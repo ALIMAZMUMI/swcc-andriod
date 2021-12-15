@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_login"
+        android:icon="@drawable/user"
+        android:title="للموظفين" />
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/homepage"
+        android:title="الرئيسية" />
+
+    <item
+        android:id="@+id/navigation_service"
+        android:icon="@drawable/services"
+        android:title="خدمات" />
+
+
+</menu>
