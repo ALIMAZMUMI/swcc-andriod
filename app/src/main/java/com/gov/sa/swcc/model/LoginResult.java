@@ -1,4 +1,4 @@
-package com.gov.sa.swcc;
+package com.gov.sa.swcc.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
