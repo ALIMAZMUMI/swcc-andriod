@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.gov.sa.swcc.model.PersonalResult;
+
 public class Global {
 
     static Context context;
@@ -29,6 +32,29 @@ public class Global {
         SharedPreferences prefs = context.getSharedPreferences("SWCCFile", Context.MODE_PRIVATE);
         String name = prefs.getString(key, "");
         return name;
+    }
+
+
+    public void SavePData(String key, PersonalResult value){
+
+        SharedPreferences.Editor editor = context.getSharedPreferences("SWCCFile", Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(value);
+        editor.putString(key, json);
+        editor.commit();
+        editor.apply();
+    }
+
+
+    public  PersonalResult GetPData(String key){
+
+        SharedPreferences prefs = context.getSharedPreferences("SWCCFile", Context.MODE_PRIVATE);
+        String name = prefs.getString(key, "");
+        Gson gson = new Gson();
+        String json = prefs.getString(key, "");
+        PersonalResult obj = gson.fromJson(json, PersonalResult.class);
+
+        return obj;
     }
 
 
