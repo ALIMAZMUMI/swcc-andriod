@@ -4,15 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#00000000"
-    android:gravity="center"
+    android:layout_gravity="center"
     tools:context=".EmpCardActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#00000000"
-
+        android:layout_gravity="center|bottom"
         android:gravity="center">
 
     <androidx.cardview.widget.CardView
@@ -21,6 +19,7 @@
         android:elevation="12dp"
         android:id="@+id/idCard"
         app:cardCornerRadius="10dp"
+        android:layout_marginHorizontal="20dp"
         android:background="#ffffff"
         android:layout_centerHorizontal="true">
 
@@ -33,12 +32,13 @@
             android:gravity="center">
 
 
-            <ImageView
+            <TextView
                 android:id="@+id/imageView3"
-                android:layout_width="300dp"
-                android:layout_marginTop="40dp"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/swccheader" />
+                android:layout_width="280dp"
+                android:layout_marginTop="41dp"
+                android:layout_height="46dp"
+                android:background="@drawable/swccheader"
+                 />
 
             <TextView
                 android:id="@+id/Empdept"
@@ -46,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="20dp"
+                android:textColor="#000000"
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/EmpPic"
@@ -54,20 +55,19 @@
                 android:textStyle="bold"
                 android:gravity="center"/>
             <TextView
+                android:id="@+id/EmpID"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:textSize="20dp"
-                android:text="190250"
                 android:textStyle="bold"
                 android:textColor="#ffffff"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/blueround"
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/EmpName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="سامي محمد المزمومي"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -78,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
                 android:textStyle="bold"
+                android:textColor="#000000"
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/EmpNameEn"
@@ -87,7 +88,6 @@
                 android:text=""
                 android:textColor="@color/colorPrimary"
                 android:textSize="18dp"
-                android:textStyle="bold"
                 android:gravity="center"/>
 
             <LinearLayout
@@ -99,7 +99,7 @@
                     android:id="@+id/textView2"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:text="TextView" />
+                    android:text="" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/blueborder"
                     android:gravity="center"
-                    android:layout_marginHorizontal="10dp"
+                    android:paddingHorizontal="10dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -121,10 +121,14 @@
                             android:layout_height="20dp"
                             android:textColor="@color/colorPrimary"
                             android:text="Nationality :"
-                            android:gravity="center"
+                            android:textSize="12dp"
+                            android:gravity="left"
                             />
                         <TextView
                             android:id="@+id/EmpNat"
+                            android:textSize="12dp"
+                            android:textColor="#000000"
+
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
@@ -133,10 +137,12 @@
                             android:text="" />
                         <TextView
                             android:layout_weight="1"
+                            android:textSize="12dp"
+
                             android:layout_width="0dp"
                             android:layout_height="20dp"
                             android:textColor="@color/colorPrimary"
-                            android:gravity="center"
+                            android:gravity="right"
                             android:text="الجنسية :" />
                     </LinearLayout>
                     <LinearLayout
@@ -147,13 +153,18 @@
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
+                            android:textSize="12dp"
+
                             android:textColor="@color/colorPrimary"
                             android:text="National ID :"
-                            android:gravity="center"
+                            android:gravity="left"
                             />
                         <TextView
                             android:id="@+id/EmpNatID"
                             android:layout_weight="1"
+                            android:textSize="12dp"
+                            android:textColor="#000000"
+
                             android:layout_width="0dp"
                             android:layout_height="20dp"
                             android:gravity="center"
@@ -163,8 +174,10 @@
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
+                            android:textSize="12dp"
+
                             android:textColor="@color/colorPrimary"
-                            android:gravity="center"
+                            android:gravity="right"
                             android:text="رقم الهوية :" />
                     </LinearLayout>
                     <LinearLayout
@@ -177,13 +190,18 @@
                             android:layout_height="20dp"
                             android:textColor="@color/colorPrimary"
                             android:text="Blood type :"
-                            android:gravity="center"
+                            android:textSize="12dp"
+
+                            android:gravity="left"
                             />
                         <TextView
                             android:id="@+id/EmpBlood"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
+                            android:textSize="12dp"
+                            android:textColor="#000000"
+
                             android:gravity="center"
                             android:text="" />
                         <TextView
@@ -191,7 +209,9 @@
                             android:layout_width="0dp"
                             android:layout_height="20dp"
                             android:textColor="@color/colorPrimary"
-                            android:gravity="center"
+                            android:gravity="right"
+                            android:textSize="12dp"
+
                             android:text="فصيلة الدم :" />
 
 
@@ -221,8 +241,8 @@
 
     <TextView
         android:id="@+id/back"
-    android:layout_width="70dp"
-    android:layout_height="50dp"
+    android:layout_width="120dp"
+    android:layout_height="100dp"
     android:background="@drawable/down"
 
 

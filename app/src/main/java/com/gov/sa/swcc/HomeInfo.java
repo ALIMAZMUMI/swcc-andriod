@@ -1,12 +1,14 @@
 package com.gov.sa.swcc;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
@@ -29,6 +31,7 @@ public class HomeInfo extends Fragment {
     }
 TextView Emppic,EmpName,EmpJob;
     Global global;
+    CardView idCard;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +41,9 @@ TextView Emppic,EmpName,EmpJob;
         Emppic=(TextView)view.findViewById(R.id.Emppic);
         EmpName=(TextView)view.findViewById(R.id.EmpName);
         EmpJob=(TextView)view.findViewById(R.id.EmpJob);
+
+        idCard=(CardView)view.findViewById(R.id.idCard);
+
 
 
         PersonalResult per=global.GetPData("PersonalResult");
@@ -50,6 +56,13 @@ TextView Emppic,EmpName,EmpJob;
         Emppic.setBackground(d);
 
 
+
+        idCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(),EmpCardActivity.class));
+            }
+        });
 
 
 
