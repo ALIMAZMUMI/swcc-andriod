@@ -56,13 +56,23 @@ global=new Global(getContext());
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+if(!global.GetPData("PersonalResult").equals("")){
 
-                if(user.getText().toString().length()>0&&pass.getText().toString().length()>0){
+    HomeInfo nextFrag= new HomeInfo();
+    Bundle bundle = new Bundle();
+    nextFrag.setArguments(bundle);
+    getActivity().getSupportFragmentManager().beginTransaction()
+            .replace(R.id.main_container, nextFrag, "findThisFragment")
+            .addToBackStack(null)
+            .commit();
 
-                    CallLogin();
-                }
+}else {
+    if (user.getText().toString().length() > 0 && pass.getText().toString().length() > 0) {
 
+        CallLogin();
+    }
 
+}
             }
         });
 
@@ -78,67 +88,67 @@ global=new Global(getContext());
 
 
 
-        global.SaveValue("Username","u190250");
-        global.SaveValue("Password","SA.RUH.1409");
-        Otp nextFrag= new Otp();
+//        global.SaveValue("Username","u190250");
+//        global.SaveValue("Password","SA.RUH.1409");
+//        Otp nextFrag= new Otp();
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putString("Mobile", "0568935924");
+//        nextFrag.setArguments(bundle);
+//        getActivity().getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.main_container, nextFrag, "findThisFragment")
+//                .addToBackStack(null)
+//                .commit();
 
-        Bundle bundle = new Bundle();
-        bundle.putString("Mobile", "0568935924");
-        nextFrag.setArguments(bundle);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
+
+        byte[] data = pass.getText().toString().getBytes(StandardCharsets.UTF_8);
+        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+
+        Log.d("base64",base64+"");
+
+        Call<LoginResult> call = RetrofitClient.getInstance().getMyApi().Login("u"+user.getText().toString().trim(),base64.trim(),"null");
+        ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
+                "يرجى الإنتظار", true);
+        call.enqueue(new Callback<LoginResult>() {
+            @Override
+            public void onResponse(Response<LoginResult> response, Retrofit retrofit) {
+                Log.d("Resp",response.message()+"");
+                dialog.dismiss();
+        if(response.isSuccess())
+        {
+            if(response.body().getResultMessage().equals("Success: Message has been sent")){
+
+                global.SaveValue("Username","u"+user.getText().toString().trim());
+                global.SaveValue("Password",pass.getText().toString());
 
 
-//        byte[] data = pass.getText().toString().getBytes(StandardCharsets.UTF_8);
-//        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
-//
-//        Log.d("base64",base64+"");
-//
-//        Call<LoginResult> call = RetrofitClient.getInstance().getMyApi().Login("u"+user.getText().toString().trim(),base64.trim(),"null");
-//        ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
-//                "يرجى الإنتظار", true);
-//        call.enqueue(new Callback<LoginResult>() {
-//            @Override
-//            public void onResponse(Response<LoginResult> response, Retrofit retrofit) {
-//                Log.d("Resp",response.message()+"");
-//                dialog.dismiss();
-//        if(response.isSuccess())
-//        {
-//            if(response.body().getResultMessage().equals("Success: Message has been sent")){
-//
-//                global.SaveValue("Username","u"+user.getText().toString().trim());
-//                global.SaveValue("Password",base64.trim());
-//
-//
-//                Otp nextFrag= new Otp();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("Mobile", response.body().getMoreDetails());
-//                nextFrag.setArguments(bundle);
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.otp, nextFrag, "findThisFragment")
-//                        .addToBackStack(null)
-//                        .commit();
-//
-//               // ShowMessage("تم تسجيل الدخول");
-//            }else {
-//                ShowMessage("الرقم الوظيفي و كلمة المرور غير صحيحة");
-//
-//            }
-//
-//        }
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                dialog.dismiss();
-//                Log.d("Reeeeeeeeeee",t.getMessage()+"");
-//
-//            }
-//
-//
-//        });
+                Otp nextFrag= new Otp();
+                Bundle bundle = new Bundle();
+                bundle.putString("Mobile", response.body().getMoreDetails());
+                nextFrag.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_container, nextFrag, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
+
+               // ShowMessage("تم تسجيل الدخول");
+            }else {
+                ShowMessage("الرقم الوظيفي و كلمة المرور غير صحيحة");
+
+            }
+
+        }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                dialog.dismiss();
+                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+
+            }
+
+
+        });
     }
 
 

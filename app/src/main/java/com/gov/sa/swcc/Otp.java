@@ -43,7 +43,7 @@ public class Otp extends Fragment {
     Button sub_otp;
     EditText otp;
 Global global;
-
+    CountDownTimer Timer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +68,7 @@ global=new Global(getContext());
         resend_pro.setVisibility(View.VISIBLE);
 
 
-        CountDownTimer Timer=new CountDownTimer(15000, 1000) {
+         Timer=new CountDownTimer(15000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 resend.setVisibility(View.GONE);
@@ -87,8 +87,7 @@ global=new Global(getContext());
             @Override
             public void onClick(View view) {
                 CallLogin();
-                Timer.start();
-                resend.setVisibility(View.GONE);
+
             }
         });
 
@@ -136,17 +135,9 @@ global=new Global(getContext());
                     if(response.body().getResultMessage().equals("Success: Message has been sent")){
 
 
-
-                        Otp nextFrag= new Otp();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Mobile", response.body().getMoreDetails());
-                        nextFrag.setArguments(bundle);
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.otp, nextFrag, "findThisFragment")
-                                .addToBackStack(null)
-                                .commit();
-
-                        // ShowMessage("تم تسجيل الدخول");
+                        Timer.start();
+                        resend.setVisibility(View.GONE);
+                        resend_pro.setVisibility(View.VISIBLE);
                     }else {
                         global.ShowMessage("الرقم الوظيفي و كلمة المرور غير صحيحة");
 
@@ -186,10 +177,22 @@ global=new Global(getContext());
                 dialog.dismiss();
                 if(response.isSuccess())
                 {
+
+                    Log.d("Resp",response.body().toString()+"");
+
                     if(response.body().getResultMessage().equals("done")){
 
 
+                        global.SavePData("PersonalResult",response.body());
 
+
+                        HomeInfo nextFrag= new HomeInfo();
+                        Bundle bundle = new Bundle();
+                        nextFrag.setArguments(bundle);
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_container, nextFrag, "findThisFragment")
+                                .addToBackStack(null)
+                                .commit();
 
 
 //                        Otp nextFrag= new Otp();
