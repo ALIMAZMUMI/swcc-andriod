@@ -19,8 +19,4 @@ public interface Api {
     Call<PersonalResult> LoginOTP(@Header("UserName") String username, @Header("UserPass") String pass, @Header("OtpCode") String otp);
 
 
-
-
-
-
 }
