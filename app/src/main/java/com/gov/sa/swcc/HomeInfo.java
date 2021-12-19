@@ -31,7 +31,7 @@ public class HomeInfo extends Fragment {
     }
 TextView Emppic,EmpName,EmpJob;
     Global global;
-    CardView idCard;
+    CardView idCard,detials,Transactions;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +43,8 @@ TextView Emppic,EmpName,EmpJob;
         EmpJob=(TextView)view.findViewById(R.id.EmpJob);
 
         idCard=(CardView)view.findViewById(R.id.idCard);
-
+        detials=(CardView)view.findViewById(R.id.detials);
+        Transactions=(CardView)view.findViewById(R.id.Transactions);
 
 
         PersonalResult per=global.GetPData("PersonalResult");
@@ -63,6 +64,19 @@ TextView Emppic,EmpName,EmpJob;
                 startActivity(new Intent(getActivity(),EmpCardActivity.class));
             }
         });
+        detials.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(),JobDetailsActivity.class));
+            }
+        });
+        Transactions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(),TransactionsActivity.class));
+            }
+        });
+
 
 
 
