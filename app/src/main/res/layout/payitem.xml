@@ -20,14 +20,14 @@
         android:weightSum="3">
 
         <TextView
-            android:id="@+id/LeaveCounttxt"
+            android:id="@+id/valuetxt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textStyle="bold"
             android:textColor="#ffffff"
-            android:textSize="16dp"
+            android:textSize="14dp"
 
             android:text="" />
 
@@ -45,26 +45,15 @@
 
 
         <TextView
-            android:id="@+id/LeaveTypetxt"
+            android:id="@+id/valueTypetxt"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center|right"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:textStyle="bold"
             android:textColor="#000000"
             android:textSize="16dp"
             android:text="" />
 
-        <TextView
-            android:id="@+id/LeaveDatetxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center|right"
-            android:textColor="#838383"
-            android:textSize="14dp"
-            android:textStyle="bold"
-            android:text="" />
     </LinearLayout>
 
 

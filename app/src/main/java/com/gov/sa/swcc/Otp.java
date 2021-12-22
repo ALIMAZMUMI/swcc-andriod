@@ -22,10 +22,10 @@ import com.gov.sa.swcc.model.PersonalResult;
 
 import java.nio.charset.StandardCharsets;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 
 /**
@@ -127,10 +127,10 @@ global=new Global(getContext());
                 "يرجى الإنتظار", true);
         call.enqueue(new Callback<LoginResult>() {
             @Override
-            public void onResponse(Response<LoginResult> response, Retrofit retrofit) {
+            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
                 Log.d("Resp",response.message()+"");
                 dialog.dismiss();
-                if(response.isSuccess())
+                if(response.isSuccessful())
                 {
                     if(response.body().getResultMessage().equals("Success: Message has been sent")){
 
@@ -147,11 +147,12 @@ global=new Global(getContext());
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<LoginResult> call, Throwable t) {
                 dialog.dismiss();
                 Log.d("Reeeeeeeeeee",t.getMessage()+"");
 
             }
+
 
 
         });
@@ -172,10 +173,10 @@ global=new Global(getContext());
                 "يرجى الإنتظار", true);
         call.enqueue(new Callback<PersonalResult>() {
             @Override
-            public void onResponse(Response<PersonalResult> response, Retrofit retrofit) {
+            public void onResponse(Call<PersonalResult> call, Response<PersonalResult> response) {
                 Log.d("Resp",response.message()+"");
                 dialog.dismiss();
-                if(response.isSuccess())
+                if(response.isSuccessful())
                 {
 
                     Log.d("Resp",response.body().toString()+"");
@@ -214,12 +215,11 @@ global=new Global(getContext());
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<PersonalResult> call, Throwable t) {
                 dialog.dismiss();
                 Log.d("Reeeeeeeeeee",t.getMessage()+"");
 
             }
-
 
         });
     }

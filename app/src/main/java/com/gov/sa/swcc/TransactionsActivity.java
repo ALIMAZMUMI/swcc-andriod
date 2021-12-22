@@ -15,10 +15,10 @@ import com.gov.sa.swcc.model.TransactionsApiResult;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class TransactionsActivity extends AppCompatActivity {
 Global global;
@@ -46,10 +46,10 @@ ListView Transactions;
                 "يرجى الإنتظار", true);
         call.enqueue(new Callback<List<TransactionsApiResult>>() {
             @Override
-            public void onResponse(Response<List<TransactionsApiResult>> response, Retrofit retrofit) {
+            public void onResponse(Call<List<TransactionsApiResult>> call, Response<List<TransactionsApiResult>> response) {
                 Log.d("Resp",response.message()+"");
                 dialog.dismiss();
-                if(response.isSuccess())
+                if(response.isSuccessful())
                 {
 
                     if(response.body().size()>0){
@@ -68,7 +68,7 @@ ListView Transactions;
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<TransactionsApiResult>> call, Throwable t) {
                 dialog.dismiss();
                 Log.d("Reeeeeeeeeee",t.getMessage()+"");
 

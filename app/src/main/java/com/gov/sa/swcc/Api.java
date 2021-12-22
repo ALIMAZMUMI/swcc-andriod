@@ -1,16 +1,17 @@
 package com.gov.sa.swcc;
 
-import com.gov.sa.swcc.model.LeaveEnvelope;
 import com.gov.sa.swcc.model.LoginResult;
 import com.gov.sa.swcc.model.PersonalResult;
 import com.gov.sa.swcc.model.TransactionsApiResult;
 
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Header;
-import retrofit.http.POST;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 
 public interface Api {
 //urlString = @"https://ext.swcc.gov.sa/OTP/API/ADOperationsOTP/auth/";
@@ -29,8 +30,12 @@ public interface Api {
     @GET("EmpTrans")
     Call<List<TransactionsApiResult>> Transactions(@Header("UserName") String username);
 
-    @POST("employeeLeavesService2MobileApp")
-    Call<List<Object>> Leaves(@Header("Authorization") String authkey, LeaveEnvelope leaveEnvelope);
+//    @Headers({
+//            "Content-Type: text/xml",
+//            "Content-Length: "
+//    })
+//    @POST("employeeLeavesService2MobileApp")
+//    Call<LeaveBody> Leaves(@Header("Authorization") String authkey, @Body Envelope envelope);
 
 
 

@@ -74,8 +74,8 @@ TextView Emppic,EmpName,EmpJob;
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(getActivity(),LeaveActivity.class));
-
+                startActivity(new Intent(getActivity(),EmployeeIdentificationActivity.class));
+//                startActivity(new Intent(getActivity(),PayslipActivity.class));
                 // startActivity(new Intent(getActivity(),TransactionsActivity.class));
             }
         });

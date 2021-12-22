@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/blueborder.xml" value="0.140625" />
+        <entry key="app/src/main/res/drawable/blueroundfull.xml" value="0.140625" />
+        <entry key="app/src/main/res/drawable/greenroundfull.xml" value="0.140625" />
+        <entry key="app/src/main/res/drawable/salgrayround.xml" value="0.140625" />
+        <entry key="app/src/main/res/drawable/salgreenround.xml" value="0.140625" />
+        <entry key="app/src/main/res/layout/activity_employee_identification.xml" value="0.11041666666666666" />
+        <entry key="app/src/main/res/layout/activity_leave.xml" value="0.14447463768115942" />
+        <entry key="app/src/main/res/layout/activity_payslip.xml" value="0.13626311645531183" />
+        <entry key="app/src/main/res/layout/leaveitem.xml" value="0.14447463768115942" />
+        <entry key="app/src/main/res/layout/payitem.xml" value="0.506662886703009" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
