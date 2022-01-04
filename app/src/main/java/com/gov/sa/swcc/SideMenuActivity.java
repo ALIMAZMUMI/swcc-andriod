@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +27,11 @@ ImageView menuimg,menuimg2,menuimg3,menuimg4;
         setContentView(R.layout.activity_side_menu);
 
 
+
+
+
+
+
         overridePendingTransition(R.anim.slide_left,R.anim.slide_right);
 
         main1=(LinearLayout)findViewById(R.id.main1);
@@ -42,15 +48,36 @@ ImageView menuimg,menuimg2,menuimg3,menuimg4;
         menuimg2=(ImageView)findViewById(R.id.menuimg2);
         menuimg3=(ImageView)findViewById(R.id.menuimg3);
         menuimg4=(ImageView)findViewById(R.id.menuimg4);
+        LinearLayout rightli=(LinearLayout)findViewById(R.id.rightli);
+        rightli.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                overridePendingTransition(R.anim.slide_right,R.anim.slide_left);
+                SideMenuActivity.this.finish();
+
+            }
+        });
 
 
+        main5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("URLLink", "https://www.swcc.gov.sa/ar/home/contactus");
+                ((Home)MainActivity.home).setURLLink("https://www.swcc.gov.sa/ar/home/contactus");
 
+                MainActivity.home.setArguments(bundle);
+                MainActivity.changelayout(3);
+                SideMenuActivity.this.finish();
+
+            }
+        });
 
         ArrayList<String> arrayStrings = new ArrayList<String>();
         arrayStrings.add("نبذة عن المؤسسة");
         arrayStrings.add("تاريخ المؤسسة");
         arrayStrings.add("شركاء النجاح");
-        arrayStrings.add("دليل الهوية البصرية");
+        //arrayStrings.add("دليل الهوية البصرية");
         arrayStrings.add("مجلس الإدارة");
         arrayStrings.add("الهيكل التنظيمي");
         arrayStrings.add("محافظ المؤسسة");
@@ -90,6 +117,85 @@ ImageView menuimg,menuimg2,menuimg3,menuimg4;
         ArrayAdapter resultAdapter4 = new ArrayAdapter<String>(this,R.layout.menuitem,R.id.submenu,arrayStrings4);
         sub4.setAdapter( resultAdapter4 );
         getHeight(resultAdapter4,sub4);
+
+sub1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        String [] Link=new String[]{
+                "WhoAreWe/SWCCSummery","WhoAreWe/SWCCChronicle","WhoAreWe/SuccessPartners",
+                "Governance/DirectorsBoard","Governance/OrganizationalStructure","Governance/SWCCGovernor",
+                "ProductionSystems/DesalinationTechnologies","ProductionSystems","PrivatizationProgram",
+                "ArtificialIntelligence"};
+
+        Bundle bundle = new Bundle();
+        bundle.putString("URLLink", "https://swcc.gov.sa/ar/" +Link[i]);
+        ((Home)MainActivity.home).setURLLink("https://swcc.gov.sa/ar/" +Link[i]);
+
+        MainActivity.home.setArguments(bundle);
+        MainActivity.changelayout(3);
+        SideMenuActivity.this.finish();
+    }
+});
+
+
+
+        sub2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String [] Link=new String[]{
+                        "ResearchInstitute","LocalContent","Services/EquipmentMaintenanceService",
+                        "Services/Laboratories","Services/MineralExtractionService"};
+
+                Bundle bundle = new Bundle();
+                bundle.putString("URLLink", "https://swcc.gov.sa/ar/" +Link[i]);
+                ((Home)MainActivity.home).setURLLink("https://swcc.gov.sa/ar/" +Link[i]);
+
+                MainActivity.home.setArguments(bundle);
+                MainActivity.changelayout(3);
+                SideMenuActivity.this.finish();
+            }
+        });
+
+        sub3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String [] Link=new String[]{
+                        "https://swcc.gov.sa/ar/Suppliers/Tenders",
+                        "https://swcc.gov.sa/ar/Suppliers/CompaniesQualification",
+                        "https://swcc.gov.sa/ar/Suppliers/SupplierSystem",
+                        "https://ext.swcc.gov.sa/TendersP/"};
+
+                Bundle bundle = new Bundle();
+                bundle.putString("URLLink", Link[i]);
+                ((Home)MainActivity.home).setURLLink(Link[i]);
+
+                MainActivity.home.setArguments(bundle);
+                MainActivity.changelayout(3);
+                SideMenuActivity.this.finish();
+            }
+        });
+
+        sub4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String [] Link=new String[]{
+                        "SafetyAndHealth",
+                        "SocialResponsibility",
+                        "EnvironmentalCompliance"};
+
+                Bundle bundle = new Bundle();
+                bundle.putString("URLLink", "https://swcc.gov.sa/ar/" +Link[i]);
+                ((Home)MainActivity.home).setURLLink("https://swcc.gov.sa/ar/" +Link[i]);
+
+                MainActivity.home.setArguments(bundle);
+                MainActivity.changelayout(3);
+                SideMenuActivity.this.finish();
+            }
+        });
 
 
 

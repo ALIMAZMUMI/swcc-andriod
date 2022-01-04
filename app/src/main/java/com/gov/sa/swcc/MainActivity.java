@@ -45,6 +45,10 @@ ImageView sidemeun;
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    Bundle bundle = new Bundle();
+                    //bundle.putString("URLLink", "https://www.swcc.gov.sa/ar");
+                    ((Home)home).setURLLink("https://www.swcc.gov.sa/ar");
+                    home.setArguments(bundle);
                     fm.beginTransaction().hide(active).show(home).commit();
                     active = home;
                     return true;
@@ -114,6 +118,10 @@ ImageView sidemeun;
         }else if(Fragmentid==2){
             fm.beginTransaction().hide(active).show(homeInfo).commit();
             active = homeInfo;
+        }
+        else if(Fragmentid==3){
+            fm.beginTransaction().hide(active).show(home).commit();
+            active = home;
         }else{
             fm.beginTransaction().hide(active).show(login).commit();
             active = login;

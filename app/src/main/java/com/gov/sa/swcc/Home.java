@@ -3,6 +3,7 @@ package com.gov.sa.swcc;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,12 +24,14 @@ import android.widget.Toast;
  */
 public class Home extends Fragment {
 
+String URLLink="";
 
     public Home() {
         // Required empty public constructor
     }
-
-
+    int runtime=0;
+    static WebView mWebview;
+    static ProgressDialog dialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class Home extends Fragment {
 
 
 
-        WebView mWebview  = (WebView) view.findViewById(R.id.web);
+         mWebview  = (WebView) view.findViewById(R.id.web);
 
         mWebview.getSettings().setJavaScriptEnabled(true); // enable javascript
 
@@ -58,33 +61,73 @@ public class Home extends Fragment {
                 onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
             }
         });
-        ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
-                "يرجى الإنتظار", true);
 
         mWebview.setWebViewClient(new WebViewClient() {
 
-            public void onPageFinished(WebView view, String url) {
-                dialog.dismiss();
-
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                dialog =   ProgressDialog.show(getActivity(), "",
+                        "يرجى الإنتظار", true);
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                //view.loadUrl(url);
+                return true;
+            }
+
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if(dialog!=null) {
+                    dialog.dismiss();
+                }
+            }
+
 
             @Override
             public void onLoadResource(WebView view, String url) {
                 super.onLoadResource(view, url);
+
                 String Java="javascript:(function() {document.getElementsByClassName('header_absolute')[0].style.display = 'none';document.getElementsByTagName('section')[0].style.height = '0px';document.getElementById('bottomMenu').style.display = 'none';document.getElementsByClassName('container')[1].style.display = 'none';document.getElementsByClassName('blue-main-hover')[4].style.display = 'none';document.getElementsByClassName('entry-footer')[0].style.display = 'none';})()";
                 mWebview.loadUrl(Java);
+
 
             }
         });
 
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            URLLink = bundle.getString("URLLink","");
+        }else
+        {
+            URLLink="https://www.swcc.gov.sa/ar";
+        }
 
-        mWebview.loadUrl("https://www.swcc.gov.sa/ar");
-
+        mWebview.loadUrl(URLLink);
 
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Bundle bundle = this.getArguments();
+//        if (bundle != null) {
+//            URLLink = bundle.getString("URLLink","");
+//        }else
+//        {
+//            URLLink="https://www.swcc.gov.sa/ar";
+//        }
+//
+//        mWebview.loadUrl(URLLink);
+    }
 
+
+
+    public void setURLLink(String URLLink){
+        mWebview.loadUrl(URLLink);
+    }
 
 }
