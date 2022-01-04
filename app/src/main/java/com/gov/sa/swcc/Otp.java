@@ -63,7 +63,12 @@ global=new Global(getContext());
         if (bundle != null) {
              Mobile = bundle.getString("Mobile","");
         }
-        Mobmsg.setText("تم إرسال الرمز للجوال ******"+Mobile.substring(Mobile.length()-4));
+        try {
+            Mobmsg.setText("تم إرسال الرمز للجوال ******"+Mobile.substring(Mobile.length()-4));
+
+        }catch (Exception ex){
+
+        }
         resend.setVisibility(View.GONE);
         resend_pro.setVisibility(View.VISIBLE);
 
@@ -187,14 +192,19 @@ global=new Global(getContext());
                         global.SavePData("PersonalResult",response.body());
 
 
-                        HomeInfo nextFrag= new HomeInfo();
-                        Bundle bundle = new Bundle();
-                        nextFrag.setArguments(bundle);
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.main_container, nextFrag, "findThisFragment")
-                                .addToBackStack(null)
-                                .commit();
 
+
+                        Bundle bundle = new Bundle();
+                        MainActivity.homeInfo.setArguments(bundle);
+                        MainActivity.changelayout(2);
+//                        HomeInfo nextFrag= new HomeInfo();
+//                        Bundle bundle = new Bundle();
+//                        nextFrag.setArguments(bundle);
+//                        getActivity().getSupportFragmentManager().beginTransaction()
+//                                .replace(R.id.main_container, nextFrag, "findThisFragment")
+//                                .addToBackStack(null)
+//                                .commit();
+//
 
 //                        Otp nextFrag= new Otp();
 //                        Bundle bundle = new Bundle();

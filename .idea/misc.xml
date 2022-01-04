@@ -3,16 +3,42 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/darkblueroundfull.xml" value="0.1296875" />
+        <entry key="app/src/main/res/drawable-v24/grayroundfull.xml" value="0.14114583333333333" />
         <entry key="app/src/main/res/drawable/blueborder.xml" value="0.140625" />
         <entry key="app/src/main/res/drawable/blueroundfull.xml" value="0.140625" />
+        <entry key="app/src/main/res/drawable/greenborder.xml" value="0.1453125" />
+        <entry key="app/src/main/res/drawable/greenlightfull.xml" value="0.1453125" />
         <entry key="app/src/main/res/drawable/greenroundfull.xml" value="0.140625" />
         <entry key="app/src/main/res/drawable/salgrayround.xml" value="0.140625" />
         <entry key="app/src/main/res/drawable/salgreenround.xml" value="0.140625" />
-        <entry key="app/src/main/res/layout/activity_employee_identification.xml" value="0.11041666666666666" />
+        <entry key="app/src/main/res/layout/activity_emp_card.xml" value="0.246875" />
+        <entry key="app/src/main/res/layout/activity_employee_identification.xml" value="0.1014260276410042" />
+        <entry key="app/src/main/res/layout/activity_eskan_service.xml" value="0.2993730407523511" />
+        <entry key="app/src/main/res/layout/activity_eskan_serviceout.xml" value="0.16701388888888888" />
+        <entry key="app/src/main/res/layout/activity_hr_request.xml" value="0.23052536231884058" />
+        <entry key="app/src/main/res/layout/activity_industrial_security.xml" value="0.26265075198336585" />
+        <entry key="app/src/main/res/layout/activity_insurance_info.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_itcom.xml" value="0.12916666666666668" />
         <entry key="app/src/main/res/layout/activity_leave.xml" value="0.14447463768115942" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_payslip.xml" value="0.13626311645531183" />
+        <entry key="app/src/main/res/layout/activity_pro_planning.xml" value="0.11354166666666667" />
+        <entry key="app/src/main/res/layout/activity_qrcode.xml" value="0.1109375" />
+        <entry key="app/src/main/res/layout/activity_return_docments.xml" value="0.15763888888888888" />
+        <entry key="app/src/main/res/layout/activity_show_link.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_side_menu.xml" value="0.3153066990240673" />
+        <entry key="app/src/main/res/layout/activity_training.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.24583333333333332" />
+        <entry key="app/src/main/res/layout/fragment_home_info.xml" value="0.19971603762618478" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.16701388888888888" />
+        <entry key="app/src/main/res/layout/fragment_services.xml" value="0.2071986297051631" />
+        <entry key="app/src/main/res/layout/insuranceitem.xml" value="0.1" />
         <entry key="app/src/main/res/layout/leaveitem.xml" value="0.14447463768115942" />
+        <entry key="app/src/main/res/layout/menuitem.xml" value="0.1718576195773081" />
         <entry key="app/src/main/res/layout/payitem.xml" value="0.506662886703009" />
+        <entry key="app/src/main/res/layout/spinnericon.xml" value="0.3522129459778536" />
+        <entry key="app/src/main/res/xml/filepath.xml" value="0.23052536231884058" />
       </map>
     </option>
   </component>

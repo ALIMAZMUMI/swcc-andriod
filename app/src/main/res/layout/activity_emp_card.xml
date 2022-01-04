@@ -19,7 +19,6 @@
         android:elevation="12dp"
         android:id="@+id/idCard"
         app:cardCornerRadius="10dp"
-        android:layout_marginHorizontal="20dp"
         android:background="#ffffff"
         android:layout_centerHorizontal="true">
 
@@ -99,7 +98,8 @@
                     android:id="@+id/textView2"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:text="" />
+                    android:text=""
+                    android:background="@drawable/qrcode"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

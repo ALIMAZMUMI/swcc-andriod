@@ -44,7 +44,7 @@
                     android:textColor="#ffffff"
                     android:textSize="30dp"
                     android:textStyle="bold"
-                    android:text="قائمة الإجازة"
+                    android:text="قائمة الإجازات"
                     android:layout_marginTop="10dp"
                     android:gravity="center"/>
 

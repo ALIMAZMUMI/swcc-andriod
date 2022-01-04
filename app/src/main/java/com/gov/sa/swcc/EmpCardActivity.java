@@ -25,6 +25,7 @@ public class EmpCardActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emp_card);
         this.setFinishOnTouchOutside(false);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
         global=new Global(EmpCardActivity.this);
 
@@ -56,13 +57,15 @@ public class EmpCardActivity extends Activity {
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         Drawable d = new BitmapDrawable(getResources(), decodedByte);
         EmpPic.setBackground(d);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EmpCardActivity.this.finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
             }
         });
 
     }
+
+
 }

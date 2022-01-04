@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeInfo">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,19 +37,24 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/EmpName"
                     android:layout_width="match_parent"
                     android:textStyle="bold"
-                    android:layout_height="30dp" />
+                    android:textColor="#000000"
+                    android:textSize="18dp"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/EmpJob"
                     android:layout_width="match_parent"
                     android:textStyle="bold"
-                    android:layout_height="30dp" />
+                    android:textColor="#000000"
+                    android:textSize="18dp"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="100dp"
@@ -74,12 +81,17 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="horizontal">
                 <androidx.cardview.widget.CardView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:elevation="12dp"
+                    android:layout_marginHorizontal="10dp"
                     android:id="@+id/idCard"
                     app:cardCornerRadius="10dp"
                     android:background="#ffffff"
@@ -95,8 +107,8 @@
 
                         <ImageView
                             android:id="@+id/imageView"
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
                             android:src="@drawable/idcard" />
                         <TextView
                             android:id="@+id/textView8"
@@ -104,8 +116,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="بطاقة العمل"
+
+                            android:textColor="#000000"
                             android:textStyle="bold"
-                            android:gravity="center"/>
+                            android:textSize="12dp"                            android:gravity="center"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
@@ -113,6 +127,8 @@
                     android:layout_height="100dp"
                     android:elevation="12dp"
                     android:id="@+id/detials"
+                    android:layout_marginHorizontal="10dp"
+
                     app:cardCornerRadius="10dp"
                     android:background="#ffffff"
                     android:layout_centerHorizontal="true"
@@ -126,23 +142,27 @@
                         >
 
                         <ImageView
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
                             android:src="@drawable/profile" />
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="بياناتي"
+                            android:textColor="#000000"
                             android:textStyle="bold"
-                            android:gravity="center"/>
+                            android:textSize="12dp"                            android:gravity="center"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
                 <androidx.cardview.widget.CardView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+
                     android:elevation="12dp"
+
+                    android:layout_marginHorizontal="10dp"
+
                     android:id="@+id/Transactions"
                     app:cardCornerRadius="10dp"
                     android:background="#ffffff"
@@ -157,26 +177,404 @@
                         >
 
                         <ImageView
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/profile" />
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/checkin" />
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="بياناتي"
+                            android:text="الحضور و الإنصراف"
+                            android:textColor="#000000"
                             android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:elevation="12dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:id="@+id/sal_cer"
+                    app:cardCornerRadius="10dp"
+                    android:background="#ffffff"
+                    android:layout_centerHorizontal="true"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/blueborder"
+                        >
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/salary" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="التعريف بالراتب"
+
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="12dp"                            android:gravity="center"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:elevation="12dp"
+                    android:id="@+id/leave"
+                    android:layout_marginHorizontal="10dp"
+
+                    app:cardCornerRadius="10dp"
+                    android:background="#ffffff"
+                    android:layout_centerHorizontal="true"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/blueborder"
+                        >
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/leave" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="الإجازات"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="12dp"                            android:gravity="center"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:elevation="12dp"
+                    android:layout_marginHorizontal="10dp"
+
+                    android:id="@+id/salmonth"
+                    app:cardCornerRadius="10dp"
+                    android:background="#ffffff"
+                    android:layout_centerHorizontal="true"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/blueborder"
+                        >
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/salary_cer" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="مسير الراتب"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:elevation="12dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:id="@+id/EskanService"
+                    app:cardCornerRadius="10dp"
+                    android:background="#ffffff"
+                    android:layout_centerHorizontal="true"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/blueborder"
+                        >
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/eskan" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="خدمات الإسكان"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:elevation="12dp"
+                    android:layout_marginHorizontal="10dp"
+
+                    android:id="@+id/ITCom"
+                    app:cardCornerRadius="10dp"
+                    android:background="#ffffff"
+                    android:layout_centerHorizontal="true"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/blueborder"
+                        >
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/it" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="تقنية المعلومات"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:elevation="12dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:id="@+id/IndustrialSecurity"
+                    app:cardCornerRadius="10dp"
+                    android:background="#ffffff"
+                    android:layout_centerHorizontal="true"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/blueborder"
+                        >
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/eskan" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="ملاحظات السلامة"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:elevation="12dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:id="@+id/HrRequest"
+                    app:cardCornerRadius="10dp"
+                    android:background="#ffffff"
+                    android:layout_centerHorizontal="true"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/blueborder"
+                        >
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/hr" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="العناية بالعاملين"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
                             android:gravity="center"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
 
 
+ </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:elevation="12dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:id="@+id/InsuranceInfo"
+                    app:cardCornerRadius="10dp"
+                    android:background="#ffffff"
+                    android:layout_centerHorizontal="true"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/blueborder"
+                        >
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/eskan" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="التامين الصحي"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:elevation="12dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:id="@+id/EmpCard"
+                    app:cardCornerRadius="10dp"
+                    android:background="#ffffff"
+                    android:layout_centerHorizontal="true"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/blueborder"
+                        >
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/eskan" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="بطاقة العمل"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:elevation="12dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:id="@+id/Sharkhom"
+                    app:cardCornerRadius="10dp"
+                    android:background="#ffffff"
+                    android:layout_centerHorizontal="true"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/blueborder"
+                        >
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/eskan" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="شاركهم"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
 
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
+</ScrollView>
 </FrameLayout>

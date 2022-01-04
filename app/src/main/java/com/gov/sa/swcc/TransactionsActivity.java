@@ -6,13 +6,16 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gov.sa.swcc.Adapter.TransactionAdapter;
 import com.gov.sa.swcc.model.PersonalResult;
 import com.gov.sa.swcc.model.TransactionsApiResult;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,11 +30,23 @@ ListView Transactions;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions);
+        overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
 
         global=new Global(TransactionsActivity.this);
         Transactions=(ListView)findViewById(R.id.Transactions);
 
         CallTransactions();
+
+        TextView back=(TextView)findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TransactionsActivity.this.finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
+            }
+        });
 
 
     }
@@ -53,9 +68,13 @@ ListView Transactions;
                 {
 
                     if(response.body().size()>0){
+                        List<TransactionsApiResult> neworder =new ArrayList<>(response.body().size());
+                        for (int i=0;i<response.body().size();i++){
 
+                            neworder.add(response.body().get(response.body().size()-(i+1)));
+                        }
 
-                        TransactionAdapter adp=new TransactionAdapter(TransactionsActivity.this,response.body());
+                        TransactionAdapter adp=new TransactionAdapter(TransactionsActivity.this,neworder);
                         Transactions.setAdapter(adp);
 
 

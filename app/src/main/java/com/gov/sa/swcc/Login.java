@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.biometric.BiometricManager;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -16,8 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 
+import com.google.gson.Gson;
 import com.gov.sa.swcc.model.LoginResult;
+import com.gov.sa.swcc.model.PersonalResult;
 
 import java.nio.charset.StandardCharsets;
 
@@ -38,6 +42,7 @@ Global global;
     }
 
 EditText user,pass;
+    Switch switch1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,30 +53,86 @@ global=new Global(getContext());
 
         user=(EditText)view.findViewById(R.id.user);
         pass=(EditText)view.findViewById(R.id.password);
+        switch1=(Switch) view.findViewById(R.id.switch1);
 
 
+
+        BiometricManager biometricManager = BiometricManager.from(getActivity());
+        switch1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(switch1.isChecked()){
+                switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+                    case BiometricManager.BIOMETRIC_SUCCESS:
+                        Log.d("MY_APP_TAG", "App can authenticate using biometrics.");
+                        switch1.setChecked(true);
+                        break;
+                    case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                        Log.e("MY_APP_TAG", "No biometric features available on this device.");
+                        switch1.setChecked(false);
+                        break;
+                    case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                        Log.e("MY_APP_TAG", "Biometric features are currently unavailable.");
+                        //b.biometricCardView.setVisibility(View.GONE);
+                        switch1.setChecked(false);
+
+                        break;
+                    case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                        // Prompts the user to create credentials that your app accepts.
+                        switch1.setChecked(false);
+                        break;
+                }
+            }
+            }
+        });
 
         Button login=(Button)view.findViewById(R.id.button);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-if(global.GetPData("PersonalResult")!=null){
+//                String PerInfo=" {\"ResultCode\":null,\"ResultMessage\":\"success\",\"MoreDetails\":\"true\",\"ResultObject\":{\"FirstNameAr\":\"عبدالله\",\"MiddleNameAr\":\"محمد\",\"LastNameAr\":\"صعيدي\",\"FirstNameEn\":\"Abdullah\",\"MiddleNameEn\":\"Abdulaziz\",\"LastNameEn\":\"Saeidy\",\"FullName\":\"عبدالله محمد عبدالعزيز صعيدي\",\"Gender\":\"M\",\"NationalId\":\"1040122714\",\"Nationality\":\"السعودية\",\"Mobile\":\"966505555987\",\"Title\":\"رجل امن\",\"Department\":\"منظومة إنتاج الشعيبة\",\"DepartmentCode\":\"1010000\",\"LocationAr\":\"الرياض\",\"LocationEn\":\"Riyadh\",\"Photo\":\"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\"}}";
+//                global.SaveValue("Username","u"+"208461");
+//
+//                Gson gson = new Gson();
+//
+//                PersonalResult per=gson.fromJson(PerInfo,PersonalResult.class);
+//
+//                global.SavePData("PersonalResult",per);
+//
+//
+//                HomeInfo nextFrag= new HomeInfo();
+//                Bundle bundle = new Bundle();
+//                nextFrag.setArguments(bundle);
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.main_container, nextFrag, "findThisFragment")
+//                        .addToBackStack(null)
+//                        .commit();
 
-    HomeInfo nextFrag= new HomeInfo();
-    Bundle bundle = new Bundle();
-    nextFrag.setArguments(bundle);
-    getActivity().getSupportFragmentManager().beginTransaction()
-            .replace(R.id.main_container, nextFrag, "findThisFragment")
-            .addToBackStack(null)
-            .commit();
 
-}else {
-    if (user.getText().toString().length() > 0 && pass.getText().toString().length() > 0) {
+                if (user.getText().toString().length() > 0 && pass.getText().toString().length() > 0) {
 
-        CallLogin();
-    }
+                    CallLogin();
+                }else if(global.GetPData("PersonalResult")!=null){
 
+
+                    MainActivity.changelayout(2);
+
+
+                //global.SaveValue("Username","u"+"208461");
+
+//    HomeInfo nextFrag= new HomeInfo();
+//    Bundle bundle = new Bundle();
+//
+//    nextFrag.setArguments(bundle);
+//
+//
+//    getActivity().getSupportFragmentManager().beginTransaction().show(nextFrag).commit();
+
+                   // MainActivity.changelayout(2);
+//            .replace(R.id.main_container, nextFrag, "findThisFragment")
+//            .addToBackStack(null)
+//            .commit();
 }
             }
         });
@@ -122,14 +183,15 @@ if(global.GetPData("PersonalResult")!=null){
                         global.SaveValue("Password",pass.getText().toString());
 
 
-                        Otp nextFrag= new Otp();
                         Bundle bundle = new Bundle();
                         bundle.putString("Mobile", response.body().getMoreDetails());
-                        nextFrag.setArguments(bundle);
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.main_container, nextFrag, "findThisFragment")
-                                .addToBackStack(null)
-                                .commit();
+                        MainActivity.otp.setArguments(bundle);
+                        MainActivity.changelayout(1);
+//                        nextFrag.setArguments(bundle);
+//                        getActivity().getSupportFragmentManager().beginTransaction()
+//                                .replace(R.id.main_container, nextFrag, "findThisFragment")
+//                                .addToBackStack(null)
+//                                .commit();
 
                         // ShowMessage("تم تسجيل الدخول");
                     }else {

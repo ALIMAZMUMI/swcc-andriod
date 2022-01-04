@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+
+    tools:context=".TrainingActivity">
+
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="150dp"
+    android:background="#00000000"
+
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/t0"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/t0"/>
+
+        <ImageView
+            android:id="@+id/t1"
+
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/t1"/>
+        <ImageView
+            android:id="@+id/t2"
+
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/t2"/>
+        <ImageView
+            android:id="@+id/t3"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/t3"/>
+        <ImageView
+            android:id="@+id/t4"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginBottom="100dp"
+            android:src="@drawable/t4"/>
+
+    </LinearLayout>
+
+</ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:background="#00000000"
+        android:weightSum="3"
+        android:layout_alignParentBottom="true"
+        >
+
+
+        <TextView
+            android:id="@+id/treaningweb"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="15dp"
+            android:padding="5dp"
+            android:background="@drawable/grayroundfull"
+            android:text="مركز التعليم الالكتروني" />
+        <TextView
+            android:id="@+id/cuntactus"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="15dp"
+            android:padding="5dp"
+            android:background="@drawable/grayroundfull"
+            android:text="للتواصل مع الاكاديمية" />
+        <TextView
+            android:id="@+id/table"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="15dp"
+            android:padding="5dp"
+            android:background="@drawable/grayroundfull"
+            android:text="جدول تدريب الاكاديمية" />
+
+    </LinearLayout>
+</RelativeLayout>
+

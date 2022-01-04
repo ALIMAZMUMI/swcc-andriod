@@ -74,6 +74,9 @@ LinearLayout sectionpay99;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payslip);
+        overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
+
         global=new Global(PayslipActivity.this);
 
         DocType99=(TextView) findViewById(R.id.DocType99);
@@ -104,7 +107,7 @@ LinearLayout sectionpay99;
         header0002=(TextView)findViewById(R.id.header0002);
 
          c = Calendar.getInstance();
-        Current=Calendar.getInstance();
+         Current=Calendar.getInstance();
         int day = c.get(Calendar.DAY_OF_MONTH);
         int month = c.get(Calendar.MONTH);
         int year = c.get(Calendar.YEAR);
@@ -186,6 +189,18 @@ LinearLayout sectionpay99;
             Log.d("Error --------",e.toString());
         }
 
+
+
+
+        TextView back=(TextView)findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PayslipActivity.this.finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
+            }
+        });
 
 
     }

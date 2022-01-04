@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "562459723250",
+    "firebase_url": "https://selfservicesmobapp-default-rtdb.firebaseio.com",
+    "project_id": "selfservicesmobapp",
+    "storage_bucket": "selfservicesmobapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562459723250:android:16be7f4dffbabdddf5976b",
+        "android_client_info": {
+          "package_name": "com.gov.sa.swcc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "562459723250-00727dm75593vnilem82921bvkch2qgs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-ZAIMnza4F1K-zTlCilb4w3cC1IM6nGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "562459723250-00727dm75593vnilem82921bvkch2qgs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "562459723250-690jltrvs7tfejjmplar95j8jqckp3ef.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.swccgovsa.general",
+                "app_store_id": "1590718891"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

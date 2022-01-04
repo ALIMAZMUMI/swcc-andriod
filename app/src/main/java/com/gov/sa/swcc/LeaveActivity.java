@@ -7,12 +7,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import com.gov.sa.swcc.Adapter.LeaveAdapter;
 import com.gov.sa.swcc.Adapter.TransactionAdapter;
 import com.gov.sa.swcc.model.LeaveItems;
+import com.gov.sa.swcc.model.TransactionsApiResult;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -27,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class LeaveActivity extends AppCompatActivity {
 Global global;
@@ -36,6 +40,8 @@ ListView LeaveList;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave);
+        overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
         global=new Global(LeaveActivity.this);
         LeaveList=(ListView) findViewById(R.id.LeaveList);
         try {
@@ -43,6 +49,18 @@ ListView LeaveList;
         }catch (Exception e){
 Log.d("Error --------",e.toString());
         }
+
+
+        TextView back=(TextView)findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LeaveActivity.this.finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
+            }
+        });
+
 
     }
 
@@ -153,7 +171,14 @@ Log.d("Error --------",e.toString());
 runOnUiThread(new Runnable() {
     @Override
     public void run() {
-        LeaveAdapter adp = new LeaveAdapter(LeaveActivity.this, leaveItems);
+
+
+        List<LeaveItems> neworder =new ArrayList<>(leaveItems.size());
+        for (int i=0;i<leaveItems.size();i++){
+
+            neworder.add(leaveItems.get(leaveItems.size()-(i+1)));
+        }
+        LeaveAdapter adp = new LeaveAdapter(LeaveActivity.this, neworder);
 
         LeaveList.setAdapter(adp);
     }

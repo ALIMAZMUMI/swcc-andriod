@@ -22,6 +22,8 @@ public class JobDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_details);
+        overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
 
         global=new Global(JobDetailsActivity.this);
 
@@ -56,6 +58,8 @@ public class JobDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 JobDetailsActivity.this.finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
             }
         });
 //Close.bringToFront();

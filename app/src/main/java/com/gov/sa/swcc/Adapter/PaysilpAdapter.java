@@ -155,10 +155,14 @@ Log.d("ElementTextAdapter",T.getElementText());
 Log.d("Type",T.getElementText()+"-----"+Type);
         valueTypetxt.setText(Type);
 
-        if (T.getClassification().equals("Deduction"))
+        if (T.getClassification().equals("Deduction")||T.getAmount().contains("-"))
         {
             valueTypetxt.setText("حسم "+valueTypetxt.getText());
-            valuetxt.setText("-"+T.getAmount() +" ريال");
+            if(T.getAmount().contains("-")){
+                valuetxt.setText(T.getAmount() +" ريال");
+            }else {
+                valuetxt.setText("-" + T.getAmount() + " ريال");
+            }
             valuetxt.setBackgroundResource(R.drawable.salgrayround);
 
         }else if (T.getClassification().equals("Paid")&&!T.getElementText().equals("Payment"))

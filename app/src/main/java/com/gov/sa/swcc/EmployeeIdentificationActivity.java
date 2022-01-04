@@ -1,11 +1,15 @@
 package com.gov.sa.swcc;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,12 +18,19 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.gov.sa.swcc.Adapter.LeaveAdapter;
 import com.gov.sa.swcc.model.LeaveItems;
@@ -29,6 +40,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -41,6 +54,7 @@ import java.util.Date;
 
 public class EmployeeIdentificationActivity extends Activity {
 
+    private int EXTERNAL_STORAGE_PERMISSION_CODE = 23;
 
     String EmployeeId,
             EmployeeName,EmpNameAr
@@ -48,7 +62,11 @@ public class EmployeeIdentificationActivity extends Activity {
             ,Position,PositionAr
             ,Nationality,
             NatioAr,JoinDate
-            ,Department,DepartmentAr;
+            ,Department,DepartmentAr,TotalSal;
+    ArrayList<String> BArabic;
+    ArrayList<String> BEnglish;
+    ArrayList<String> BValue;
+
     ImageView imageView2;
     Global global;
     PersonalResult per;
@@ -56,10 +74,26 @@ public class EmployeeIdentificationActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_identification);
+        overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
+
         global=new Global(EmployeeIdentificationActivity.this);
 imageView2=(ImageView)findViewById(R.id.imageView2);
 
 
+
+
+
+
+TextView back=(TextView)findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EmployeeIdentificationActivity.this.finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
          per=global.GetPData("PersonalResult");
 
         try {
@@ -68,6 +102,62 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
         }catch (Exception e){
             Log.d("Error --------",e.toString());
         }
+
+
+        TextView share=(TextView) findViewById(R.id.share);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isStoragePermissionGranted()) {
+
+
+                    // create a new document
+                    PdfDocument document = new PdfDocument();
+
+                    // create a page description
+                    View content =  findViewById(R.id.imageView2);
+
+                    PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(content.getWidth(), content.getHeight(), 1).create();
+
+                    // start a page
+                    PdfDocument.Page page = document.startPage(pageInfo);
+
+
+                    content.draw(page.getCanvas());
+
+
+//                    // Draw the bitmap onto the page
+//                    Canvas canvas = page.getCanvas();
+//                    Bitmap bm = ((BitmapDrawable) imageView2.getBackground()).getBitmap();
+//
+//                    Paint paint = new Paint();
+//                    canvas.drawBitmap(bm, 10f, 10f, paint);
+
+                    document.finishPage(page);
+                    File dir = new File(Environment.getExternalStoragePublicDirectory
+                            (Environment.DIRECTORY_DOWNLOADS), "pdf");
+                    if(!dir.exists()){
+                        dir.mkdir();
+                    }
+                    try {
+                        document.writeTo(new FileOutputStream(dir.getPath() + "/emp_Identification.pdf"));
+                    } catch (IOException e) {
+                        Log.d("FileLocation",dir.getPath() + "/emp_Identification.pdf");
+                        e.printStackTrace();
+                    }
+                    document.close();
+                    Log.d("FileLocation09",dir.getPath() + "/emp_Identification.pdf");
+
+                    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                    Uri screenshotUri = Uri.parse(dir.getPath() + "/emp_Identification.pdf");
+                    sharingIntent.setType("*/*");
+                    sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+                    startActivity(Intent.createChooser(sharingIntent, "Share using"));
+                }
+            }
+        });
+
+
     }
 
     private void CallGetSalary() throws IOException, XmlPullParserException {
@@ -122,7 +212,9 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
                     InputStream inputStream = connection.getInputStream();
                     dialog.dismiss();
 
-
+                    BArabic=new ArrayList<String> ();
+                    BEnglish=new ArrayList<String> ();
+                    BValue=new ArrayList<String> ();
                     XmlPullParserFactory parserFactory = XmlPullParserFactory.newInstance();
                     XmlPullParser parser = parserFactory.newPullParser();
                     parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -131,6 +223,9 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
                     int event = parser.getEventType();
                     while (event != XmlPullParser.END_DOCUMENT) {
                         tag = parser.getName();
+
+
+
                         switch (event) {
                             case XmlPullParser.START_TAG:
                                 if (tag.equals("item"))
@@ -175,6 +270,9 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
                                     case "DepartmentAr":
                                         DepartmentAr=text;
                                         break;
+                                    case "TotalSal":
+                                        TotalSal=text;
+                                        break;
 
 
 
@@ -184,7 +282,23 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
 //                                            leaveItems.add(item);
 //                                        break;
                                 }
-                                break;
+
+                                if (tag.startsWith("Lgtxt")&&tag.endsWith("Ar"))
+                                {
+                                    if(text!=null&&text.length()>0)
+                                    BArabic.add(text);
+                                }else if (tag.startsWith("Lgtxt")&&tag.endsWith("En"))
+                                {
+                                    if(text!=null&&text.length()>0)
+                                        BEnglish.add(text);
+                                }else if (tag.startsWith("Bet"))
+                                {
+float v=Float.parseFloat(text);
+if(v>0)
+                                    BValue.add(text);
+                                }
+
+                                    break;
                         }
                         event = parser.next();
                     }
@@ -277,16 +391,25 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
         canvas.drawText(JoinDate,670, 1750, paint);
         canvas.drawText("Location : "+per.getResultObject().getLocationEn(),50, 798, paint);
         canvas.drawText("Department : "+Department,50, 868, paint);
-        float x=(float)1891.0;
-        float y=(float)26.0;
-        canvas.drawBitmap(writeTextOnRow(),y,x,null);
+        float x=(float)1860.0;
+        float y=(float)0;
+
+
+
+        for (int i=0;i<BArabic.size();i++){
+            canvas.drawBitmap(writeTextOnRow(BArabic.get(i),BEnglish.get(i),BValue.get(i)),y,x+((i)*98),null);
+        }
+        canvas.drawBitmap(writeTextOnEnd(),y,x+((BArabic.size())*98)-3,null);
+
+
+
         return new BitmapDrawable(getResources(), bm);
     }
 
 
 
 
-    private Bitmap writeTextOnRow() {
+    private Bitmap writeTextOnRow(String Arabic,String English,String Value) {
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.selfservice2)
                 .copy(Bitmap.Config.ARGB_8888, true);
@@ -308,11 +431,40 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
 
         paint.setTextAlign(Paint.Align.RIGHT);
 
-        canvas.drawText("بدل السكن",3780, 53, paint);
-        paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("4900",1930, 53, paint);
+        canvas.drawText(Arabic,3780, 60, paint);
+        paint.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText(Value,2000, 60, paint);
         paint.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("Housing Allowance",50, 53, paint);
+        canvas.drawText(English,50, 60, paint);
+
+        return bm;
+    }
+
+
+    private Bitmap writeTextOnEnd() {
+
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.selfservice3)
+                .copy(Bitmap.Config.ARGB_8888, true);
+
+        Typeface tf = ResourcesCompat.getFont(this, R.font.swcc);
+
+        //Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
+
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.BLACK);
+        paint.setTypeface(tf);
+        paint.setTextAlign(Paint.Align.RIGHT);
+
+        paint.setTextSize(convertToPixels(EmployeeIdentificationActivity.this, 21));
+
+        Canvas canvas = new Canvas(bm);
+
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText(TotalSal+" ريال ",2000, 60, paint);
+        paint.setTextAlign(Paint.Align.LEFT);
 
         return bm;
     }
@@ -329,4 +481,36 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
     public float getdp(int pix){
         return pix / ((float) EmployeeIdentificationActivity.this.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
+
+
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("Swcc","Permission is granted");
+                return true;
+            } else {
+
+                Log.v("SWCC","Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("SWCC","Permission is granted");
+            return true;
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Log.v("SWCC","Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
+        }
+    }
+
 }

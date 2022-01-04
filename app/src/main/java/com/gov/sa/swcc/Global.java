@@ -1,5 +1,6 @@
 package com.gov.sa.swcc;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -83,6 +84,29 @@ public class Global {
 
     }
 
+    public void ShowMessageF(String Message, Activity activity){
 
+
+
+        AlertDialog alertDialog1 = new AlertDialog.Builder(
+                context).create();
+
+        // Setting Dialog Title
+        alertDialog1.setTitle("");
+
+        // Setting Dialog Message
+        alertDialog1.setMessage(Message);
+
+        alertDialog1.setButton("موافق", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                activity.finish();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog1.show();
+
+    }
 
 }

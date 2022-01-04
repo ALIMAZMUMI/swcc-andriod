@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+
+    tools:context=".InsuranceInfoActivity">
+
+
+
+
+    <ListView
+        android:id="@+id/cards"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:background="#00000000"
+        android:divider="@null"
+        android:dividerHeight="0dp">
+
+
+    </ListView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:background="#00000000"
+        android:weightSum="3"
+        android:layout_alignParentBottom="true"
+        >
+
+
+        <TextView
+            android:id="@+id/insparent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="15dp"
+            android:padding="5dp"
+            android:background="@drawable/grayroundfull"
+            android:text="التأمين الصحي للوالدين" />
+        <TextView
+            android:id="@+id/cuntactus"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="15dp"
+            android:padding="5dp"
+            android:background="@drawable/grayroundfull"
+            android:text="للتواصل مع الرعاية الطبية" />
+        <TextView
+            android:id="@+id/instable"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="15dp"
+            android:padding="5dp"
+            android:background="@drawable/grayroundfull"
+            android:text="جدول المنافع والشبكات الطبية" />
+
+    </LinearLayout>
+</RelativeLayout>
+
+
+<!--<RelativeLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_marginRight="3dp"-->
+<!--android:layout_weight=".28"-->
+<!--android:orientation="horizontal">-->
+
+<!--<Spinner-->
+<!--    android:id="@+id/servicetype"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="50dp"-->
+<!--    android:background="@drawable/blueroundfull" />-->
+
+<!--<ImageView-->
+<!--    android:layout_width="50dp"-->
+<!--    android:layout_height="50dp"-->
+<!--    android:layout_alignParentRight="true"-->
+<!--    android:layout_centerVertical="true"-->
+<!--    android:layout_gravity="center"-->
+<!--    android:padding="10dp"-->
+<!--    android:src="@drawable/downw" />-->
+
+<!--</RelativeLayout>-->
