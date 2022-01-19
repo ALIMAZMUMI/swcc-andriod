@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EdgeEffect;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
@@ -56,18 +57,26 @@ EditText title,detials;
         title=(EditText)findViewById(R.id.title);
         detials=(EditText)findViewById(R.id.detials);
 
-
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
         Button submit=(Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-if(title.getText().toString().length()>0&&detials.getText().toString().length()>0){
+                if(global.CheckInternet(ITComActivity.this)) {
+                }else if(title.getText().toString().length()>0&&detials.getText().toString().length()>0){
 
-}
+
                 try{
                     ITCom(title.getText().toString(),detials.getText().toString());
                 }catch (Exception e){
 
+                }
                 }
             }
         });
@@ -129,7 +138,7 @@ itRequest.setTitle(Title);
                 "'LastName' : 'ALHARBI'," +
                 "'Title' : 'عنواااااان'," +
                 "'Department' : 'منظومة إنتاج الجبيل'," +
-                "'Email' : 'SAlHarbi780e@swcc.gov.sa'," +
+                "'Email' : '"+global.GetEmail(user)+"'," +
                 "'City' : 'الرياض'}]";
         post=post.replaceAll("'","\"");
         //obj1.add("[]",);
@@ -194,7 +203,7 @@ itRequest.setTitle(Title);
                             "'LastName' : '"+per.getResultObject().getLastNameEn()+"'," +
                             "'Title' : '"+Title+"'," +
                             "'Department' : '"+per.getResultObject().getDepartment()+"'," +
-                            "'Email' : 'SAlHarbi780e@swcc.gov.sa'," +
+                            "'Email' : '"+global.GetEmail(user)+"'," +
                             "'City' : '"+per.getResultObject().getLocationAr()+"'}]";
                     post=post.replaceAll("'","\"");
 

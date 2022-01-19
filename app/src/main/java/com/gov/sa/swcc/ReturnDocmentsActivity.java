@@ -21,11 +21,13 @@ package com.gov.sa.swcc;
         import android.util.Base64;
         import android.util.Log;
         import android.view.View;
+        import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.ImageView;
         import android.widget.Spinner;
+        import android.widget.TextView;
         import android.widget.Toast;
 
         import com.gov.sa.swcc.model.PersonalResult;
@@ -57,6 +59,27 @@ public class ReturnDocmentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_return_docments);
 
+
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        TextView back=(TextView)findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
+
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
         global=new Global(ReturnDocmentsActivity.this);
         Spinner city = (Spinner) findViewById(R.id.city);
 
@@ -65,7 +88,6 @@ public class ReturnDocmentsActivity extends AppCompatActivity {
 
 
         List<String> citystring = new ArrayList<String>();
-        citystring.add("إختر المدينة");
         citystring.add("إسكان راس الخير");
         citystring.add("إسكان الخبر");
         citystring.add("إسكان الجبيل");
@@ -77,16 +99,25 @@ public class ReturnDocmentsActivity extends AppCompatActivity {
         citystring.add("إسكان بنقل الجبيل الرياض القصيم");
         citystring.add("إسكان العليا المركز الرئيسي");
         citystring.add("إسكان التخصصي المركز الرئيسي");
+        citystring.add("إختر المدينة");
 
 
         // Creating adapter for spinner
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(this, R.layout.spinnericon,R.id.spinneritem, citystring);
+        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(this, R.layout.spinnericon,R.id.spinneritem, citystring)
+        {
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                return super.getDropDownView(position , convertView, parent);
+            }
 
+            public int getCount() {
+                return citystring.size() - 1;
+            }
+        };
         // Drop down layout style - list view with radio button
 
         // attaching data adapter to spinner
         city.setAdapter(cityAdapter);
-
+city.setSelection(citystring.size()-1);
 
         addimage=(ImageView) findViewById(R.id.addimage);
         addimage.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +134,8 @@ public class ReturnDocmentsActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(city.getSelectedItemPosition()==0 || detials.getText().toString().length()==0){
+                if(global.CheckInternet(ReturnDocmentsActivity.this)) {
+                }else if(city.getSelectedItemPosition()==(citystring.size()-1) || detials.getText().toString().length()==0){
                     global.ShowMessage("ارجو اكمال البيانات المطلوبة");
                 }else {
                     try {
@@ -244,11 +276,11 @@ public class ReturnDocmentsActivity extends AppCompatActivity {
         int fileSizeInMB = fileSizeInKB / 1024;
         Log.d("Image Size in MB", "" + fileSizeInMB);
         if (fileSizeInMB < 8) {
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 7, baos);
         } else if (fileSizeInMB < 20) {
-            bm.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 3, baos);
         } else {
-            bm.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 1, baos);
         }
 //        int lnth = bm.getByteCount();
 //        ByteBuffer dst = ByteBuffer.allocate(lnth);

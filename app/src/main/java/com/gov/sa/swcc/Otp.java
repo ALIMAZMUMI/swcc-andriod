@@ -21,6 +21,7 @@ import com.gov.sa.swcc.model.LoginResult;
 import com.gov.sa.swcc.model.PersonalResult;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,7 +92,10 @@ global=new Global(getContext());
         resend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(global.CheckInternet()) {
+                }else{
                 CallLogin();
+                }
 
             }
         });
@@ -99,8 +103,9 @@ global=new Global(getContext());
         sub_otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                CallLoginOTP(otp.getText().toString());
+                if(global.CheckInternet()) {
+                }else{
+                CallLoginOTP(otp.getText().toString());}
             }
         });
 
@@ -190,12 +195,18 @@ global=new Global(getContext());
 
 
                         global.SavePData("PersonalResult",response.body());
-
+                        if(global.GetValue("Authentication").equals("YY")) {
+                            global.SaveValue("Authentication", "Y");
+                            global.SaveValue("Home", "y");
+                            Calendar c=Calendar.getInstance();
+                            global.putDate("Login", c.getTimeInMillis());
+                        }
 
 
 
                         Bundle bundle = new Bundle();
                         MainActivity.homeInfo.setArguments(bundle);
+                        ((HomeInfo)MainActivity.homeInfo).update();
                         MainActivity.changelayout(2);
 //                        HomeInfo nextFrag= new HomeInfo();
 //                        Bundle bundle = new Bundle();

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gov.sa.swcc.Adapter.PaysilpAdapter;
 
@@ -19,15 +20,15 @@ public class SideMenuActivity extends AppCompatActivity {
 LinearLayout main1,main2,main3,main4,main5,main6;
 
 ListView sub1,sub2,sub3,sub4;
-ImageView menuimg,menuimg2,menuimg3,menuimg4;
-
+ImageView menuimg,menuimg2,menuimg3,menuimg4,side;
+Global global;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_side_menu);
 
 
-
+global=new Global(SideMenuActivity.this);
 
 
 
@@ -48,8 +49,45 @@ ImageView menuimg,menuimg2,menuimg3,menuimg4;
         menuimg2=(ImageView)findViewById(R.id.menuimg2);
         menuimg3=(ImageView)findViewById(R.id.menuimg3);
         menuimg4=(ImageView)findViewById(R.id.menuimg4);
+        side=(ImageView)findViewById(R.id.side);
+
+        TextView sing=(TextView)findViewById(R.id.sing);
+
+        if(global.GetValue("Home").equals("y")){
+            sing.setText("تسجيل الخروج");
+        }else {
+            sing.setText("تسجيل الدخول");
+        }
+
+        sing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                global.SaveValue("Home","N");
+                global.SaveValue("Authentication","YY");
+                global.SaveValue("Username","");
+                global.SaveValue("Password","");
+                Bundle bundle = new Bundle();
+                MainActivity.login.setArguments(bundle);
+                MainActivity.changelayout(0);
+                SideMenuActivity.this.finish();
+            }
+        });
+
+
+
+
+
+
         LinearLayout rightli=(LinearLayout)findViewById(R.id.rightli);
         rightli.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                overridePendingTransition(R.anim.slide_right,R.anim.slide_left);
+                SideMenuActivity.this.finish();
+
+            }
+        });
+        side.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 overridePendingTransition(R.anim.slide_right,R.anim.slide_left);

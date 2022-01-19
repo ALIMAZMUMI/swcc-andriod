@@ -20,12 +20,14 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gov.sa.swcc.model.PersonalResult;
@@ -60,6 +62,28 @@ public class HrRequestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hr_request);
 
+
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+        TextView back=(TextView)findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
+
         global=new Global(HrRequestActivity.this);
         Spinner servicetype = (Spinner) findViewById(R.id.servicetype);
         Spinner city = (Spinner) findViewById(R.id.city);
@@ -68,19 +92,27 @@ public class HrRequestActivity extends AppCompatActivity {
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
-        categories.add("إخترالطلب يتعلق ب");
+
         categories.add("الموارد البشرية");
         categories.add("الإسكان و المرافق");
         categories.add("الأمن و السلامة");
         categories.add("اخرى");
-
+        categories.add("إخترالطلب يتعلق ب");
 
 
 
 
         // Creating adapter for spinner
-        ArrayAdapter<String> serviceAdapter = new ArrayAdapter<String>(this, R.layout.spinnericon,R.id.spinneritem, categories);
+        ArrayAdapter<String> serviceAdapter = new ArrayAdapter<String>(this, R.layout.spinnericon,R.id.spinneritem, categories)
+        {
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                return super.getDropDownView(position , convertView, parent);
+            }
 
+            public int getCount() {
+                return categories.size() - 1;
+            }
+        };
 
 
 
@@ -92,13 +124,13 @@ public class HrRequestActivity extends AppCompatActivity {
 
         // attaching data adapter to spinner
         servicetype.setAdapter(serviceAdapter);
+        servicetype.setSelection(categories.size()-1);
 
         servicetype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i==1){
+                if(i==0){
                   citystring = new ArrayList<String>();
-                    citystring.add("إختر نوع الخدمة");
                     citystring.add("مستحقات ماليه");
                     citystring.add("تجمد وظيفي");
                     citystring.add("طلب نقل");
@@ -109,22 +141,43 @@ public class HrRequestActivity extends AppCompatActivity {
                     citystring.add("استفسار");
                     citystring.add("شكوى");
                     citystring.add("أخرى");
+                    citystring.add("إختر نوع الخدمة");
 
-                    ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(HrRequestActivity.this, R.layout.spinnericon,R.id.spinneritem, citystring);
+                    ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(HrRequestActivity.this, R.layout.spinnericon,R.id.spinneritem, citystring)
+                    {
+                        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                            return super.getDropDownView(position , convertView, parent);
+                        }
+
+                        public int getCount() {
+                            return citystring.size() - 1;
+                        }
+                    };
+
                     city.setAdapter(cityAdapter);
+                    city.setSelection(citystring.size()-1);
 
                 }else{
 
                     citystring = new ArrayList<String>();
-                    citystring.add("إختر نوع الخدمة");
                     citystring.add("اقتراح");
                     citystring.add("استفسار");
                     citystring.add("شكوى");
                     citystring.add("أخرى");
+                    citystring.add("إختر نوع الخدمة");
 
-                    ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(HrRequestActivity.this, R.layout.spinnericon,R.id.spinneritem, citystring);
+                    ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(HrRequestActivity.this, R.layout.spinnericon,R.id.spinneritem, citystring)
+                    {
+                        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                            return super.getDropDownView(position , convertView, parent);
+                        }
+
+                        public int getCount() {
+                            return citystring.size() - 1;
+                        }
+                    };
                     city.setAdapter(cityAdapter);
-
+city.setSelection(citystring.size()-1);
                 }
             }
 
@@ -150,7 +203,8 @@ public class HrRequestActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(servicetype.getSelectedItemPosition()==0||city.getSelectedItemPosition()==0 || detials.getText().toString().length()==0){
+                if(global.CheckInternet(HrRequestActivity.this)) {
+                }else if(servicetype.getSelectedItemPosition()==(categories.size()-1)||city.getSelectedItemPosition()==(citystring.size()-1) || detials.getText().toString().length()==0){
                     global.ShowMessage("ارجو اكمال البيانات المطلوبة");
                 }else {
                     try {
@@ -198,7 +252,7 @@ public class HrRequestActivity extends AppCompatActivity {
                             "'LastName' : '"+per.getResultObject().getLastNameEn()+"'," +
                             "'Title' : '"+TOR+"'," +
                             "'Department' : '"+per.getResultObject().getDepartment()+"'," +
-                            "'Email' : 'SAlHarbi780e@swcc.gov.sa'," +
+                            "'Email' : '"+global.GetEmail(user)+"'," +
                             "'City' : '"+per.getResultObject().getLocationAr()+"'," +
                             "'MainCategory' : '"+City+"'," +
                             "'ConcernedParty' : '"+TOR+"'," +
@@ -292,11 +346,11 @@ public class HrRequestActivity extends AppCompatActivity {
         int fileSizeInMB = fileSizeInKB / 1024;
         Log.d("Image Size in MB", "" + fileSizeInMB);
         if (fileSizeInMB < 8) {
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 7, baos);
         } else if (fileSizeInMB < 20) {
-            bm.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 3, baos);
         } else {
-            bm.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 1, baos);
         }
 //        int lnth = bm.getByteCount();
 //        ByteBuffer dst = ByteBuffer.allocate(lnth);

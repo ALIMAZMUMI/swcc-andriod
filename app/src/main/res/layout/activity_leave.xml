@@ -15,13 +15,16 @@
         android:layout_gravity="center|bottom"
         android:gravity="center">
 
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="12dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/idCard"
             app:cardCornerRadius="10dp"
             android:background="#ffffff"
@@ -80,7 +83,14 @@
         </androidx.cardview.widget.CardView>
 
 
-
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/close"
+            android:elevation="12dp" />
+    </RelativeLayout>
 
 
 

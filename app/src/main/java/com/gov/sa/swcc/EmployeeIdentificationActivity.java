@@ -76,13 +76,18 @@ public class EmployeeIdentificationActivity extends Activity {
         setContentView(R.layout.activity_employee_identification);
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
-
         global=new Global(EmployeeIdentificationActivity.this);
 imageView2=(ImageView)findViewById(R.id.imageView2);
 
 
 
-
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
 
 
 TextView back=(TextView)findViewById(R.id.back);
@@ -97,7 +102,10 @@ TextView back=(TextView)findViewById(R.id.back);
          per=global.GetPData("PersonalResult");
 
         try {
+            if(global.CheckInternet(EmployeeIdentificationActivity.this)) {
+            }else {
             CallGetSalary();
+            }
 
         }catch (Exception e){
             Log.d("Error --------",e.toString());
@@ -350,6 +358,9 @@ if(v>0)
         Rect textRect = new Rect();
         //paint.getTextBounds(text, 0, text.length(), textRect);
 
+
+        float h= (float) (bm.getHeight()/1868.0);
+        float w= (float) (bm.getWidth()/1468.0);
         Canvas canvas = new Canvas(bm);
 
         //If the text is bigger than the canvas , reduce the font size
@@ -363,48 +374,64 @@ if(v>0)
         int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
         //Arabic Name
 
-        canvas.drawText(EmpNameAr,3294, 1270, paint);
-        canvas.drawText(global.GetValue("Username").replaceAll("u",""),3294, 1350, paint);
-        canvas.drawText(IdentityNo,3294, 1450, paint);
-        canvas.drawText(PositionAr,3294, 1550, paint);
-        canvas.drawText(NatioAr,3294, 1650, paint);
-        canvas.drawText(JoinDate,3294, 1750, paint);
-        canvas.drawText("الموقع : "+per.getResultObject().getLocationAr(),3780, 798, paint);
-        canvas.drawText("الإدارة : "+DepartmentAr,3780, 868, paint);
+        canvas.drawText(EmpNameAr,1252*w, 480*h, paint);
+        canvas.drawText(global.GetValue("Username").replaceAll("u",""),1252*w, 520*h, paint);
+        canvas.drawText(IdentityNo,1252*w, 560*h, paint);
+        canvas.drawText(PositionAr,1252*w, 595*h, paint);
+        canvas.drawText(NatioAr,1252*w, 630*h, paint);
+        canvas.drawText(JoinDate,1252*w, 665*h, paint);
+        canvas.drawText("الموقع : "+per.getResultObject().getLocationAr(),1448*w, 310*h, paint);
+        canvas.drawText("الإدارة : "+DepartmentAr,1448*w, 340*h, paint);
 
 
         Calendar Current=Calendar.getInstance();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        String date=arabicToDecimal(sdf.format(Current.getTime()));
 
-        canvas.drawText(sdf.format(Current.getTime()),3400, 470, paint);
+        canvas.drawText(date,1295*w, 178*h, paint);
 
 
         //English Name
 
         paint.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText(EmployeeName,670, 1270, paint);
-        canvas.drawText(global.GetValue("Username").replaceAll("u",""),670, 1350, paint);
-        canvas.drawText(IdentityNo,670, 1450, paint);
-        canvas.drawText(Position,670, 1550, paint);
-        canvas.drawText(Nationality,670, 1650, paint);
-        canvas.drawText(JoinDate,670, 1750, paint);
-        canvas.drawText("Location : "+per.getResultObject().getLocationEn(),50, 798, paint);
-        canvas.drawText("Department : "+Department,50, 868, paint);
-        float x=(float)1860.0;
+        canvas.drawText(EmployeeName,255*w, 480*h, paint);
+        canvas.drawText(global.GetValue("Username").replaceAll("u",""),255*w, 520*h, paint);
+        canvas.drawText(IdentityNo,255*w, 560*h, paint);
+        canvas.drawText(Position,255*w, 595*h, paint);
+        canvas.drawText(Nationality,255*w, 630*h, paint);
+        canvas.drawText(JoinDate,255*w, 665*h, paint);
+        canvas.drawText("Location : "+per.getResultObject().getLocationEn(),30*w, 310*h, paint);
+        canvas.drawText("Department : "+Department,30*w, 340*h, paint);
+        float x=(float)711*h;
         float y=(float)0;
 
 
 
         for (int i=0;i<BArabic.size();i++){
-            canvas.drawBitmap(writeTextOnRow(BArabic.get(i),BEnglish.get(i),BValue.get(i)),y,x+((i)*98),null);
+            canvas.drawBitmap(writeTextOnRow(BArabic.get(i),BEnglish.get(i),BValue.get(i)),y,x+((i)*(38*h)),null);
         }
-        canvas.drawBitmap(writeTextOnEnd(),y,x+((BArabic.size())*98)-3,null);
+        canvas.drawBitmap(writeTextOnEnd(),y,x+((BArabic.size())*(38*h))-3,null);
 
 
 
         return new BitmapDrawable(getResources(), bm);
     }
+
+    private static final String arabic = "\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9";
+    private static String arabicToDecimal(String number) {
+        char[] chars = new char[number.length()];
+        for(int i=0;i<number.length();i++) {
+            char ch = number.charAt(i);
+            if (ch >= 0x0660 && ch <= 0x0669)
+                ch -= 0x0660 - '0';
+            else if (ch >= 0x06f0 && ch <= 0x06F9)
+                ch -= 0x06f0 - '0';
+            chars[i] = ch;
+        }
+        return new String(chars);
+    }
+
 
 
 
@@ -427,15 +454,16 @@ if(v>0)
         paint.setTextSize(convertToPixels(EmployeeIdentificationActivity.this, 21));
 
         Canvas canvas = new Canvas(bm);
-
+        float h= (float) (bm.getHeight()/38.0);
+        float w= (float) (bm.getWidth()/1468.0);
 
         paint.setTextAlign(Paint.Align.RIGHT);
 
-        canvas.drawText(Arabic,3780, 60, paint);
+        canvas.drawText(Arabic,1450*w, 24*h, paint);
         paint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText(Value,2000, 60, paint);
+        canvas.drawText(Value,734*w, 24*h, paint);
         paint.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText(English,50, 60, paint);
+        canvas.drawText(English,26*w, 24*h, paint);
 
         return bm;
     }
@@ -456,6 +484,10 @@ if(v>0)
         paint.setTypeface(tf);
         paint.setTextAlign(Paint.Align.RIGHT);
 
+        float h= (float) (bm.getHeight()/606.0);
+        float w= (float) (bm.getWidth()/1468.0);
+
+
         paint.setTextSize(convertToPixels(EmployeeIdentificationActivity.this, 21));
 
         Canvas canvas = new Canvas(bm);
@@ -463,7 +495,7 @@ if(v>0)
 
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText(TotalSal+" ريال ",2000, 60, paint);
+        canvas.drawText(TotalSal+" ريال ",734*w, 24*h, paint);
         paint.setTextAlign(Paint.Align.LEFT);
 
         return bm;

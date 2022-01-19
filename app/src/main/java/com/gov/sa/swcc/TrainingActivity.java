@@ -16,6 +16,24 @@ public class TrainingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
 
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+//        TextView back=(TextView)findViewById(R.id.back);
+//
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+//            }
+//        });
+
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
 
         ImageView t0=(ImageView)findViewById(R.id.t0);
         ImageView t1=(ImageView)findViewById(R.id.t1);
@@ -56,9 +74,15 @@ public class TrainingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String url = "http://www.swacademy.com/wp-content/uploads/2021-%D9%85%D8%B6%D8%BA%D9%88%D8%B7.pdf";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);            }
+
+                Intent Link=  new Intent(TrainingActivity.this,ShowLinkActivity.class);
+                Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+url);
+                Link.putExtra("Auth","N");
+                Link.putExtra("Share","1");
+                startActivity(Link);
+
+
+                }
         });
         t4.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,9 +121,11 @@ public class TrainingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String url = "http://www.swacademy.com/wp-content/uploads/2021-%D9%85%D8%B6%D8%BA%D9%88%D8%B7.pdf";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
+                Intent Link=  new Intent(TrainingActivity.this,ShowLinkActivity.class);
+                Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+url);
+                Link.putExtra("Auth","N");
+                Link.putExtra("Share","1");
+                startActivity(Link);
             }
         });
     }

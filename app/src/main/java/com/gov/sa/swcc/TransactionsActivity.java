@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,8 +37,17 @@ ListView Transactions;
         global=new Global(TransactionsActivity.this);
         Transactions=(ListView)findViewById(R.id.Transactions);
 
-        CallTransactions();
-
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+        if(global.CheckInternet(TransactionsActivity.this)) {
+        }else {
+            CallTransactions();
+        }
         TextView back=(TextView)findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

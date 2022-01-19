@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static  Fragment active = home;
     public static int Fragmentid=0;
-
+    public static String Home;
 ImageView sidemeun;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -59,7 +59,9 @@ ImageView sidemeun;
                     return true;
 
                 case R.id.navigation_login:
-
+                    if(Home.equals("y")) {
+                        Fragmentid=2;
+                    }
                     if(Fragmentid==1) {
                         fm.beginTransaction().hide(active).show(otp).commit();
                         active = otp;
@@ -84,23 +86,38 @@ ImageView sidemeun;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+Global global=new Global(MainActivity.this);
 
         fm=getSupportFragmentManager();
         sidemeun=(ImageView)findViewById(R.id.sidemeun);
         sidemeun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,SideMenuActivity.class));
+                Intent side=new Intent(MainActivity.this,SideMenuActivity.class);
+                side.putExtra("Home",Home);
+
+                startActivity(side);
             }
         });
+        Home="";
+         Home=global.GetValue("Home");
 
-        fm.beginTransaction().add(R.id.main_container, login, "3").hide(login).commit();
-        fm.beginTransaction().add(R.id.main_container, services, "2").hide(services).commit();
-        fm.beginTransaction().add(R.id.main_container,home, "1").commit();
-        fm.beginTransaction().add(R.id.main_container,homeInfo, "4").hide(homeInfo).commit();
-        fm.beginTransaction().add(R.id.main_container,otp, "5").hide(otp).commit();
-
+if(Home.equals("y")) {
+    fm.beginTransaction().add(R.id.main_container, login, "3").hide(login).commit();
+    fm.beginTransaction().add(R.id.main_container, services, "2").hide(services).commit();
+    fm.beginTransaction().add(R.id.main_container, home, "1").hide(home).commit();
+    fm.beginTransaction().add(R.id.main_container, homeInfo, "4").commit();
+    fm.beginTransaction().add(R.id.main_container, otp, "5").hide(otp).commit();
+    active = homeInfo;
+    Fragmentid=2;
+}else {
+    fm.beginTransaction().add(R.id.main_container, login, "3").hide(login).commit();
+    fm.beginTransaction().add(R.id.main_container, services, "2").hide(services).commit();
+    fm.beginTransaction().add(R.id.main_container, home, "1").commit();
+    fm.beginTransaction().add(R.id.main_container, homeInfo, "4").hide(homeInfo).commit();
+    fm.beginTransaction().add(R.id.main_container, otp, "5").hide(otp).commit();
+    //((Home)home).setURLLink("https://www.swcc.gov.sa/ar");
+}
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,24 @@ public class InsuranceInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insurance_info);
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+//        TextView back=(TextView)findViewById(R.id.back);
+//
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+//            }
+//        });
+
+
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
 
         global=new Global(InsuranceInfoActivity.this);
         Insur=(ListView)findViewById(R.id.cards);
@@ -61,10 +80,14 @@ public class InsuranceInfoActivity extends AppCompatActivity {
         insparent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "https://www.swcc.gov.sa/uploads/Leaflet_And%20Providers_CLASS_AP.pdf";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);            }
+
+                Intent Link=  new Intent(InsuranceInfoActivity.this,ShowLinkActivity.class);
+                Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+"https://www.swcc.gov.sa/uploads/Leaflet_And%20Providers_CLASS_AP.pdf");
+                Link.putExtra("Auth","N");
+                Link.putExtra("Share","1");
+                startActivity(Link);
+
+            }
         });
 
         cuntactus.setOnClickListener(new View.OnClickListener() {
@@ -84,10 +107,12 @@ public class InsuranceInfoActivity extends AppCompatActivity {
         instable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "https://www.swcc.gov.sa/uploads/Leaflet_And%20Providers_CLASS_A.pdf";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
+                Intent Link=  new Intent(InsuranceInfoActivity.this,ShowLinkActivity.class);
+                Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+"https://www.swcc.gov.sa/uploads/Leaflet_And%20Providers_CLASS_A.pdf");
+                Link.putExtra("Auth","N");
+                Link.putExtra("Share","1");
+                startActivity(Link);
+
             }
         });
 
@@ -101,8 +126,10 @@ Insur.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     }
 });
 
-        CallInsur();
-
+        if(global.CheckInternet(InsuranceInfoActivity.this)) {
+        }else {
+            CallInsur();
+        }
 
     }
 
@@ -196,6 +223,12 @@ for (int i=0;i<response.body().getListInsuranceData().size();i++){
         Rect textRect = new Rect();
         //paint.getTextBounds(text, 0, text.length(), textRect);
 
+
+        float h= (float) (bm.getHeight()/1050.0);
+        float w= (float) (bm.getWidth()/1666.0);
+        if(h<2.2){
+            paint.setTextSize(convertToPixels(InsuranceInfoActivity.this, 45));
+        }
         Canvas canvas = new Canvas(bm);
 
         //If the text is bigger than the canvas , reduce the font size
@@ -210,19 +243,23 @@ for (int i=0;i<response.body().getListInsuranceData().size();i++){
         //Arabic Name
         paint.setTextAlign(Paint.Align.LEFT);
 
-        canvas.drawText("Name: "+insuranceInfo.getFirstName()+" "+insuranceInfo.getFatherName()+" "+insuranceInfo.getFamilyName(),215, 700, paint);
-        canvas.drawText("PIN: "+insuranceInfo.getMedgulfPIN(),215, 900, paint);
-        canvas.drawText("REL: "+insuranceInfo.getRel(),215, 1100, paint);
-        canvas.drawText("Birth Date: "+insuranceInfo.getBirdthDateAsDmy(),215, 1300, paint);
-        canvas.drawText("Policy: "+insuranceInfo.getPolicyNo(),215, 1700, paint);
-        canvas.drawText("ID: "+insuranceInfo.getOfficialID(),215, 1900, paint);
-        canvas.drawText("Category: "+insuranceInfo.getCategory(),215, 2100, paint);
-        canvas.drawText("EMP ID: "+insuranceInfo.getEmployeeID(),2290, 1100, paint);
-        canvas.drawText(""+insuranceInfo.getG(),2290, 1300, paint);
-        canvas.drawText("Expiry date: "+insuranceInfo.getEffectiveDateAsDmy(),2290, 1700, paint);
-        canvas.drawText("> SAR 1000",2290, 1900, paint);
+        canvas.drawText("Name: "+insuranceInfo.getFirstName()+" "+insuranceInfo.getFatherName()+" "+insuranceInfo.getFamilyName(),82*w, 300*h, paint);
+        canvas.drawText("PIN: "+insuranceInfo.getMedgulfPIN(),82*w, 370*h , paint);
+        canvas.drawText("REL: "+insuranceInfo.getRel(),82*w, 450*h, paint);
+        canvas.drawText("Birth Date: "+insuranceInfo.getBirdthDateAsDmy(),82*w, 520*h, paint);
+        canvas.drawText("Policy: "+insuranceInfo.getPolicyNo(),82*w, 680*h, paint);
+        canvas.drawText("ID: "+insuranceInfo.getOfficialID(),82*w, 750*h, paint);
+        canvas.drawText("Category: "+insuranceInfo.getCategory(),82*h, 820*h, paint);
+        canvas.drawText("EMP ID: "+insuranceInfo.getEmployeeID(),866*w, 450*h, paint);
+        canvas.drawText(""+insuranceInfo.getG(),866*w, 520*h, paint);
+        canvas.drawText("Expiry date: "+insuranceInfo.getEffectiveDateAsDmy(),866*w, 680*h, paint);
+        canvas.drawText("> SAR 1000",866*w, 750*h, paint);
+
         paint.setTextSize(convertToPixels(InsuranceInfoActivity.this, 70));
-        canvas.drawText("800-166-2700",2820, 2610, paint);
+        if(h<2.2){
+            paint.setTextSize(convertToPixels(InsuranceInfoActivity.this, 55));
+        }
+        canvas.drawText("800-116-2700",1080*w, 1000*h, paint);
 
 
 

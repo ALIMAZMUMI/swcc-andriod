@@ -7,15 +7,16 @@
     android:background="#00000000"
 
     tools:context=".InsuranceInfoActivity">
-
-
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_marginTop="100dp"
+    android:layout_height="wrap_content">
 
     <ListView
         android:id="@+id/cards"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
         android:background="#00000000"
         android:divider="@null"
         android:dividerHeight="0dp">
@@ -23,6 +24,15 @@
 
     </ListView>
 
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/close"
+        android:elevation="12dp" />
+</RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,6 +82,7 @@
             android:text="جدول المنافع والشبكات الطبية" />
 
     </LinearLayout>
+
 </RelativeLayout>
 
 

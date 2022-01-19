@@ -16,12 +16,15 @@
         android:gravity="center">
 
 
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="12dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/idCard"
             app:cardCornerRadius="10dp"
             android:background="#ffffff"
@@ -73,6 +76,7 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="20dp"
                     android:layout_weight="5"
+                    android:weightSum="7"
                     android:orientation="vertical">
 
 
@@ -80,7 +84,7 @@
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:elevation="12dp"
                         app:cardCornerRadius="10dp"
                         app:cardBackgroundColor="@color/colorPrimary"
@@ -96,12 +100,12 @@
                             <Spinner
                                 android:id="@+id/servicetype"
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
+                                android:layout_height="40dp"
                                 android:background="@drawable/blueroundfull" />
 
                             <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="center"
@@ -117,7 +121,7 @@
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:elevation="12dp"
                         app:cardCornerRadius="10dp"
                         android:layout_marginTop="10dp"
@@ -134,12 +138,12 @@
                             <Spinner
                                 android:id="@+id/city"
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
+                                android:layout_height="40dp"
                                 android:background="@drawable/blueroundfull" />
 
                             <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="center"
@@ -156,7 +160,8 @@
                     <ImageView
                         android:id="@+id/addimage"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
                         app:srcCompat="@drawable/camera" />
@@ -173,7 +178,8 @@
                     <EditText
                         android:id="@+id/detials"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
                         android:ems="10"
                         android:textAlignment="center"
                         android:inputType="textMultiLine"
@@ -206,7 +212,13 @@
 
         </androidx.cardview.widget.CardView>
 
-
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/close"
+            android:elevation="12dp" />
+    </RelativeLayout>
 
 
 

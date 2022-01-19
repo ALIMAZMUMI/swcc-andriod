@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gov.sa.swcc.model.PersonalResult;
@@ -25,6 +26,14 @@ public class JobDetailsActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
 
+
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
         global=new Global(JobDetailsActivity.this);
 
         Empdept=(TextView)findViewById(R.id.Empdept);

@@ -79,6 +79,16 @@ LinearLayout sectionpay99;
 
         global=new Global(PayslipActivity.this);
 
+
+
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
         DocType99=(TextView) findViewById(R.id.DocType99);
         DateinHigri99=(TextView) findViewById(R.id.DateinHigri99);
         EmpName99=(TextView) findViewById(R.id.EmpName99);
@@ -119,6 +129,8 @@ LinearLayout sectionpay99;
             c.add(Calendar.MONTH,-1);
             SelDate=sdf.format(c.getTime());
         }
+        SelDate=arabicToDecimal(sdf.format(c.getTime()));
+
         String date = day + "/" + (month+1) + "/" + year;
 
         saldate=(TextView)findViewById(R.id.saldate);
@@ -129,17 +141,20 @@ LinearLayout sectionpay99;
             @Override
             public void onClick(View view) {
                 c.add(Calendar.MONTH,1);
-                SelDate=sdf.format(c.getTime());
+                SelDate=arabicToDecimal(sdf.format(c.getTime()));
+
                 if(Current.getTimeInMillis()>=c.getTimeInMillis()){
                     try {
                         sectionpay99.setVisibility(View.GONE);
                         sectionpay0001.setVisibility(View.GONE);
                         sectionpay0002.setVisibility(View.GONE);
-
+                        if(global.CheckInternet(PayslipActivity.this)) {
+                        }else{
                         CallPayslip("99",SelDate);
                         CallPayslip("0001",SelDate);
                         CallPayslip("0002",SelDate);
                         saldate.setText(SelDate.substring(0,SelDate.length()-3));
+                        }
                     }catch (Exception e){
                         Log.d("Error --------",e.toString());
                     }
@@ -154,17 +169,18 @@ LinearLayout sectionpay99;
             @Override
             public void onClick(View view) {
                 c.add(Calendar.MONTH,-1);
-                SelDate=sdf.format(c.getTime());
+                SelDate=arabicToDecimal(sdf.format(c.getTime()));
                     try {
                         sectionpay99.setVisibility(View.GONE);
                         sectionpay0001.setVisibility(View.GONE);
                         sectionpay0002.setVisibility(View.GONE);
-
-                        CallPayslip("99",SelDate);
-                        CallPayslip("0001",SelDate);
-                        CallPayslip("0002",SelDate);
-                        saldate.setText(SelDate.substring(0,SelDate.length()-3));
-
+                        if(global.CheckInternet(PayslipActivity.this)) {
+                        }else {
+                            CallPayslip("99", SelDate);
+                            CallPayslip("0001", SelDate);
+                            CallPayslip("0002", SelDate);
+                            saldate.setText(SelDate.substring(0, SelDate.length() - 3));
+                        }
                     }catch (Exception e){
                         Log.d("Error --------",e.toString());
                     }
@@ -179,12 +195,13 @@ LinearLayout sectionpay99;
             sectionpay99.setVisibility(View.GONE);
             sectionpay0001.setVisibility(View.GONE);
             sectionpay0002.setVisibility(View.GONE);
-
-            CallPayslip("99",SelDate);
-            CallPayslip("0001",SelDate);
-            CallPayslip("0002",SelDate);
-            saldate.setText(SelDate.substring(0,SelDate.length()-3));
-
+            if(global.CheckInternet(PayslipActivity.this)) {
+            }else {
+                CallPayslip("99", SelDate);
+                CallPayslip("0001", SelDate);
+                CallPayslip("0002", SelDate);
+                saldate.setText(SelDate.substring(0, SelDate.length() - 3));
+            }
         }catch (Exception e){
             Log.d("Error --------",e.toString());
         }
@@ -204,9 +221,24 @@ LinearLayout sectionpay99;
 
 
     }
+    private static final String arabic = "\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9";
+    private static String arabicToDecimal(String number) {
+        char[] chars = new char[number.length()];
+        for(int i=0;i<number.length();i++) {
+            char ch = number.charAt(i);
+            if (ch >= 0x0660 && ch <= 0x0669)
+                ch -= 0x0660 - '0';
+            else if (ch >= 0x06f0 && ch <= 0x06F9)
+                ch -= 0x06f0 - '0';
+            chars[i] = ch;
+        }
+        return new String(chars);
+    }
+
 
     private void CallPayslip(String Type,String Date) throws IOException, XmlPullParserException {
         Date cDate = new Date();
+
 
         ProgressDialog dialog = ProgressDialog.show(PayslipActivity.this, "", "يرجى الإنتظار", true);
 
@@ -220,13 +252,13 @@ LinearLayout sectionpay99;
 
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
+
                     String request = "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:urn=\"urn:sap-com:document:sap:soap:functions:mc-style\">\n" +
                             "   <soap:Header/>\n" +
                             "   <soap:Body>\n" +
                             "      <urn:ZhrEmpPayslip>\n" +
                             "         <EmployeeId>" + global.GetValue("Username") + "</EmployeeId>\n" +
                             "         <PayrollDate>"+Date+"</PayrollDate>\n" +
-                            "         <!--Optional:-->\n" +
                             "         <PayrollType>"+Type+"</PayrollType>\n" +
                             "      </urn:ZhrEmpPayslip>\n" +
                             "   </soap:Body>\n" +
@@ -237,6 +269,7 @@ LinearLayout sectionpay99;
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                     // Set timeout as per needs
+
                     connection.setConnectTimeout(20000);
                     connection.setReadTimeout(20000);
 
@@ -530,7 +563,7 @@ LinearLayout sectionpay99;
 
 
                 }catch (Exception ex){
-
+dialog.dismiss();
                     Log.d("Ex--++",ex.toString());
                 }
 

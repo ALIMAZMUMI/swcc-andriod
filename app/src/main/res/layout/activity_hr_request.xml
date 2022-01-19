@@ -15,13 +15,16 @@
         android:layout_gravity="center|bottom"
         android:gravity="center">
 
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="12dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/idCard"
             app:cardCornerRadius="10dp"
             android:background="#ffffff"
@@ -43,7 +46,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:layout_marginHorizontal="20dp">
@@ -52,7 +55,7 @@
                     <TextView
                         android:id="@+id/textView5"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textSize="30dp"
                         android:textColor="@color/colorPrimary"
@@ -62,6 +65,7 @@
 
                     <ImageView
                         android:id="@+id/imageView4"
+                        android:padding="7dp"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         app:srcCompat="@drawable/hr"
@@ -73,6 +77,7 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="20dp"
                     android:layout_weight="5"
+                    android:weightSum="7"
                     android:orientation="vertical">
 
 
@@ -80,7 +85,7 @@
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:elevation="12dp"
                         app:cardCornerRadius="10dp"
                         app:cardBackgroundColor="@color/colorPrimary"
@@ -91,17 +96,19 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="3dp"
                             android:layout_weight=".28"
+                            android:gravity="center"
+                            android:layout_gravity="center"
                             android:orientation="horizontal">
 
                             <Spinner
                                 android:id="@+id/servicetype"
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
+                                android:layout_height="40dp"
                                 android:background="@drawable/blueroundfull" />
 
                             <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="center"
@@ -117,7 +124,7 @@
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:elevation="12dp"
                         app:cardCornerRadius="10dp"
                         android:layout_marginTop="10dp"
@@ -134,12 +141,12 @@
                             <Spinner
                                 android:id="@+id/city"
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
+                                android:layout_height="40dp"
                                 android:background="@drawable/blueroundfull" />
 
                             <ImageView
                                 android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_height="40dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="center"
@@ -156,7 +163,8 @@
                     <ImageView
                         android:id="@+id/addimage"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
                         android:layout_marginTop="10dp"
                         android:padding="10dp"
                         app:srcCompat="@drawable/hrimage" />
@@ -173,7 +181,8 @@
                     <EditText
                         android:id="@+id/detials"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
                         android:ems="10"
                         android:textAlignment="center"
                         android:inputType="textMultiLine"
@@ -183,8 +192,9 @@
 
                     <Button
                         android:id="@+id/submit"
-                        android:layout_width="120dp"
-                        android:layout_height="60dp"
+                        android:layout_width="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/greenlightfull"
                         android:text="ارسل الطلب"
                         android:textSize="18dp"
@@ -207,6 +217,13 @@
         </androidx.cardview.widget.CardView>
 
 
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/close"
+            android:elevation="12dp" />
+    </RelativeLayout>
 
 
 

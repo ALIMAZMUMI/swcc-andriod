@@ -19,17 +19,17 @@
     >
     <ImageView
         android:id="@+id/sidemeun"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/menud"
-        android:padding="15dp"
+        android:padding="10dp"
         />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:src="@drawable/header"
-
+android:layout_marginRight="10dp"
         android:gravity="right"
         />
 

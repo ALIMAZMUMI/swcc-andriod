@@ -7,53 +7,82 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/swcc"
         android:label="@string/app_name"
         android:roundIcon="@drawable/swcc"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".PersonalCardActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent"/>
+        <activity
+            android:name=".EmpSearchActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".AuthActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ReturnDocmentsActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Translucent"
-            />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".EskanServiceoutActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".TrainingActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".ShowLinkActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SideMenuActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".Pro_planningActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".QRCodeActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".InsuranceInfoActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".HrRequestActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".IndustrialSecurityActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
 
         <service
@@ -77,34 +106,43 @@
         <activity
             android:name=".EskanServiceActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".ITComActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".EmployeeIdentificationActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".PayslipActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".LeaveActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".TransactionsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".JobDetailsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".EmpCardActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Auth2Activity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

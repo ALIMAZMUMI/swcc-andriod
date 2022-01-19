@@ -4,12 +4,18 @@ package com.gov.sa.swcc;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.hardware.biometrics.BiometricPrompt;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.biometric.BiometricManager;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.CancellationSignal;
+import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +30,8 @@ import com.gov.sa.swcc.model.LoginResult;
 import com.gov.sa.swcc.model.PersonalResult;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,13 +44,21 @@ import retrofit2.Retrofit;
  */
 public class Login extends Fragment {
 
-Global global;
+
+    private CancellationSignal cancellationSignal = null;
+
+    // create an authenticationCallback
+    private BiometricPrompt.AuthenticationCallback authenticationCallback;
+
+
+    Global global;
     public Login() {
         // Required empty public constructor
     }
 
 EditText user,pass;
     Switch switch1;
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,32 +73,10 @@ global=new Global(getContext());
 
 
 
-        BiometricManager biometricManager = BiometricManager.from(getActivity());
         switch1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(switch1.isChecked()){
-                switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
-                    case BiometricManager.BIOMETRIC_SUCCESS:
-                        Log.d("MY_APP_TAG", "App can authenticate using biometrics.");
-                        switch1.setChecked(true);
-                        break;
-                    case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                        Log.e("MY_APP_TAG", "No biometric features available on this device.");
-                        switch1.setChecked(false);
-                        break;
-                    case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                        Log.e("MY_APP_TAG", "Biometric features are currently unavailable.");
-                        //b.biometricCardView.setVisibility(View.GONE);
-                        switch1.setChecked(false);
 
-                        break;
-                    case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                        // Prompts the user to create credentials that your app accepts.
-                        switch1.setChecked(false);
-                        break;
-                }
-            }
             }
         });
 
@@ -111,29 +105,33 @@ global=new Global(getContext());
 
 
                 if (user.getText().toString().length() > 0 && pass.getText().toString().length() > 0) {
-
+                    if(global.CheckInternet()) {
+                    }else{
                     CallLogin();
-                }else if(global.GetPData("PersonalResult")!=null){
+                    }
+                }
 
-
-                    MainActivity.changelayout(2);
-
+//                else if(global.GetPData("PersonalResult")!=null) {
+//
+//
+//                    MainActivity.changelayout(2);
+//                }
 
                 //global.SaveValue("Username","u"+"208461");
-
-//    HomeInfo nextFrag= new HomeInfo();
-//    Bundle bundle = new Bundle();
 //
-//    nextFrag.setArguments(bundle);
+////    HomeInfo nextFrag= new HomeInfo();
+////    Bundle bundle = new Bundle();
+////
+////    nextFrag.setArguments(bundle);
+////
+////
+////    getActivity().getSupportFragmentManager().beginTransaction().show(nextFrag).commit();
 //
-//
-//    getActivity().getSupportFragmentManager().beginTransaction().show(nextFrag).commit();
-
-                   // MainActivity.changelayout(2);
-//            .replace(R.id.main_container, nextFrag, "findThisFragment")
-//            .addToBackStack(null)
-//            .commit();
-}
+//                   // MainActivity.changelayout(2);
+////            .replace(R.id.main_container, nextFrag, "findThisFragment")
+////            .addToBackStack(null)
+////            .commit();
+//}
             }
         });
 
@@ -181,6 +179,14 @@ global=new Global(getContext());
 
                         global.SaveValue("Username","u"+user.getText().toString().trim());
                         global.SaveValue("Password",pass.getText().toString());
+
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P){
+                            if(switch1.isChecked()) {
+                                global.SaveValue("Authentication", "YY");
+                            }
+                        } else{
+
+                        }
 
 
                         Bundle bundle = new Bundle();

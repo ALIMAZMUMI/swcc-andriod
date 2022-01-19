@@ -15,18 +15,27 @@ import androidx.fragment.app.Fragment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.gov.sa.swcc.Adapter.GridAdapter;
+import com.gov.sa.swcc.Adapter.PaysilpAdapter;
+import com.gov.sa.swcc.model.GridItem;
 import com.gov.sa.swcc.model.PersonalResult;
+
+import java.util.ArrayList;
 
 
 /**
@@ -42,7 +51,9 @@ TextView Emppic,EmpName,EmpJob;
     Global global;
     CardView idCard,detials,Transactions
             ,sal_cer,leave,salmonth,ITCom,EskanService,IndustrialSecurity,HrRequest,InsuranceInfo
-            ,Sharkhom,EmpCard;
+            ,Sharkhom,EmpCard,photolip,Proplan,libiry,logout;
+
+    int height,width;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -52,32 +63,173 @@ TextView Emppic,EmpName,EmpJob;
         EmpName=(TextView)view.findViewById(R.id.EmpName);
         EmpJob=(TextView)view.findViewById(R.id.EmpJob);
 
-        sal_cer=(CardView)view.findViewById(R.id.sal_cer);
-        leave=(CardView)view.findViewById(R.id.leave);
-        Transactions=(CardView)view.findViewById(R.id.Transactions);
 
-        idCard=(CardView)view.findViewById(R.id.idCard);
-        detials=(CardView)view.findViewById(R.id.detials);
-        salmonth=(CardView)view.findViewById(R.id.salmonth);
-        EskanService=(CardView)view.findViewById(R.id.EskanService);
-        IndustrialSecurity=(CardView)view.findViewById(R.id.IndustrialSecurity);
-        HrRequest=(CardView)view.findViewById(R.id.HrRequest);
-        InsuranceInfo=(CardView)view.findViewById(R.id.InsuranceInfo);
-        Sharkhom=(CardView)view.findViewById(R.id.Sharkhom);
-        EmpCard=(CardView)view.findViewById(R.id.EmpCard);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+        ArrayList<GridItem> birdList = new ArrayList<GridItem>();
+        birdList.add(new GridItem("بطاقة العمل",R.drawable.idcard));
+        birdList.add(new GridItem("بياناتي",R.drawable.profile));
+        birdList.add(new GridItem("الحضور و الإنصراف",R.drawable.checkin));
+
+        birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary));
+        birdList.add(new GridItem("الإجازات",R.drawable.leave));
+        birdList.add(new GridItem("مسير الراتب",R.drawable.salary_cer));
+
+        birdList.add(new GridItem("بحث العاملين",R.drawable.findemppng));
+        birdList.add(new GridItem("خدمات الإسكان",R.drawable.eskan));
+        birdList.add(new GridItem("تقنية المعلومات",R.drawable.it));
+
+        birdList.add(new GridItem("ملاحظات السلامة",R.drawable.safety));
+        birdList.add(new GridItem("العناية بالعاملين",R.drawable.hr));
+        birdList.add(new GridItem("التامين الصحي",R.drawable.insur));
+        birdList.add(new GridItem("بطاقة أعمال",R.drawable.qremp));
+
+        birdList.add(new GridItem("المكتبة المصورة",R.drawable.photo));
+        birdList.add(new GridItem("بيانات الانتاج",R.drawable.proplanb));
+        birdList.add(new GridItem("شاركهم",R.drawable.sharkhom));
+
+        birdList.add(new GridItem("أكاديمية التحلية",R.drawable.trainingb));
+        birdList.add(new GridItem("تسجيل الخروج",R.drawable.logout));
 
 
-        ITCom=(CardView)view.findViewById(R.id.ITCom);
+        GridAdapter adapter=new GridAdapter(getContext(),R.layout.griditem,birdList,width,height,0);
+        GridView gridView=(GridView)view.findViewById(R.id.servicegrid);
+        gridView.setAdapter(adapter);
+        getHeight(adapter,gridView);
 
 
-        PersonalResult per=global.GetPData("PersonalResult");
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        EmpName.setText(per.getResultObject().getFullName());
-        EmpJob.setText(per.getResultObject().getTitle());
-        byte[] decodedString = Base64.decode(per.getResultObject().getPhoto(), Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        Drawable d = new BitmapDrawable(getResources(), decodedByte);
-        Emppic.setBackground(d);
+                Animation animZoomIn = AnimationUtils.loadAnimation(getActivity(),R.anim.zoom_in);
+                Animation animZoomOut = AnimationUtils.loadAnimation(getActivity(),R.anim.zoom_out);
+
+                view.startAnimation(animZoomIn);
+
+                final Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.startAnimation(animZoomOut);
+
+                        if(i==0){
+                            startActivity(new Intent(getActivity(),EmpCardActivity.class));
+
+                        }
+                        else if(i==1){
+                            startActivity(new Intent(getActivity(),JobDetailsActivity.class));
+                        }
+                        else if(i==2){
+                            startActivity(new Intent(getActivity(),TransactionsActivity.class));
+                        }
+                        else if(i==3){
+                            startActivity(new Intent(getActivity(),EmployeeIdentificationActivity.class));
+                        }
+                        else if(i==4){
+                            startActivity(new Intent(getActivity(),LeaveActivity.class));
+                        }
+                        else if(i==5){
+                            startActivity(new Intent(getActivity(),PayslipActivity.class));
+                        }
+                        else if(i==6){
+                            startActivity(new Intent(getActivity(),EmpSearchActivity.class));
+                        }
+                        else if(i==7){
+                            startActivity(new Intent(getActivity(),EskanServiceActivity.class));
+                        }
+                        else if(i==8){
+                            startActivity(new Intent(getActivity(),ITComActivity.class));
+                        }
+                        else if(i==9){
+                            startActivity(new Intent(getActivity(),IndustrialSecurityActivity.class));
+                        }
+                        else if(i==10){
+                            startActivity(new Intent(getActivity(),HrRequestActivity.class));
+                        }
+                        else if(i==11){
+                            startActivity(new Intent(getActivity(),InsuranceInfoActivity.class));
+                        }
+                        else if(i==12){
+                            startActivity(new Intent(getActivity(),QRCodeActivity.class));
+                        }
+                        else if(i==13){
+                            Intent Link=new Intent(getActivity(),ShowLinkActivity.class);
+                        Link.putExtra("URL_LINK","https://ext.swcc.gov.sa/elib");
+                        Link.putExtra("Auth","T");
+                        Link.putExtra("Share","0");
+                        startActivity(Link);
+                        }
+                        else if(i==14){
+                            startActivity(new Intent(getActivity(),Pro_planningActivity.class));
+                        }
+                        else if(i==15){
+                            Intent Link=new Intent(getActivity(),ShowLinkActivity.class);
+                        Link.putExtra("URL_LINK","https://ext.swcc.gov.sa/news");
+                        Link.putExtra("Auth","T");
+                        Link.putExtra("Share","0");
+                        startActivity(Link);
+                        }
+                        else if(i==16){
+                                                    startActivity(new Intent(getActivity(),TrainingActivity.class));
+
+                        }
+                        else if(i==17){
+                            global.SaveValue("Home","N");
+                global.SaveValue("Authentication","YY");
+                global.SaveValue("Username","");
+                global.SaveValue("Password","");
+                Bundle bundle = new Bundle();
+                MainActivity.login.setArguments(bundle);
+                MainActivity.Home="n";
+                MainActivity.changelayout(0);
+                        }
+
+
+                    }
+                }, 150);
+
+
+            }
+        });
+
+//        sal_cer=(CardView)view.findViewById(R.id.sal_cer);
+//        leave=(CardView)view.findViewById(R.id.leave);
+//        Transactions=(CardView)view.findViewById(R.id.Transactions);
+//
+//        idCard=(CardView)view.findViewById(R.id.idCard);
+//        detials=(CardView)view.findViewById(R.id.detials);
+//        salmonth=(CardView)view.findViewById(R.id.salmonth);
+//        EskanService=(CardView)view.findViewById(R.id.EskanService);
+//        IndustrialSecurity=(CardView)view.findViewById(R.id.IndustrialSecurity);
+//        HrRequest=(CardView)view.findViewById(R.id.HrRequest);
+//        InsuranceInfo=(CardView)view.findViewById(R.id.InsuranceInfo);
+//        Sharkhom=(CardView)view.findViewById(R.id.Sharkhom);
+//        EmpCard=(CardView)view.findViewById(R.id.EmpCard);
+////photolip,Proplan,libiry,logout;
+//        photolip=(CardView)view.findViewById(R.id.photolip);
+//        Proplan=(CardView)view.findViewById(R.id.Proplan);
+//        libiry=(CardView)view.findViewById(R.id.libiry);
+//        logout=(CardView)view.findViewById(R.id.logout);
+//
+//        ITCom=(CardView)view.findViewById(R.id.ITCom);
+
+
+       try {
+           PersonalResult per=global.GetPData("PersonalResult");
+           EmpName.setText(per.getResultObject().getFullName());
+           EmpJob.setText(per.getResultObject().getTitle());
+           byte[] decodedString = Base64.decode(per.getResultObject().getPhoto(), Base64.DEFAULT);
+           Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+           Drawable d = new BitmapDrawable(getResources(), decodedByte);
+           Emppic.setBackground(d);
+       }catch (Exception e){
+
+       }
+
+
 
 
 
@@ -85,233 +237,298 @@ TextView Emppic,EmpName,EmpJob;
         Animation animZoomIn = AnimationUtils.loadAnimation(getActivity(),R.anim.zoom_in);
         Animation animZoomOut = AnimationUtils.loadAnimation(getActivity(),R.anim.zoom_out);
 
-        idCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),EmpCardActivity.class));
-                    }
-                }, 150);
-
-            }
-        });
-        detials.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),JobDetailsActivity.class));
-                    }
-                }, 150);
-            }
-        });
-        Transactions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),TransactionsActivity.class));
-                    }
-                }, 150);
-
-            }
-        });
-
-        sal_cer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),EmployeeIdentificationActivity.class));
-                    }
-                }, 150);
-
-            }
-        });
-        leave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),LeaveActivity.class));
-                    }
-                }, 150);
-
-            }
-        });
-        salmonth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),PayslipActivity.class));
-                    }
-                }, 150);
-            }
-        });
-
-        ITCom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),ITComActivity.class));
-                    }
-                }, 150);
-            }
-        });
-
-        EskanService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),EskanServiceActivity.class));
-                    }
-                }, 150);
-            }
-        });
-
-
-        IndustrialSecurity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),IndustrialSecurityActivity.class));
-                    }
-                }, 150);
-            }
-        });
-
-        HrRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),HrRequestActivity.class));
-                    }
-                }, 150);
-            }
-        });
-        InsuranceInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),InsuranceInfoActivity.class));
-                    }
-                }, 150);
-            }
-        });
-
-
-        Sharkhom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-
-                        Intent Link=new Intent(getActivity(),ShowLinkActivity.class);
-                        Link.putExtra("URL_LINK","https://ext.swcc.gov.sa/news");
-                        Link.putExtra("Auth","T");
-                        Link.putExtra("Share","0");
-                        startActivity(Link);
-                    }
-                }, 150);
-
-            }
-        });
-
-        EmpCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                view.startAnimation(animZoomIn);
-
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.startAnimation(animZoomOut);
-                        startActivity(new Intent(getActivity(),QRCodeActivity.class));
-                    }
-                }, 150);
-            }
-        });
-
-
-
-
-
+//        idCard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),EmpCardActivity.class));
+//                    }
+//                }, 150);
+//
+//            }
+//        });
+//        detials.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),JobDetailsActivity.class));
+//                    }
+//                }, 150);
+//            }
+//        });
+//        Transactions.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//
+//
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),TransactionsActivity.class));
+//                    }
+//                }, 150);
+//
+//            }
+//        });
+//
+//        sal_cer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),EmployeeIdentificationActivity.class));
+//                    }
+//                }, 150);
+//
+//            }
+//        });
+//        leave.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),LeaveActivity.class));
+//                    }
+//                }, 150);
+//
+//            }
+//        });
+//        salmonth.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),PayslipActivity.class));
+//                    }
+//                }, 150);
+//            }
+//        });
+//
+//        ITCom.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),ITComActivity.class));
+//                    }
+//                }, 150);
+//            }
+//        });
+//
+//        EskanService.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),EskanServiceActivity.class));
+//                    }
+//                }, 150);
+//            }
+//        });
+//
+//
+//        IndustrialSecurity.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),IndustrialSecurityActivity.class));
+//                    }
+//                }, 150);
+//            }
+//        });
+//
+//        HrRequest.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),HrRequestActivity.class));
+//                    }
+//                }, 150);
+//            }
+//        });
+//        InsuranceInfo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),InsuranceInfoActivity.class));
+//                    }
+//                }, 150);
+//            }
+//        });
+//
+//
+//        Sharkhom.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//
+//                        Intent Link=new Intent(getActivity(),ShowLinkActivity.class);
+//                        Link.putExtra("URL_LINK","https://ext.swcc.gov.sa/news");
+//                        Link.putExtra("Auth","T");
+//                        Link.putExtra("Share","0");
+//                        startActivity(Link);
+//                    }
+//                }, 150);
+//
+//            }
+//        });
+//
+//        EmpCard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),QRCodeActivity.class));
+//                    }
+//                }, 150);
+//            }
+//        });
+//        //photolip,Proplan,libiry,logout;
+//        photolip.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        Intent Link=new Intent(getActivity(),ShowLinkActivity.class);
+//                        Link.putExtra("URL_LINK","https://ext.swcc.gov.sa/elib");
+//                        Link.putExtra("Auth","T");
+//                        Link.putExtra("Share","0");
+//                        startActivity(Link);                    }
+//                }, 150);
+//            }
+//        });
+//        Proplan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),Pro_planningActivity.class));
+//                    }
+//                }, 150);
+//            }
+//        });
+//        libiry.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                view.startAnimation(animZoomIn);
+//
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        view.startAnimation(animZoomOut);
+//                        startActivity(new Intent(getActivity(),TrainingActivity.class));
+//                    }
+//                }, 150);
+//            }
+//        });
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                global.SaveValue("Home","N");
+//                global.SaveValue("Authentication","YY");
+//                global.SaveValue("Username","");
+//                global.SaveValue("Password","");
+//                Bundle bundle = new Bundle();
+//                MainActivity.login.setArguments(bundle);
+//                MainActivity.changelayout(0);
+////
+//            }
+//        });
+//
+//
+//
+//
+//
         Log.d("Token++",MyFirebaseMessagingService.getToken(getActivity()));
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -331,4 +548,50 @@ TextView Emppic,EmpName,EmpJob;
         return view;
     }
 
+    public void getHeight(GridAdapter listadp, GridView listview)
+    {
+        int totalHeight = 0;
+        for (int i = 0; i < listadp.getCount(); i++) {
+            View listItem = listadp.getView(i, null, listview);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+            i=i+2;
+        }
+
+        ViewGroup.LayoutParams params = listview.getLayoutParams();
+        params.height = totalHeight + (listview.getVerticalSpacing() * ((int)(listadp.getCount()/3)));
+        listview.setLayoutParams(params);
+        listview.requestLayout();
+    }
+
+    public void update(){
+
+        try {
+            PersonalResult per=new Global(getActivity()).GetPData("PersonalResult");
+            EmpName.setText(per.getResultObject().getFullName());
+            EmpJob.setText(per.getResultObject().getTitle());
+            byte[] decodedString = Base64.decode(per.getResultObject().getPhoto(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            Drawable d = new BitmapDrawable(getResources(), decodedByte);
+            Emppic.setBackground(d);
+        }catch (Exception e){
+
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            PersonalResult per=global.GetPData("PersonalResult");
+            EmpName.setText(per.getResultObject().getFullName());
+            EmpJob.setText(per.getResultObject().getTitle());
+            byte[] decodedString = Base64.decode(per.getResultObject().getPhoto(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            Drawable d = new BitmapDrawable(getResources(), decodedByte);
+            Emppic.setBackground(d);
+        }catch (Exception e){
+
+        }
+    }
 }

@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+
 
 android {
     compileSdkVersion 29
@@ -50,6 +52,7 @@ dependencies {
         exclude group: 'xpp3', module: 'xpp3'
     }
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
+    implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'

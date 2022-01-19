@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,9 +44,21 @@ ListView LeaveList;
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
         global=new Global(LeaveActivity.this);
+
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
         LeaveList=(ListView) findViewById(R.id.LeaveList);
         try {
+            if(global.CheckInternet(LeaveActivity.this)) {
+            }else{
             CallLeaves();
+            }
         }catch (Exception e){
 Log.d("Error --------",e.toString());
         }

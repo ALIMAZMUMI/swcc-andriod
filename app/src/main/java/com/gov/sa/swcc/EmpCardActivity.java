@@ -5,16 +5,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.zxing.WriterException;
 import com.gov.sa.swcc.model.PersonalResult;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 
 public class EmpCardActivity extends Activity {
 
@@ -60,10 +69,62 @@ public class EmpCardActivity extends Activity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EmpCardActivity.this.finish();
+                finish();
                 overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
             }
         });
+
+
+
+
+
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
+
+
+        ImageView qrcode=(ImageView) findViewById(R.id.textView2);
+
+        // below line is for getting
+        // the windowmanager service.
+        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+        // initializing a variable for default display.
+        Display display = manager.getDefaultDisplay();
+
+        // creating a variable for point which
+        // is to be displayed in QR Code.
+        Point point = new Point();
+        display.getSize(point);
+
+        // getting width and
+        // height of a point
+        int width = point.x;
+        int height = point.y;
+
+        // generating dimension from width and height.
+        int dimen = width < height ? width : height;
+        dimen = dimen * 3 / 4;
+
+        // setting this dimensions inside our qr code
+        // encoder to generate our qr code.
+        QRGEncoder qrgEncoder = new QRGEncoder(global.GetValue("Username").replaceAll("u",""), null, QRGContents.Type.TEXT, dimen);
+        try {
+            // getting our qrcode in the form of bitmap.
+            Bitmap bitmap = qrgEncoder.encodeAsBitmap();
+            // the bitmap is set inside our image
+            // view using .setimagebitmap method.
+            qrcode.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            // this method is called for
+            // exception handling.
+            Log.e("QR++", e.toString());
+        }
 
     }
 

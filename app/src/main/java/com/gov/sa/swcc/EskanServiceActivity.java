@@ -21,11 +21,13 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gov.sa.swcc.model.PersonalResult;
@@ -57,7 +59,26 @@ public class EskanServiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eskan_service);
 
-global=new Global(EskanServiceActivity.this);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        TextView back=(TextView)findViewById(R.id.back);
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
+
+
+        global=new Global(EskanServiceActivity.this);
         Spinner servicetype = (Spinner) findViewById(R.id.servicetype);
         Spinner city = (Spinner) findViewById(R.id.city);
 
@@ -65,14 +86,14 @@ global=new Global(EskanServiceActivity.this);
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
-        categories.add("إختر نوع الخدمة");
         categories.add("خدمات الصيانة");
         categories.add("خدمات النظافة ومكافحة الحشرات");
         categories.add("طلب الأجهزة و المواد");
         categories.add("راصد");
+        categories.add("إختر نوع الخدمة");
+
 
         List<String> citystring = new ArrayList<String>();
-        citystring.add("إختر المدينة");
         citystring.add("إسكان راس الخير");
         citystring.add("إسكان الخبر");
         citystring.add("إسكان الجبيل");
@@ -84,11 +105,33 @@ global=new Global(EskanServiceActivity.this);
         citystring.add("إسكان بنقل الجبيل الرياض القصيم");
         citystring.add("إسكان العليا المركز الرئيسي");
         citystring.add("إسكان التخصصي المركز الرئيسي");
+        citystring.add("إختر المدينة");
 
 
         // Creating adapter for spinner
-        ArrayAdapter<String> serviceAdapter = new ArrayAdapter<String>(this, R.layout.spinnericon,R.id.spinneritem, categories);
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(this, R.layout.spinnericon,R.id.spinneritem, citystring);
+        ArrayAdapter<String> serviceAdapter = new ArrayAdapter<String>(this, R.layout.spinnericon,R.id.spinneritem, categories)
+        {
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                return super.getDropDownView(position , convertView, parent);
+            }
+
+            public int getCount() {
+                return categories.size() - 1;
+            }
+        };
+
+
+
+        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(this, R.layout.spinnericon,R.id.spinneritem, citystring)
+        {
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                return super.getDropDownView(position , convertView, parent);
+            }
+
+            public int getCount() {
+                return citystring.size() - 1;
+            }
+        };
 
         // Drop down layout style - list view with radio button
 
@@ -96,6 +139,8 @@ global=new Global(EskanServiceActivity.this);
         servicetype.setAdapter(serviceAdapter);
         city.setAdapter(cityAdapter);
 
+        servicetype.setSelection(categories.size()-1);
+        city.setSelection(citystring.size()-1);
 
          addimage=(ImageView) findViewById(R.id.addimage);
          addimage.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +157,8 @@ global=new Global(EskanServiceActivity.this);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(servicetype.getSelectedItemPosition()==0||city.getSelectedItemPosition()==0 || detials.getText().toString().length()==0){
+                if(global.CheckInternet(EskanServiceActivity.this)) {
+                }else if(servicetype.getSelectedItemPosition()==(categories.size()-1)||city.getSelectedItemPosition()==(citystring.size()-1) || detials.getText().toString().length()==0){
                     global.ShowMessage("ارجو اكمال البيانات المطلوبة");
                 }else {
 try {
@@ -160,7 +206,7 @@ try {
                             "'LastName' : '"+per.getResultObject().getLastNameEn()+"'," +
                             "'Title' : '"+TOR+"'," +
                             "'Department' : '"+per.getResultObject().getDepartment()+"'," +
-                            "'Email' : 'SAlHarbi780e@swcc.gov.sa'," +
+                            "'Email' : '"+global.GetEmail(user)+"'," +
                             "'City' : '"+per.getResultObject().getLocationAr()+"'," +
                             "'TypeRequest' : '"+TOR+"'," +
                             "'Location' : '"+City+"'," +
@@ -253,11 +299,11 @@ try {
         int fileSizeInMB = fileSizeInKB / 1024;
         Log.d("Image Size in MB", "" + fileSizeInMB);
         if (fileSizeInMB < 8) {
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 7, baos);
         } else if (fileSizeInMB < 20) {
-            bm.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 3, baos);
         } else {
-            bm.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 1, baos);
         }
 //        int lnth = bm.getByteCount();
 //        ByteBuffer dst = ByteBuffer.allocate(lnth);

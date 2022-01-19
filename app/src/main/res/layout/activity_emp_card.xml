@@ -11,17 +11,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center|bottom"
-        android:gravity="center">
+        android:gravity="center"
+        android:padding="10dp">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="12dp"
+        android:elevation="1dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/idCard"
         app:cardCornerRadius="10dp"
         android:background="#ffffff"
         android:layout_centerHorizontal="true">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +39,7 @@
             <TextView
                 android:id="@+id/imageView3"
                 android:layout_width="280dp"
-                android:layout_marginTop="41dp"
+                android:layout_marginTop="5dp"
                 android:layout_height="46dp"
                 android:background="@drawable/swccheader"
                  />
@@ -49,8 +54,8 @@
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/EmpPic"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:textStyle="bold"
                 android:gravity="center"/>
             <TextView
@@ -94,12 +99,13 @@
                 android:layout_height="80dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <ImageView
                     android:id="@+id/textView2"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:text=""
-                    android:background="@drawable/qrcode"/>
+
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -227,17 +233,24 @@
                     android:textColor="#ffffff"
                     android:background="@drawable/greenborder"
                     android:gravity="center"
-                    android:text=""
+                    android:text="(1/1)123456/1"
+                    android:textDirection="ltr"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="10dp"/>
 
 
         </LinearLayout>
+
+
     </androidx.cardview.widget.CardView>
 
-
-
-
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/close"
+        android:elevation="12dp" />
+</RelativeLayout>
 
     <TextView
         android:id="@+id/back"

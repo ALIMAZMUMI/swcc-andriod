@@ -79,6 +79,7 @@ String URLLink="";
 
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+
                 if(dialog!=null) {
                     dialog.dismiss();
                 }
@@ -98,11 +99,12 @@ String URLLink="";
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            URLLink = bundle.getString("URLLink","");
+            URLLink = bundle.getString("URLLink","https://www.swcc.gov.sa/ar");
         }else
         {
             URLLink="https://www.swcc.gov.sa/ar";
         }
+
 
         mWebview.loadUrl(URLLink);
 
@@ -113,21 +115,28 @@ String URLLink="";
     @Override
     public void onResume() {
         super.onResume();
-//        Bundle bundle = this.getArguments();
-//        if (bundle != null) {
-//            URLLink = bundle.getString("URLLink","");
-//        }else
-//        {
-//            URLLink="https://www.swcc.gov.sa/ar";
-//        }
-//
-//        mWebview.loadUrl(URLLink);
+
+if(mWebview!=null) {
+    if(!mWebview.getUrl().equals(URLLink)){
+    Bundle bundle = this.getArguments();
+    if (bundle != null) {
+        URLLink = bundle.getString("URLLink", "https://www.swcc.gov.sa/ar");
+    } else {
+        URLLink = "https://www.swcc.gov.sa/ar";
+    }
+
+    mWebview.loadUrl(URLLink);
+    }
+}
+
     }
 
 
 
     public void setURLLink(String URLLink){
-        mWebview.loadUrl(URLLink);
+        if(!mWebview.getUrl().equals(URLLink)) {
+            mWebview.loadUrl(URLLink);
+        }
     }
 
 }

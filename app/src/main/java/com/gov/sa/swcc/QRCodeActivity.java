@@ -7,8 +7,10 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.zxing.WriterException;
 import com.gov.sa.swcc.model.PersonalResult;
@@ -23,6 +25,31 @@ Global global;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
+
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+
+        TextView back=(TextView)findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
+
+//        TextView back=(TextView)findViewById(R.id.back);
+//
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+//            }
+//        });
+
 
         global=new Global(QRCodeActivity.this);
         PersonalResult per=global.GetPData("PersonalResult");

@@ -34,15 +34,35 @@ import retrofit2.Response;
 
 public class Pro_planningActivity extends AppCompatActivity {
 Global global;
-    ImageView next,prev;
-    TextView saldate,addimage;
+    ImageView next,prev,addimage;
+    TextView saldate;
     Calendar c,Current;
     String SelDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pro_planning);
-         c = Calendar.getInstance();
+
+global=new Global(Pro_planningActivity.this);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        TextView back=(TextView)findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
+        c = Calendar.getInstance();
         Current=Calendar.getInstance();
         c.add(Calendar.DATE,-1);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -50,12 +70,14 @@ Global global;
 
 
         saldate=(TextView)findViewById(R.id.saldate);
-        addimage=(TextView)findViewById(R.id.addimage);
+        addimage=(ImageView) findViewById(R.id.addimage);
         next=(ImageView) findViewById(R.id.next);
         prev=(ImageView) findViewById(R.id.prev);
-
+        if(global.CheckInternet(Pro_planningActivity.this)) {
+        }else{
         saldate.setText(SelDate);
         CallProPlanning(SelDate);
+        }
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,9 +85,11 @@ Global global;
                 c.add(Calendar.DATE,1);
                 SelDate=sdf.format(c.getTime());
                 if(Current.getTimeInMillis()>c.getTimeInMillis()){
-
+                    if(global.CheckInternet(Pro_planningActivity.this)) {
+                    }else{
                     saldate.setText(SelDate);
                     CallProPlanning(SelDate);
+                    }
                 }else {
                     c.add(Calendar.DATE,-1);
                 }
@@ -78,9 +102,11 @@ Global global;
                 c.add(Calendar.DATE,-1);
                 SelDate=sdf.format(c.getTime());
                 try {
-
+                    if(global.CheckInternet(Pro_planningActivity.this)) {
+                    }else{
                     saldate.setText(SelDate);
                     CallProPlanning(SelDate);
+                    }
 
                 }catch (Exception e){
                     Log.d("Error --------",e.toString());
@@ -91,11 +117,29 @@ Global global;
     }
 
 
+    private static final String arabic = "\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9";
+    private static String arabicToDecimal(String number) {
+        char[] chars = new char[number.length()];
+        for(int i=0;i<number.length();i++) {
+            char ch = number.charAt(i);
+            if (ch >= 0x0660 && ch <= 0x0669)
+                ch -= 0x0660 - '0';
+            else if (ch >= 0x06f0 && ch <= 0x06F9)
+                ch -= 0x06f0 - '0';
+            chars[i] = ch;
+        }
+        return new String(chars);
+    }
+
     private void CallProPlanning(String Date) {
 
 
+        String date=arabicToDecimal(Date);
+        Log.d("Date----",date+"");
 
-        Call<ProPlanning> call = RetrofitClient.getInstance(Api.ProPlaning).getMyApi().ProPlaning(Date);
+
+
+        Call<ProPlanning> call = RetrofitClient.getInstance(Api.ProPlaning).getMyApi().ProPlaning(date);
         ProgressDialog dialog = ProgressDialog.show(Pro_planningActivity.this, "",
                 "يرجى الإنتظار", true);
         call.enqueue(new Callback<ProPlanning>() {
@@ -138,6 +182,9 @@ float pers=(v1/v2)*100;
         });
     }
 
+
+
+
     private BitmapDrawable writeTextOnDrawable(String date_pro,String V1,String V2,String V3) {
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.prdplanning)
@@ -159,6 +206,16 @@ float pers=(v1/v2)*100;
         Log.d("Image Size",bm.getHeight()+"------"+bm.getWidth());
         Rect textRect = new Rect();
         //paint.getTextBounds(text, 0, text.length(), textRect);
+        float h= (float) (bm.getHeight()/1500.0);
+        float w= (float) (bm.getWidth()/1000.0);
+if(h<2.2){
+    paint.setTextSize(convertToPixels(Pro_planningActivity.this, 50));
+}
+        Log.d("Image Size",h+"------"+w);
+
+
+
+
 
         Canvas canvas = new Canvas(bm);
 
@@ -173,12 +230,18 @@ float pers=(v1/v2)*100;
         int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
         //Arabic Name
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("بيانات يوم :"+date_pro,1330, 821, paint);
+        canvas.drawText("بيانات يوم :"+date_pro, 511*h,315*w, paint);
+
+        Log.d("Image Size",511*w+"------"+315*h);
+
         paint.setTextSize(convertToPixels(Pro_planningActivity.this, 38));
+        if(h<2.2){
+            paint.setTextSize(convertToPixels(Pro_planningActivity.this, 33));
+        }
         paint.setColor(Color.WHITE);
-        canvas.drawText(V1+" مليون متر مكعب",1673, 1490, paint);
-        canvas.drawText(V2+" مليون متر مكعب",2073, 1990, paint);
-        canvas.drawText(V3,1873, 2700, paint);
+        canvas.drawText(V1+" مليون متر مكعب", 643*h,573*w, paint);
+        canvas.drawText(V2+" مليون متر مكعب",797*h,765*w, paint);
+        canvas.drawText(V3,720*h,1040*w, paint);
 
 //        paint.setTextAlign(Paint.Align.RIGHT);
 //        canvas.drawText("PIN: "+insuranceInfo.getMedgulfPIN(),215, 900, paint);

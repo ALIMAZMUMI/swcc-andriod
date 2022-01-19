@@ -16,16 +16,24 @@
         android:gravity="center">
 
 
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
 
-
+>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="12dp"
             android:id="@+id/idCard"
+            android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
             android:background="#ffffff"
             android:layout_centerHorizontal="true">
+
+
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,12 +55,15 @@
                     android:text="بياناتي الوظيفية"
                     android:layout_marginTop="10dp"
                     android:gravity="center"/>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:orientation="vertical"
+    android:layout_weight="5">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_weight="5"
                     android:orientation="horizontal">
 
                     <TextView
@@ -64,7 +75,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
@@ -115,35 +126,41 @@
                         android:textColor="#000000"
                         android:textSize="14dp"
                         android:textStyle="bold" />
-                        <TextView
-                            android:id="@+id/EmpMobile"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:textColor="#000000"
-                            android:textSize="14dp"
-                            android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/EmpNameEn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:textColor="#000000"
-                            android:textSize="14dp"
-                            android:textStyle="bold"  />
-
-                        <TextView
-                            android:id="@+id/JobTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:textColor="#000000"
-                            android:textSize="14dp"
-                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <TextView
+                        android:id="@+id/EmpMobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:textColor="#000000"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/EmpNameEn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:textColor="#000000"
+                        android:textSize="14dp"
+                        android:textStyle="bold"  />
+                    <TextView
+                        android:id="@+id/JobTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:textColor="#000000"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+</LinearLayout>
                 <TextView
                     android:id="@+id/back"
                     android:layout_width="120dp"
@@ -160,8 +177,13 @@
         </androidx.cardview.widget.CardView>
 
 
-
-
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/close"
+        android:elevation="12dp" />
+    </RelativeLayout>
 
 
     </LinearLayout>
