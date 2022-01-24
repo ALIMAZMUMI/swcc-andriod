@@ -18,10 +18,23 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".SharekMenuActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+
+        <activity
+            android:name=".ProjectSignActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".SharekProjectsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
             android:name=".PersonalCardActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Translucent"/>
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".EmpSearchActivity"
             android:exported="false"

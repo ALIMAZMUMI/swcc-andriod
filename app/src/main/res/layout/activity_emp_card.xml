@@ -19,80 +19,84 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/idCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="1dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:id="@+id/idCard"
-        app:cardCornerRadius="10dp"
         android:background="#ffffff"
-        android:layout_centerHorizontal="true">
+        android:elevation="1dp"
+        app:cardCornerRadius="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginHorizontal="30dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
 
             <TextView
                 android:id="@+id/imageView3"
                 android:layout_width="280dp"
-                android:layout_marginTop="5dp"
                 android:layout_height="46dp"
-                android:background="@drawable/swccheader"
-                 />
+                android:layout_marginTop="5dp"
+                android:background="@drawable/swccheader" />
 
             <TextView
                 android:id="@+id/Empdept"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="20dp"
+                android:gravity="center"
                 android:textColor="#000000"
-                android:gravity="center"/>
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/EmpPic"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/EmpID"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
                 android:background="@drawable/blueround"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/EmpName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:gravity="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18dp"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/JobTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:textStyle="bold"
+                android:gravity="center"
                 android:textColor="#000000"
-                android:gravity="center"/>
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/EmpNameEn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:gravity="center"
                 android:text=""
                 android:textColor="@color/colorPrimary"
-                android:textSize="18dp"
-                android:gravity="center"/>
+                android:textSize="18dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -113,112 +117,120 @@
                     android:layout_weight="1"
                     android:background="@drawable/blueborder"
                     android:gravity="center"
-                    android:paddingHorizontal="10dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingHorizontal="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
-                        android:weightSum="3"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:textColor="@color/colorPrimary"
-                            android:text="Nationality :"
-                            android:textSize="12dp"
+                            android:layout_weight="1"
                             android:gravity="left"
-                            />
+                            android:text="Nationality :"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="12dp" />
+
                         <TextView
                             android:id="@+id/EmpNat"
-                            android:textSize="12dp"
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text=""
                             android:textColor="#000000"
 
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
-                            android:layout_height="20dp"
-                            android:gravity="center"
+                            android:textSize="12dp" />
 
-                            android:text="" />
                         <TextView
-                            android:layout_weight="1"
-                            android:textSize="12dp"
-
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:textColor="@color/colorPrimary"
+
+                            android:layout_weight="1"
                             android:gravity="right"
-                            android:text="الجنسية :" />
+                            android:text="الجنسية :"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="12dp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:orientation="horizontal">
+
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:textSize="12dp"
-
-                            android:textColor="@color/colorPrimary"
-                            android:text="National ID :"
+                            android:layout_weight="1"
                             android:gravity="left"
-                            />
+
+                            android:text="National ID :"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="12dp" />
+
                         <TextView
                             android:id="@+id/EmpNatID"
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
                             android:layout_weight="1"
-                            android:textSize="12dp"
+
+                            android:gravity="center"
+                            android:text=""
                             android:textColor="#000000"
 
-                            android:layout_width="0dp"
-                            android:layout_height="20dp"
-                            android:gravity="center"
+                            android:textSize="12dp" />
 
-                            android:text="" />
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:textSize="12dp"
-
-                            android:textColor="@color/colorPrimary"
+                            android:layout_weight="1"
                             android:gravity="right"
-                            android:text="رقم الهوية :" />
+
+                            android:text="رقم الهوية :"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="12dp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:orientation="horizontal">
+
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:textColor="@color/colorPrimary"
-                            android:text="Blood type :"
-                            android:textSize="12dp"
-
+                            android:layout_weight="1"
                             android:gravity="left"
-                            />
+                            android:text="Blood type :"
+                            android:textColor="@color/colorPrimary"
+
+                            android:textSize="12dp" />
+
                         <TextView
                             android:id="@+id/EmpBlood"
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:textSize="12dp"
-                            android:textColor="#000000"
-
+                            android:layout_weight="1"
                             android:gravity="center"
-                            android:text="" />
+                            android:text=""
+
+                            android:textColor="#000000"
+                            android:textSize="12dp" />
+
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
-                            android:textColor="@color/colorPrimary"
+                            android:layout_weight="1"
                             android:gravity="right"
-                            android:textSize="12dp"
+                            android:text="فصيلة الدم :"
+                            android:textColor="@color/colorPrimary"
 
-                            android:text="فصيلة الدم :" />
+                            android:textSize="12dp" />
 
 
                     </LinearLayout>
@@ -227,16 +239,16 @@
 
             </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:textColor="#ffffff"
-                    android:background="@drawable/greenborder"
-                    android:gravity="center"
-                    android:text="(1/1)123456/1"
-                    android:textDirection="ltr"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/greenborder"
+                android:gravity="center"
+                android:text="(1/1)123456/1"
+                android:textColor="#ffffff"
+                android:textDirection="ltr" />
 
 
         </LinearLayout>

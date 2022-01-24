@@ -8,6 +8,8 @@ import com.gov.sa.swcc.model.InsuranceInfo;
 import com.gov.sa.swcc.model.LoginResult;
 import com.gov.sa.swcc.model.PersonalResult;
 import com.gov.sa.swcc.model.ProPlanning;
+import com.gov.sa.swcc.model.Sharekproject;
+import com.gov.sa.swcc.model.Signproject;
 import com.gov.sa.swcc.model.TransactionsApiResult;
 
 import org.json.JSONArray;
@@ -29,6 +31,8 @@ public interface Api {
     String SingINOutBASE_URL = "https://ext.swcc.gov.sa/TransactionsApi/api/";
     String Ticket = "https://apitest.swcc.gov.sa/swccmobile/api/FootPrint/";
 String Insur="https://ext.swcc.gov.sa/insinfo/api/";
+String Sharek="https://apitest.swcc.gov.sa/FupsApi/api/EmployeeEvaluation/";
+
 
     String ProPlaning="https://ext.swcc.gov.sa/ocpapi/api/ocp/";
 
@@ -69,6 +73,17 @@ String Insur="https://ext.swcc.gov.sa/insinfo/api/";
     @GET("Get_Export_Mobile")
     Call<ProPlanning> ProPlaning(@Query("prm_from_date") String Date);
 
+
+
+    @Headers({"Accept: application/json","Content-Type: application/json"
+            ,"secretToken: 123456789"})
+    @GET("GetAllSupervisorProjecct")
+    Call<List<Sharekproject>> GetAllSupervisorProjecct(@Query("SupervisorUID") String ID);
+
+    @Headers({"Accept: application/json","Content-Type: application/json"
+            ,"secretToken: 123456789"})
+    @GET("GetEmployeeTransactions")
+    Call<List<Signproject>> GetEmployeeTransactions(@Query("SuperVisorId") String ID, @Query("date") String Date);
 
 
 

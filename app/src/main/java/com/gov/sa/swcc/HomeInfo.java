@@ -91,6 +91,8 @@ TextView Emppic,EmpName,EmpJob;
         birdList.add(new GridItem("شاركهم",R.drawable.sharkhom));
 
         birdList.add(new GridItem("أكاديمية التحلية",R.drawable.trainingb));
+        birdList.add(new GridItem("شارك",R.drawable.findemppng));
+
         birdList.add(new GridItem("تسجيل الخروج",R.drawable.logout));
 
 
@@ -173,10 +175,10 @@ TextView Emppic,EmpName,EmpJob;
                         startActivity(Link);
                         }
                         else if(i==16){
-                                                    startActivity(new Intent(getActivity(),TrainingActivity.class));
+                            startActivity(new Intent(getActivity(),TrainingActivity.class));
 
                         }
-                        else if(i==17){
+                        else if(i==18){
                             global.SaveValue("Home","N");
                 global.SaveValue("Authentication","YY");
                 global.SaveValue("Username","");
@@ -185,6 +187,12 @@ TextView Emppic,EmpName,EmpJob;
                 MainActivity.login.setArguments(bundle);
                 MainActivity.Home="n";
                 MainActivity.changelayout(0);
+                        }else if(i==17){
+
+                            startActivity(new Intent(getActivity(),SharekMenuActivity.class));
+
+
+
                         }
 
 
