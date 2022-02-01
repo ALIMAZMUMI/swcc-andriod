@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Switch;
 
@@ -57,7 +58,7 @@ public class Login extends Fragment {
     }
 
 EditText user,pass;
-    Switch switch1;
+    CheckBox switch1;
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +70,7 @@ global=new Global(getContext());
 
         user=(EditText)view.findViewById(R.id.user);
         pass=(EditText)view.findViewById(R.id.password);
-        switch1=(Switch) view.findViewById(R.id.switch1);
+        switch1=(CheckBox) view.findViewById(R.id.switch1);
 
 
 
@@ -113,8 +114,8 @@ global=new Global(getContext());
 
                 else if(global.GetPData("PersonalResult")!=null) {
 
-
-                    MainActivity.changelayout(2);
+startActivity(new Intent(getActivity(),MainLGActivity.class));
+                    //MainActivity.changelayout(2);
                 }
 
                 //global.SaveValue("Username","u"+"208461");

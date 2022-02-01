@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/swcc</item>
+        <item name="android:layoutDirection">ltr</item>
 
     </style>
 
@@ -19,15 +20,19 @@
         <!--on below line we are displaying the windowNotitle as true as we are not displaying our status bar-->
         <item name="android:windowNoTitle">true</item>
         <!--on below line we are setting our window background as transparent color-->
-        <item name="android:windowBackground">#CC000000</item>
+        <item name="android:windowBackground">#3E000000</item>
         <!--on below line we are setting color background cache hint as null-->
         <item name="android:colorBackgroundCacheHint">@null</item>
         <!--on below line we are adding a window translucent as true-->
         <item name="android:windowIsTranslucent">true</item>
         <!--on below line we are adding a window animationstyle-->
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:layoutDirection">ltr</item>
         <item name="android:fontFamily">@font/swcc</item>
     </style>
 
 
+    <style name="MyRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_btn_radio</item>
+    </style>
 </resources>

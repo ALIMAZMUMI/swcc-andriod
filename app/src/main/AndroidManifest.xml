@@ -14,21 +14,31 @@
         android:icon="@drawable/swcc"
         android:label="@string/app_name"
         android:roundIcon="@drawable/swcc"
-        android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".FaveroitActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent"/>
+        <activity
+            android:name=".RequestMessageActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
             android:name=".SharekMenuActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
-
         <activity
             android:name=".ProjectSignActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".SharekProjectsActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".PersonalCardActivity"
@@ -46,6 +56,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainLGActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

@@ -36,36 +36,32 @@ int Wh,Hi;
         View v = convertView;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(R.layout.gridbitem, null);
-
-
-
-
         TextView textView = (TextView) v.findViewById(R.id.text);
         ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
 
         textView.setText(birdList.get(position).getServiceName());
         imageView.setImageResource(birdList.get(position).getImage());
-        if(Wh<=540){
-            textView.setTextSize(10);
+        if(Wh==540){
+
+                textView.setTextSize(9);
+
             textView.setTypeface(textView.getTypeface(), Typeface.NORMAL);
             imageView.getLayoutParams().height = 45;
-            textView.getLayoutParams().height = 60;
+            imageView.getLayoutParams().height = 50;
+            textView.getLayoutParams().height = 110;
         }else if(Wh>540){
-float per= (float) (45.0/540.0);
+            float per= (float) (45.0/540.0);
 
             textView.setTextSize(12);
             textView.setTypeface(textView.getTypeface(), Typeface.NORMAL);
             imageView.getLayoutParams().height =(int) (Wh*per);
-            textView.getLayoutParams().height = (int) (Wh*(60.0/540.0));
+            textView.getLayoutParams().height = (int) (Wh*(110/540.0));
         }
-//        else if(Wh>540){
-//            textView.setTextSize(10);
-//            textView.setTypeface(textView.getTypeface(), Typeface.NORMAL);
-//            imageView.getLayoutParams().height = 90;
-//            textView.getLayoutParams().height = 70;
-//        }
-        return v;
+        if(birdList.get(position).getServiceName().contains("a")){
+            textView.setTextSize(9);
+        }
 
+        return v;
     }
 
 }

@@ -20,6 +20,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import com.gov.sa.swcc.Adapter.CardsAdapter;
 import com.gov.sa.swcc.Adapter.TransactionAdapter;
 import com.gov.sa.swcc.model.InsuranceInfo;
+import com.gov.sa.swcc.model.InsuranceItem;
 import com.gov.sa.swcc.model.ListInsuranceDatum;
 import com.gov.sa.swcc.model.TransactionsApiResult;
 
@@ -44,7 +46,7 @@ import retrofit2.Response;
 public class InsuranceInfoActivity extends AppCompatActivity {
     Global global;
     ListView Insur;
-    List<BitmapDrawable> insurbitmap;
+    List<InsuranceItem> insurbitmap;
     TextView insparent,cuntactus,instable;
 
     @Override
@@ -52,6 +54,14 @@ public class InsuranceInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insurance_info);
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
+
+
+        TextView Header=(TextView)findViewById(R.id.header);
+        String text = "<font color=#004C86>خدمات الموارد البشرية /</font> <font color=#0066CC>التأمين الصحي</font>";
+        Header.setText(Html.fromHtml(text));
+
+
 //        TextView back=(TextView)findViewById(R.id.back);
 //
 //        back.setOnClickListener(new View.OnClickListener() {
@@ -73,56 +83,59 @@ public class InsuranceInfoActivity extends AppCompatActivity {
 
         global=new Global(InsuranceInfoActivity.this);
         Insur=(ListView)findViewById(R.id.cards);
-        insparent=(TextView) findViewById(R.id.insparent);
-        cuntactus=(TextView) findViewById(R.id.cuntactus);
-        instable=(TextView) findViewById(R.id.instable);
-
-        insparent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent Link=  new Intent(InsuranceInfoActivity.this,ShowLinkActivity.class);
-                Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+"https://www.swcc.gov.sa/uploads/Leaflet_And%20Providers_CLASS_AP.pdf");
-                Link.putExtra("Auth","N");
-                Link.putExtra("Share","1");
-                startActivity(Link);
-
-            }
-        });
-
-        cuntactus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"HR-Medical@swcc.gov.sa"});
-                intent.putExtra(Intent.EXTRA_SUBJECT, "");
-                intent.putExtra(Intent.EXTRA_TEXT,"");
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }
-            }
-        });
-
-        instable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent Link=  new Intent(InsuranceInfoActivity.this,ShowLinkActivity.class);
-                Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+"https://www.swcc.gov.sa/uploads/Leaflet_And%20Providers_CLASS_A.pdf");
-                Link.putExtra("Auth","N");
-                Link.putExtra("Share","1");
-                startActivity(Link);
-
-            }
-        });
+//        insparent=(TextView) findViewById(R.id.insparent);
+//        cuntactus=(TextView) findViewById(R.id.cuntactus);
+//        instable=(TextView) findViewById(R.id.instable);
+//
+//        insparent.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Intent Link=  new Intent(InsuranceInfoActivity.this,ShowLinkActivity.class);
+//                Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+"https://www.swcc.gov.sa/uploads/Leaflet_And%20Providers_CLASS_AP.pdf");
+//                Link.putExtra("Auth","N");
+//                Link.putExtra("Share","1");
+//                startActivity(Link);
+//
+//            }
+//        });
+//
+//        cuntactus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Intent.ACTION_SENDTO);
+//                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+//                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"HR-Medical@swcc.gov.sa"});
+//                intent.putExtra(Intent.EXTRA_SUBJECT, "");
+//                intent.putExtra(Intent.EXTRA_TEXT,"");
+//                if (intent.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(intent);
+//                }
+//            }
+//        });
+//
+//        instable.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent Link=  new Intent(InsuranceInfoActivity.this,ShowLinkActivity.class);
+//                Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+"https://www.swcc.gov.sa/uploads/Leaflet_And%20Providers_CLASS_A.pdf");
+//                Link.putExtra("Auth","N");
+//                Link.putExtra("Share","1");
+//                startActivity(Link);
+//
+//            }
+//        });
 
 Insur.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         if(isStoragePermissionGranted()){
+            if(i!=0&&i!=2){
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:8001162700"));
-        startActivity(callIntent);}
+        startActivity(callIntent);
+            }
+        }
     }
 });
 
@@ -149,9 +162,27 @@ Insur.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 {
 
                     if(response.body().getListInsuranceData().size()>0){
-insurbitmap=new ArrayList<>();
+insurbitmap=new ArrayList<InsuranceItem>();
+
 for (int i=0;i<response.body().getListInsuranceData().size();i++){
-    insurbitmap.add(writeTextOnDrawable(response.body().getListInsuranceData().get(i)));
+    if(i==0){
+        InsuranceItem insuranceItem=new InsuranceItem();
+        insuranceItem.setID("Header");
+        insuranceItem.setText("التأمين الصحي الشخصي");
+        insurbitmap.add(insuranceItem);
+    }
+
+    if(i==1){
+        InsuranceItem insuranceItem=new InsuranceItem();
+        insuranceItem.setID("Header");
+        insuranceItem.setText("التأمين الصحي العائلي");
+        insurbitmap.add(insuranceItem);
+    }
+
+    InsuranceItem insuranceItem=new InsuranceItem();
+    insuranceItem.setID(response.body().getListInsuranceData().get(i).getRel());
+    insuranceItem.setImage(writeTextOnDrawable(response.body().getListInsuranceData().get(i)));
+    insurbitmap.add(insuranceItem);
 }
                         dialog.dismiss();
 

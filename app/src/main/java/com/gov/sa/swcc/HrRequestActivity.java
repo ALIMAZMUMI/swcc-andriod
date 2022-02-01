@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +57,9 @@ public class HrRequestActivity extends AppCompatActivity {
     Global global;
     int Image=0;
     List<String> citystring;
+    TextView removeimagetxt,addimagetxt;
+    ImageView removeimage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,13 @@ public class HrRequestActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
 
+
+
+        TextView Header=(TextView)findViewById(R.id.header);
+        String text = "<font color=#004C86>الدعم الفني /</font> <font color=#0066CC>العناية بالعاملين</font>";
+        Header.setText(Html.fromHtml(text));
+
+
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,15 +84,15 @@ public class HrRequestActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
             }
         });
-        TextView back=(TextView)findViewById(R.id.back);
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-            }
-        });
+//        TextView back=(TextView)findViewById(R.id.back);
+//
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+//            }
+//        });
 
 
         global=new Global(HrRequestActivity.this);
@@ -141,7 +152,7 @@ public class HrRequestActivity extends AppCompatActivity {
                     citystring.add("استفسار");
                     citystring.add("شكوى");
                     citystring.add("أخرى");
-                    citystring.add("إختر نوع الخدمة");
+                    citystring.add("تحديد نوع الخدمة");
 
                     ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(HrRequestActivity.this, R.layout.spinnericon,R.id.spinneritem, citystring)
                     {
@@ -198,6 +209,15 @@ city.setSelection(citystring.size()-1);
             }
         });
 
+        addimagetxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isStoragePermissionGranted()){
+                    openCamera();
+                }
+            }
+        });
+
         detials=(EditText)findViewById(R.id.detials);
         Button submit=(Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +240,24 @@ city.setSelection(citystring.size()-1);
 
                 }
 
+
+            }
+        });
+
+
+
+
+        removeimagetxt=(TextView) findViewById(R.id.removeimagetxt);
+        addimagetxt=(TextView)findViewById(R.id.addimagetxt);
+        removeimage=(ImageView) findViewById(R.id.removeimage);
+        removeimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addimagetxt.setVisibility(View.VISIBLE);
+                addimage.setVisibility(View.VISIBLE);
+                removeimage.setVisibility(View.GONE);
+                removeimagetxt.setVisibility(View.GONE);
+                Image=0;
 
             }
         });
@@ -303,7 +341,7 @@ city.setSelection(citystring.size()-1);
                             try {
                                 line = bufferedReader.readLine();
                                 if(connection.getResponseCode()==200){
-                                    global.ShowMessageF("تم ارسال الطلب بنجاح رقم الطلب "+line+" تم ارسال نسخة لبريدك ",HrRequestActivity.this);
+                                    global.ShowMessageNF("رقم الطلب :"+line,HrRequestActivity.this);
                                 }else {
                                     global.ShowMessage("حدث مشكلة اثناء الاتصال");
 
@@ -409,7 +447,11 @@ city.setSelection(citystring.size()-1);
                                 Log.d("img", "true");
                                 //                            imageView.setImageURI(Uri.fromFile(imgFile));
                                 try {
-                                    addimage.setImageURI(Uri.fromFile(imgFile));
+                                    //addimage.setImageURI(Uri.fromFile(imgFile));
+                                    addimagetxt.setVisibility(View.GONE);
+                                    addimage.setVisibility(View.GONE);
+                                    removeimage.setVisibility(View.VISIBLE);
+                                    removeimagetxt.setVisibility(View.VISIBLE);
                                     Image=1;
                                 }catch (OutOfMemoryError ex){
                                 }

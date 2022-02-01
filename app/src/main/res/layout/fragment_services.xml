@@ -7,20 +7,50 @@
     tools:context=".Services">
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#05388DCA"
+    >
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="20dp"
-        android:orientation="vertical">
+        android:paddingHorizontal="20dp"
+        android:orientation="vertical"
+        android:gravity="right">
+        <com.smarteist.autoimageslider.SliderView
+            android:id="@+id/slider"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            app:sliderAnimationDuration="600"
+            app:sliderAutoCycleDirection="back_and_forth"
+            app:sliderIndicatorAnimationDuration="600"
+            app:sliderIndicatorEnabled="true"
+            app:sliderIndicatorGravity="center_horizontal|bottom"
+            app:sliderIndicatorMargin="15dp"
+            app:sliderIndicatorOrientation="horizontal"
+            app:sliderIndicatorPadding="3dp"
+            app:sliderIndicatorRadius="2dp"
+            app:sliderIndicatorSelectedColor="#5A5A5A"
+            app:sliderIndicatorUnselectedColor="#FFF"
+            app:sliderScrollTimeInSec="1" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="الخدمات العامة"
-        android:textSize="20dp"
-            android:textColor="#000000"/>
+        android:textSize="17dp"
+            android:paddingVertical="5dp"
+            android:textColor="#004C86"/>
 
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="3dp"
+            android:background="@drawable/lgreenroundfull"
+            android:textSize="17dp"
+
+            />
 
         <GridView
             android:id="@+id/servicegrid1"
@@ -30,7 +60,11 @@
             android:layout_weight="5"
             android:layout_marginTop="20dp"
             android:verticalSpacing="10dp"
-            android:horizontalSpacing="3dp"            />
+            android:horizontalSpacing="0dp"
+            android:gravity="right"
+            android:rotationY="180"
+
+            android:textDirection="rtl"/>
 
 <!--        <LinearLayout-->
 <!--            android:layout_width="match_parent"-->
@@ -148,10 +182,50 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="مصادر مفترحة :"
-            android:textSize="20dp"
+            android:text="نماذج الأمن الصناعي"
+            android:textSize="17dp"
+            android:paddingVertical="5dp"
+
             android:layout_marginTop="30dp"
-            android:textColor="#000000"/>
+            android:textColor="#004C86"/>
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="3dp"
+            android:background="@drawable/lgreenroundfull"
+            android:textSize="15dp"
+
+            />
+
+
+        <GridView
+            android:id="@+id/servicegrid3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:numColumns="1"
+            android:layout_weight="5"
+            android:layout_marginTop="20dp"
+            android:verticalSpacing="2dp"
+            android:horizontalSpacing="3dp"
+
+            />
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="مصادر مفترحة :"
+            android:textSize="17dp"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="30dp"
+            android:textColor="#004C86"/>
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="3dp"
+            android:background="@drawable/lgreenroundfull"
+            android:textSize="17dp"
+
+            />
         <GridView
             android:id="@+id/servicegrid2"
             android:layout_width="match_parent"
@@ -161,6 +235,7 @@
             android:layout_marginTop="20dp"
             android:verticalSpacing="10dp"
             android:horizontalSpacing="3dp"
+            android:rotationY="180"
 
             />
 
@@ -316,26 +391,6 @@
 <!--        </LinearLayout>-->
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="خدمات الأمن الصناعي"
-            android:textSize="20dp"
-            android:textColor="#000000"/>
-
-
-
-        <GridView
-            android:id="@+id/servicegrid3"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:numColumns="3"
-            android:layout_weight="5"
-            android:layout_marginTop="20dp"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="3dp"
-
-            />
 
 <!--        <LinearLayout-->
 <!--            android:layout_width="match_parent"-->

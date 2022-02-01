@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,6 +25,7 @@ import java.util.TimeZone;
 public class Global {
 
     static Context context;
+    public static Activity activity;
 
 
 
@@ -116,6 +118,19 @@ public class Global {
 
         // Showing Alert Message
         alertDialog1.show();
+
+    }
+
+
+
+
+    public void ShowMessageNF(String Message, Activity activity){
+
+
+        this.activity=activity;
+        Intent intent=new Intent(context,RequestMessageActivity.class);
+        intent.putExtra("Message",Message);
+        context.startActivity(intent);
 
     }
 

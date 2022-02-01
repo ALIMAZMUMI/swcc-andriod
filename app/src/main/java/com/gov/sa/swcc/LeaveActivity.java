@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,6 +46,11 @@ ListView LeaveList;
 
         global=new Global(LeaveActivity.this);
 
+
+        TextView Header=(TextView)findViewById(R.id.header);
+        String text = "<font color=#004C86>خدمات الموارد البشرية /</font> <font color=#0066CC>الاجازات ومهام العمل</font>";
+        Header.setText(Html.fromHtml(text));
+
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,15 +70,7 @@ Log.d("Error --------",e.toString());
         }
 
 
-        TextView back=(TextView)findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LeaveActivity.this.finish();
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
-            }
-        });
 
 
     }
@@ -185,13 +183,56 @@ runOnUiThread(new Runnable() {
     @Override
     public void run() {
 
-
+int bus=0,nor=0;
         List<LeaveItems> neworder =new ArrayList<>(leaveItems.size());
         for (int i=0;i<leaveItems.size();i++){
-
+            if(leaveItems.get(i).getVacationCode().toLowerCase().equals("ANNUAL_LEAVE".toLowerCase())){
+                nor++;
+            }
+            if(leaveItems.get(i).getVacationCode().toLowerCase().equals("BUSINESS_TRIP".toLowerCase())){
+                bus++;
+            }
             neworder.add(leaveItems.get(leaveItems.size()-(i+1)));
         }
-        LeaveAdapter adp = new LeaveAdapter(LeaveActivity.this, neworder);
+        List<LeaveItems> newq =new ArrayList<>(leaveItems.size());
+
+        if(nor>0){
+
+            LeaveItems leaveItems1=new LeaveItems();
+            leaveItems1.setVacationCode("الاجازات الاعتيادية");
+            leaveItems1.setBegda("Header");
+            newq.add(leaveItems1);
+            for (int i=0;i<neworder.size();i++){
+                if(neworder.get(i).getVacationCode().toLowerCase().equals("ANNUAL_LEAVE".toLowerCase())){
+                    newq.add(neworder.get(i));
+                }
+
+            }
+
+        }
+
+        if(bus>0){
+
+            LeaveItems leaveItems1=new LeaveItems();
+            leaveItems1.setVacationCode("مهام عمل");
+            leaveItems1.setBegda("Header");
+            newq.add(leaveItems1);
+            for (int i=0;i<neworder.size();i++){
+                if(neworder.get(i).getVacationCode().toLowerCase().equals("BUSINESS_TRIP".toLowerCase())){
+                    newq.add(neworder.get(i));
+                }
+
+            }
+
+        }
+
+
+
+
+
+
+
+        LeaveAdapter adp = new LeaveAdapter(LeaveActivity.this, newq);
 
         LeaveList.setAdapter(adp);
     }

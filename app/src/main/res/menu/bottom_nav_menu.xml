@@ -2,18 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_login"
-        android:icon="@drawable/user"
-        android:title="للموظفين" />
-
-    <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/homepage"
-        android:title="الرئيسية" />
+        android:icon="@drawable/myprofile"
+        android:title="الموظف" />
 
     <item
         android:id="@+id/navigation_service"
-        android:icon="@drawable/services"
-        android:title="خدمات" />
+        android:icon="@drawable/servicesicon"
+        android:title="الخدمات" />
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/homeicon"
+        android:title="الرئيسية" />
+
+
 
 
 </menu>

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,20 +38,20 @@ import java.util.Date;
 
 public class PayslipActivity extends AppCompatActivity {
 
-    TextView DocType99,DateinHigri99,EmpName99,Payrole99,NatID99,header99;
+//    TextView DocType99,DateinHigri99,EmpName99,Payrole99,NatID99,header99;
     String DocT99,DateinH99,EName99,Payr99,NID99,NetPay;
 LinearLayout sectionpay99;
     ListView Payrolelist99;
     ArrayList<PayslipItem> payslipItems;
 
 
-    TextView DocType0001,DateinHigri0001,EmpName0001,Payrole0001,NatID0001,header0001;
+//    TextView DocType0001,DateinHigri0001,EmpName0001,Payrole0001,NatID0001,header0001;
     String DocT0001,DateinH0001,EName0001,Payr0001,NID0001;
     LinearLayout sectionpay0001;
     ListView Payrolelist0001;
     ArrayList<PayslipItem> payslipItems0001;
-
-    TextView DocType0002,DateinHigri0002,EmpName0002,Payrole0002,NatID0002,header0002;
+//
+//    TextView DocType0002,DateinHigri0002,EmpName0002,Payrole0002,NatID0002,header0002;
     String DocT0002,DateinH0002,EName0002,Payr0002,NID0002;
     LinearLayout sectionpay0002;
     ListView Payrolelist0002;
@@ -89,34 +90,42 @@ LinearLayout sectionpay99;
             }
         });
 
-        DocType99=(TextView) findViewById(R.id.DocType99);
-        DateinHigri99=(TextView) findViewById(R.id.DateinHigri99);
-        EmpName99=(TextView) findViewById(R.id.EmpName99);
-        Payrole99=(TextView) findViewById(R.id.Payrole99);
-        NatID99=(TextView) findViewById(R.id.NatID99);
+//        DocType99=(TextView) findViewById(R.id.DocType99);
+//        DateinHigri99=(TextView) findViewById(R.id.DateinHigri99);
+//        EmpName99=(TextView) findViewById(R.id.EmpName99);
+//        Payrole99=(TextView) findViewById(R.id.Payrole99);
+//        NatID99=(TextView) findViewById(R.id.NatID99);
         Payrolelist99=(ListView) findViewById(R.id.Payrolelist99);
         sectionpay99=(LinearLayout)findViewById(R.id.sectionpay99);
-        header99=(TextView)findViewById(R.id.header99);
+//        header99=(TextView)findViewById(R.id.header99);
         //----------------------------
-        DocType0001=(TextView) findViewById(R.id.DocType0001);
-        DateinHigri0001=(TextView) findViewById(R.id.DateinHigri0001);
-        EmpName0001=(TextView) findViewById(R.id.EmpName0001);
-        Payrole0001=(TextView) findViewById(R.id.Payrole0001);
-        NatID0001=(TextView) findViewById(R.id.NatID0001);
+//        DocType0001=(TextView) findViewById(R.id.DocType0001);
+//        DateinHigri0001=(TextView) findViewById(R.id.DateinHigri0001);
+//        EmpName0001=(TextView) findViewById(R.id.EmpName0001);
+//        Payrole0001=(TextView) findViewById(R.id.Payrole0001);
+//        NatID0001=(TextView) findViewById(R.id.NatID0001);
         Payrolelist0001=(ListView) findViewById(R.id.Payrolelist0001);
         sectionpay0001=(LinearLayout)findViewById(R.id.sectionpay0001);
-        header0001=(TextView)findViewById(R.id.header0001);
+//        header0001=(TextView)findViewById(R.id.header0001);
         //---------------------------
-        DocType0002=(TextView) findViewById(R.id.DocType0002);
-        DateinHigri0002=(TextView) findViewById(R.id.DateinHigri0002);
-        EmpName0002=(TextView) findViewById(R.id.EmpName0002);
-        Payrole0002=(TextView) findViewById(R.id.Payrole0002);
-        NatID0002=(TextView) findViewById(R.id.NatID0002);
+//        DocType0002=(TextView) findViewById(R.id.DocType0002);
+//        DateinHigri0002=(TextView) findViewById(R.id.DateinHigri0002);
+//        EmpName0002=(TextView) findViewById(R.id.EmpName0002);
+//        Payrole0002=(TextView) findViewById(R.id.Payrole0002);
+//        NatID0002=(TextView) findViewById(R.id.NatID0002);
         Payrolelist0002=(ListView) findViewById(R.id.Payrolelist0002);
         sectionpay0002=(LinearLayout)findViewById(R.id.sectionpay0002);
-        header0002=(TextView)findViewById(R.id.header0002);
+//        header0002=(TextView)findViewById(R.id.header0002);
 
-         c = Calendar.getInstance();
+
+
+        TextView Header=(TextView)findViewById(R.id.header);
+        String text = "<font color=#004C86>خدمات الموارد البشرية /</font> <font color=#0066CC>مسيّر الراتب</font>";
+        Header.setText(Html.fromHtml(text));
+
+
+
+        c = Calendar.getInstance();
          Current=Calendar.getInstance();
         int day = c.get(Calendar.DAY_OF_MONTH);
         int month = c.get(Calendar.MONTH);
@@ -209,15 +218,15 @@ LinearLayout sectionpay99;
 
 
 
-        TextView back=(TextView)findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PayslipActivity.this.finish();
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-
-            }
-        });
+//        TextView back=(TextView)findViewById(R.id.back);
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                PayslipActivity.this.finish();
+//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+//
+//            }
+//        });
 
 
     }
@@ -367,20 +376,20 @@ LinearLayout sectionpay99;
 //                            item.setClassification("TOTAL");
 
                            // payslipItems.add(item);
-                            payslipItems=Arrange(payslipItems);
+                            payslipItems=Arrange(payslipItems,"مسيّر الراتب الاساسي");
                             PaysilpAdapter adp = new PaysilpAdapter(PayslipActivity.this, payslipItems);
-                            DocType99.setText("الراتب مسير");
-                            DateinHigri99.setText(DateinH99);
-                            EmpName99.setText(per.getResultObject().getFullName());
-                            Payrole99.setText("فارغ");
-                            NatID99.setText(NID99);
+//                            DocType99.setText("الراتب مسير");
+//                            DateinHigri99.setText(DateinH99);
+//                            EmpName99.setText(per.getResultObject().getFullName());
+//                            Payrole99.setText("فارغ");
+//                            NatID99.setText(NID99);
 
 
 
                             Payrolelist99.setAdapter(adp);
 
                                 getHeight(adp,Payrolelist99);
-                            header99.setText("مسير الراتب :"+Date.substring(0,Date.length()-3));
+                            //header99.setText("مسير الراتب :"+Date.substring(0,Date.length()-3));
                             sectionpay99.setVisibility(View.VISIBLE);}
                         }
                     });
@@ -456,19 +465,21 @@ LinearLayout sectionpay99;
 //                            item.setClassification("TOTAL");
 
                                 // payslipItems.add(item);
-                                payslipItems0001=Arrange(payslipItems0001);
+                                payslipItems0001=Arrange(payslipItems0001,"مسيّر الراتب الاضافي");
                                 PaysilpAdapter adp = new PaysilpAdapter(PayslipActivity.this, payslipItems0001);
-                                DocType0001.setText("العمل الإضافي مسير");
-                                DateinHigri0001.setText(DateinH0001);
-                                EmpName0001.setText(per.getResultObject().getFullName());
-                                Payrole0001.setText("فارغ");
-                                NatID0001.setText(NID0001);
+//                                DocType0001.setText("العمل الإضافي مسير");
+//                                DateinHigri0001.setText(DateinH0001);
+//                                EmpName0001.setText(per.getResultObject().getFullName());
+//                                Payrole0001.setText("فارغ");
+//                                NatID0001.setText(NID0001);
 
                                 Payrolelist0001.setAdapter(adp);
                                     getHeight(adp,Payrolelist0001);
 
                                     sectionpay0001.setVisibility(View.VISIBLE);
-                                header0001.setText("مسير العمل الإضافي :"+Date.substring(0,Date.length()-3));}
+                                //header0001.setText("مسير العمل الإضافي :"+Date.substring(0,Date.length()-3));
+
+                                }
                             }
                         });
 
@@ -544,18 +555,20 @@ LinearLayout sectionpay99;
 //                            item.setClassification("TOTAL");
 
                                 // payslipItems.add(item);
-                                payslipItems=Arrange(payslipItems);
+                                payslipItems=Arrange(payslipItems,"مسير الإنتدابات");
                                 PaysilpAdapter adp = new PaysilpAdapter(PayslipActivity.this, payslipItems);
-                                DocType0002.setText("الإنتدابات مسير");
-                                DateinHigri0002.setText(DateinH0002);
-                                EmpName0002.setText(per.getResultObject().getFullName());
-                                Payrole0002.setText("فارغ");
-                                NatID0002.setText(NID0002);
+//                                DocType0002.setText("الإنتدابات مسير");
+//                                DateinHigri0002.setText(DateinH0002);
+//                                EmpName0002.setText(per.getResultObject().getFullName());
+//                                Payrole0002.setText("فارغ");
+//                                NatID0002.setText(NID0002);
 
                                 Payrolelist0002.setAdapter(adp);
                                     getHeight(adp,Payrolelist0002);
 
-                                    header0002.setText("مسير الإنتدابات : "+ Date.substring(0,Date.length()-3));}
+                                    //header0002.setText("مسير الإنتدابات : "+ Date.substring(0,Date.length()-3));
+
+                                }
                             }
                         });
 
@@ -573,14 +586,30 @@ dialog.dismiss();
     }
 
 
-    public ArrayList<PayslipItem> Arrange(ArrayList<PayslipItem> Payin){
+    public ArrayList<PayslipItem> Arrange(ArrayList<PayslipItem> Payin,String Header){
         ArrayList<PayslipItem> payout=new ArrayList<>(Payin.size());
 
+        PayslipItem header=new PayslipItem();
+        header.setElementCode("Header");
+        header.setElementText(Header);
+        payout.add(header);
+
+
+        header=new PayslipItem();
+        header.setElementCode("Header1");
+        header.setElementText("مستحقات الراتب");
+        payout.add(header);
         for (PayslipItem pay:Payin) {
             if(pay.getClassification().equals("Paid")&&!pay.getElementText().equals("Payment")){
                 payout.add(pay);
             }
         }
+
+        header=new PayslipItem();
+        header.setElementCode("Header1");
+        header.setElementText("الخصومات");
+        payout.add(header);
+
         for (PayslipItem pay:Payin) {
             if(pay.getClassification().equals("Deduction")){
                 payout.add(pay);

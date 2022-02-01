@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="right">
+    <TextView
+        android:id="@+id/textheader"
+        android:layout_width="match_parent"
+        android:layout_height="29dp"
+        android:textColor="#004C86"
+        android:textSize="16dp"
+        android:gravity="center|right"
+        android:text="الاجازات الاعتيادية"
+        />
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="3dp"
+        android:background="@drawable/lgreenroundfull"
+        android:textSize="17dp"
+
+        />
+
+
+</LinearLayout>

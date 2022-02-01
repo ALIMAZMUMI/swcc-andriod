@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Html;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,8 +34,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.gov.sa.swcc.Adapter.GridAdapter;
 import com.gov.sa.swcc.Adapter.PaysilpAdapter;
+import com.gov.sa.swcc.Adapter.SliderAdapter;
 import com.gov.sa.swcc.model.GridItem;
 import com.gov.sa.swcc.model.PersonalResult;
+import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
 
@@ -53,15 +57,107 @@ TextView Emppic,EmpName,EmpJob;
             ,sal_cer,leave,salmonth,ITCom,EskanService,IndustrialSecurity,HrRequest,InsuranceInfo
             ,Sharkhom,EmpCard,photolip,Proplan,libiry,logout;
 
+
+
+    TextView Empdept,EmpID,EmpNat,EmpNatID,EmpMobile,JobTitle,down,badge;
+
+    LinearLayout moreinfo;
     int height,width;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view=inflater.inflate(R.layout.fragment_home_info, container, false);
+
+
+
+        ArrayList<SliderData> sliderDataArrayList = new ArrayList<>();
+
+        // initializing the slider view.
+        SliderView sliderView = view.findViewById(R.id.slider);
+
+        // adding the urls inside array list
+        sliderDataArrayList.add(new SliderData(R.drawable.slide1));
+        sliderDataArrayList.add(new SliderData(R.drawable.slide2));
+        sliderDataArrayList.add(new SliderData(R.drawable.slide3));
+
+        // passing this array list inside our adapter class.
+        SliderAdapter adapter1 = new SliderAdapter(getContext(), sliderDataArrayList);
+
+        // below method is used to set auto cycle direction in left to
+        // right direction you can change according to requirement.
+        // sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
+
+        sliderView.setSliderAdapter(adapter1);
+
+        // below method is use to set
+        // scroll time in seconds.
+        sliderView.setScrollTimeInSec(3);
+
+        // to set it scrollable automatically
+        // we use below method.
+        sliderView.setAutoCycle(true);
+
+        // to start autocycle below method is used.
+        sliderView.startAutoCycle();
+
+
+
+
+
+
+
         global=new Global(getContext());
         Emppic=(TextView)view.findViewById(R.id.Emppic);
         EmpName=(TextView)view.findViewById(R.id.EmpName);
         EmpJob=(TextView)view.findViewById(R.id.EmpJob);
+
+
+        Empdept=(TextView)view.findViewById(R.id.Empdept);
+        EmpID=(TextView)view.findViewById(R.id.EmpID);
+        EmpNat=(TextView)view.findViewById(R.id.EmpNat);
+        EmpNatID=(TextView)view.findViewById(R.id.EmpNatID);
+        JobTitle=(TextView)view.findViewById(R.id.JobTitle);
+        EmpMobile=(TextView)view.findViewById(R.id.EmpMobile);
+        down=(TextView)view.findViewById(R.id.down);
+        moreinfo=(LinearLayout) view.findViewById(R.id.moreinfo);
+        badge=(TextView)view.findViewById(R.id.badge);
+
+
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(moreinfo.getVisibility()==moreinfo.VISIBLE){
+                    moreinfo.setVisibility(View.GONE);
+                    //down.setRotationY(180);
+                    down.setBackgroundResource(R.drawable.dropdown);
+                }else {
+                    moreinfo.setVisibility(View.VISIBLE);
+                   // down.setRotationY(180);
+                    down.setBackgroundResource(R.drawable.up);
+
+                }
+            }
+        });
+
+        PersonalResult per=global.GetPData("PersonalResult");
+
+        String text = "<font color=#000000>الادارة: </font> <font color=#0066CC> "+per.getResultObject().getDepartment()+"</font>";
+        Empdept.setText(Html.fromHtml(text));
+
+//        text = "<font color=#000000>الهوية الوطنية:</font> <font color=#0066CC> "+per.getResultObject().getNationalId()+"</font>";
+//        EmpID.setText(Html.fromHtml(text));
+
+         text = "<font color=#000000>الجنسية:</font> <font color=#0066CC> "+per.getResultObject().getNationality()+"</font>";
+        EmpNat.setText(Html.fromHtml(text));
+
+        text = "<font color=#000000>الهوية الوطنية:</font> <font color=#0066CC> "+per.getResultObject().getNationalId()+"</font>";
+        EmpNatID.setText(Html.fromHtml(text));
+
+         text = "<font color=#000000>المسمى الوظيفي:</font> <font color=#0066CC> "+per.getResultObject().getTitle()+"</font>";
+        JobTitle.setText(Html.fromHtml(text));
+        text = "<font color=#000000>رقم الجوال:</font> <font color=#0066CC> "+per.getResultObject().getMobile()+"</font>";
+        EmpMobile.setText(Html.fromHtml(text));
+
 
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -69,31 +165,78 @@ TextView Emppic,EmpName,EmpJob;
         height = displayMetrics.heightPixels;
         width = displayMetrics.widthPixels;
         ArrayList<GridItem> birdList = new ArrayList<GridItem>();
-        birdList.add(new GridItem("بطاقة العمل",R.drawable.idcard));
-        birdList.add(new GridItem("بياناتي",R.drawable.profile));
-        birdList.add(new GridItem("الحضور و الإنصراف",R.drawable.checkin));
 
-        birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary));
-        birdList.add(new GridItem("الإجازات",R.drawable.leave));
-        birdList.add(new GridItem("مسير الراتب",R.drawable.salary_cer));
 
-        birdList.add(new GridItem("بحث العاملين",R.drawable.findemppng));
-        birdList.add(new GridItem("خدمات الإسكان",R.drawable.eskan));
-        birdList.add(new GridItem("تقنية المعلومات",R.drawable.it));
 
-        birdList.add(new GridItem("ملاحظات السلامة",R.drawable.safety));
-        birdList.add(new GridItem("العناية بالعاملين",R.drawable.hr));
-        birdList.add(new GridItem("التامين الصحي",R.drawable.insur));
-        birdList.add(new GridItem("بطاقة أعمال",R.drawable.qremp));
+if(global.GetValue("HRFav").contains("HR3")) {
+    birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+}
+        if(global.GetValue("HRFav").contains("HR2")) {
+            birdList.add(new GridItem("مسيّر الراتب",R.drawable.profile));
+        }
 
-        birdList.add(new GridItem("المكتبة المصورة",R.drawable.photo));
-        birdList.add(new GridItem("بيانات الانتاج",R.drawable.proplanb));
-        birdList.add(new GridItem("شاركهم",R.drawable.sharkhom));
+        if(global.GetValue("HRFav").contains("HR1")) {
+            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+        }
+        if(global.GetValue("HRFav").contains("HR6")) {
+            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+        }
+        if(global.GetValue("HRFav").contains("HR5")) {
+            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+        }
+        if(global.GetValue("HRFav").contains("HR4")) {
+            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+        }
+        if(global.GetValue("HRFav").contains("HR3")) {
+            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+        }
+        if(global.GetValue("HRFav").contains("HR3")) {
+            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+        }
+        if(global.GetValue("HRFav").contains("HR3")) {
+            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+        }
 
-        birdList.add(new GridItem("أكاديمية التحلية",R.drawable.trainingb));
-        birdList.add(new GridItem("شارك",R.drawable.findemppng));
 
-        birdList.add(new GridItem("تسجيل الخروج",R.drawable.logout));
+
+
+
+
+        birdList.add(new GridItem("مسيّر الراتب",R.drawable.profile,"HR2",global.GetValue("HRFav").contains("HR2")));
+        birdList.add(new GridItem("الاجازات",R.drawable.leave,"HR1",global.GetValue("HRFav").contains("HR1")));
+
+
+        birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6",global.GetValue("HRFav").contains("HR6")));
+        birdList.add(new GridItem("البحث عن العاملين",R.drawable.findemppng,"HR5",global.GetValue("HRFav").contains("HR5")));
+        birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4",global.GetValue("HRFav").contains("HR4")));
+
+        birdList.add(new GridItem("AddItem",R.drawable.idcard));
+
+//        birdList.add(new GridItem("بطاقة العمل",R.drawable.idcard));
+//        birdList.add(new GridItem("بياناتي",R.drawable.profile));
+//        birdList.add(new GridItem("الحضور و الإنصراف",R.drawable.checkin));
+//
+//        birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary));
+//        birdList.add(new GridItem("الإجازات",R.drawable.leave));
+//        birdList.add(new GridItem("مسير الراتب",R.drawable.salary_cer));
+//
+//        birdList.add(new GridItem("بحث العاملين",R.drawable.findemppng));
+//        birdList.add(new GridItem("خدمات الإسكان",R.drawable.eskan));
+//        birdList.add(new GridItem("تقنية المعلومات",R.drawable.it));
+//
+//        birdList.add(new GridItem("ملاحظات السلامة",R.drawable.safety));
+//        birdList.add(new GridItem("العناية بالعاملين",R.drawable.hr));
+//        birdList.add(new GridItem("التامين الصحي",R.drawable.insur));
+//        birdList.add(new GridItem("بطاقة أعمال",R.drawable.qremp));
+//
+//        birdList.add(new GridItem("المكتبة المصورة",R.drawable.photo));
+//        birdList.add(new GridItem("بيانات الانتاج",R.drawable.proplanb));
+//        birdList.add(new GridItem("شاركهم",R.drawable.sharkhom));
+//
+//        birdList.add(new GridItem("أكاديمية التحلية",R.drawable.trainingb));
+//        birdList.add(new GridItem("شارك",R.drawable.findemppng));
+//
+//        birdList.add(new GridItem("تسجيل الخروج",R.drawable.logout));
 
 
         GridAdapter adapter=new GridAdapter(getContext(),R.layout.griditem,birdList,width,height,0);
@@ -117,7 +260,11 @@ TextView Emppic,EmpName,EmpJob;
                     public void run() {
                         view.startAnimation(animZoomOut);
 
+
                         if(i==0){
+                            startActivity(new Intent(getActivity(),FaveroitActivity.class));
+
+                        }else if(i==0){
                             startActivity(new Intent(getActivity(),EmpCardActivity.class));
 
                         }
@@ -226,9 +373,11 @@ TextView Emppic,EmpName,EmpJob;
 
 
        try {
-           PersonalResult per=global.GetPData("PersonalResult");
+            per=global.GetPData("PersonalResult");
            EmpName.setText(per.getResultObject().getFullName());
-           EmpJob.setText(per.getResultObject().getTitle());
+           EmpJob.setText(global.GetValue("Username"));
+           badge.setText(global.GetValue("Username"));
+
            byte[] decodedString = Base64.decode(per.getResultObject().getPhoto(), Base64.DEFAULT);
            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
            Drawable d = new BitmapDrawable(getResources(), decodedByte);

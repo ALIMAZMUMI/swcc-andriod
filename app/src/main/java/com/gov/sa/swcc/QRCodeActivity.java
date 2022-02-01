@@ -29,7 +29,7 @@ Global global;
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
 
-        TextView back=(TextView)findViewById(R.id.back);
+        ImageView back=(ImageView)findViewById(R.id.close);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,19 +40,18 @@ Global global;
         });
 
 
-//        TextView back=(TextView)findViewById(R.id.back);
-//
-//        back.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-//            }
-//        });
+
+
+
 
 
         global=new Global(QRCodeActivity.this);
         PersonalResult per=global.GetPData("PersonalResult");
+
+        ((TextView)findViewById(R.id.name)).setText(per.getResultObject().getFullName());
+        ((TextView)findViewById(R.id.dept)).setText(per.getResultObject().getDepartment());
+        ((TextView)findViewById(R.id.badge)).setText(global.GetValue("Username"));
+
         data="BEGIN:VCARD\n" +
                 "\n" +
                 "VERSION:3.0\n" +

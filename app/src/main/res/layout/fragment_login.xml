@@ -11,93 +11,96 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_marginHorizontal="30dp"
+        android:gravity="center|top"
+        android:background="#FFFFFF"
+        android:paddingHorizontal="30dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/emp" />
-
-        <TextView
-            android:id="@+id/Mobmsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp"
-            android:text="بيانات تسجيل الدخول"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp" />
-
+            android:textColor="#004C86"
+            android:gravity="center|right"
+            android:textSize="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:text="رقم الموظف" />
         <EditText
             android:id="@+id/user"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:ems="10"
-            android:background="@drawable/edittext"
+            android:background="@drawable/darkblueborder"
             android:inputType="number"
-            android:gravity="center"
+            android:gravity="center|right"
+            android:paddingHorizontal="10dp"
             android:hint="20****"/>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#004C86"
+            android:gravity="center|right"
+            android:textSize="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:text="الرقم السري" />
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:ems="10"
             android:layout_marginTop="10dp"
-            android:background="@drawable/edittext"
+            android:background="@drawable/darkblueborder"
+            android:paddingHorizontal="10dp"
             android:inputType="textPassword"
-            android:gravity="center"
+            android:gravity="center|right"
             android:hint="******"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:weightSum="4"
-            android:gravity="center"
-            android:layout_marginVertical="10dp"
+            android:gravity="center|right"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="3"
                 android:text="حفظ بيانات الدخول"
                 android:gravity="right|center"
-                android:paddingEnd="30dp"
                 android:textStyle="bold"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp"/>
+                android:textColor="#004C86"
+                android:textSize="15sp"/>
 
-            <Switch
+            <CheckBox
                 android:id="@+id/switch1"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
+                android:text=""
+                android:button="@null"
+                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                android:gravity="center|right"
                  />
         </LinearLayout>
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/grayroundbtn"
             android:text="تسجيل الدخول"
-            android:layout_marginHorizontal="20dp"
-            android:textColor="#ffffff"
-            android:textStyle="bold"
-            android:background="@drawable/btnround"/>
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="تسجيل جديد"
+            android:textSize="14dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:textColor="#ffffff"/>
+<!--        <TextView-->
+<!--            android:id="@+id/textView4"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="تسجيل جديد"-->
 
             android:layout_marginTop="10dp"
             android:gravity="center"

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -53,6 +54,13 @@ EditText title,detials;
         setContentView(R.layout.activity_itcom);
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
+
+        TextView Header=(TextView)findViewById(R.id.header);
+        String text = "<font color=#004C86>الدعم الفني /</font> <font color=#0066CC>تقنية المعلومات</font>";
+        Header.setText(Html.fromHtml(text));
+
+
+
         global=new Global(ITComActivity.this);
         title=(EditText)findViewById(R.id.title);
         detials=(EditText)findViewById(R.id.detials);
@@ -82,15 +90,15 @@ EditText title,detials;
         });
 
 
-        TextView back=(TextView)findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ITComActivity.this.finish();
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-
-            }
-        });
+//        TextView back=(TextView)findViewById(R.id.back);
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ITComActivity.this.finish();
+//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+//
+//            }
+//        });
 
 
 
@@ -247,7 +255,7 @@ itRequest.setTitle(Title);
                             try {
                                 line = bufferedReader.readLine();
                                 if(connection.getResponseCode()==200){
-                                    global.ShowMessageF("تم ارسال الطلب بنجاح رقم الطلب "+line+" تم ارسال نسخة لبريدك ",ITComActivity.this);
+                                    global.ShowMessageNF("رقم الطلب :"+line,ITComActivity.this);
                                 }else {
                                     global.ShowMessage("حدث مشكلة اثناء الاتصال");
 

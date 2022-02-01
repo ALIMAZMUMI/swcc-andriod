@@ -31,47 +31,49 @@ public class LeaveAdapter extends ArrayAdapter<LeaveItems> {
 
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater=context.getLayoutInflater();
-        View rowView=inflater.inflate(R.layout.leaveitem, null,true);
 
-        TextView LeaveTypetxt = (TextView) rowView.findViewById(R.id.LeaveTypetxt);
-        TextView LeaveDatetxt = (TextView) rowView.findViewById(R.id.LeaveDatetxt);
-        TextView LeaveCounttxt=(TextView)rowView.findViewById(R.id.LeaveCounttxt);
         LeaveItems T=Titem.get(position);
+        View rowView;
+        if(T.getBegda().equals("Header")){
+            rowView= inflater.inflate(R.layout.leaveheaderitem, null, true);
+            TextView textheader = (TextView) rowView.findViewById(R.id.textheader);
+            textheader.setText(T.getVacationCode());
 
-        String Type="";
-        if(T.getVacationCode().equals("ANNUAL_LEAVE"))
-        {
-            Type="اجازة اعتيادية";
+        }else {
 
-        }else if(T.getVacationCode().equals("BUSINESS_TRIP"))
-        {
-            Type="مهمة عمل";
+            rowView= inflater.inflate(R.layout.leaveitem, null, true);
+            TextView LeaveDatetxt = (TextView) rowView.findViewById(R.id.LeaveDatetxt);
+            TextView LeaveCounttxt = (TextView) rowView.findViewById(R.id.LeaveCounttxt);
+
+            String Type = "";
+            if (T.getVacationCode().equals("ANNUAL_LEAVE")) {
+                Type = "اجازة اعتيادية";
+
+            } else if (T.getVacationCode().equals("BUSINESS_TRIP")) {
+                Type = "مهمة عمل";
+            }
+
+            String NoOFDays = "";
+            int NOD = Integer.parseInt(T.getNoDays());
+            if (NOD == 1) {
+                NoOFDays = "يوم معتمد";
+
+            } else if (NOD == 2) {
+                NoOFDays = "يومان معتمدة";
+            } else if (NOD > 2 && NOD < 10) {
+                NoOFDays = NOD + " أيام معتمدة";
+            } else {
+                NoOFDays = NOD + " يوم معتمد";
+
+
+            }
+
+            LeaveDatetxt.setText("" + T.getBegda() + " - " + T.getEndda());
+            LeaveCounttxt.setText(NoOFDays);
         }
-
-String NoOFDays="";
-        int NOD=Integer.parseInt(T.getNoDays());
-        if(NOD==1)
-        {
-            NoOFDays="يوم معتمد";
-
-        }else if(NOD==2)
-        {
-            NoOFDays="يومان معتمدة";
-        }else if(NOD>2 && NOD<10)
-        {
-            NoOFDays=NOD+" أيام معتمدة";
-        }else{
-            NoOFDays=NOD+" يوم معتمد";
-
-
-        }
-
-        LeaveTypetxt.setText(Type);
-        LeaveDatetxt.setText("من "+T.getBegda()+" إلى "+T.getEndda());
-LeaveCounttxt.setText(NoOFDays);
         return rowView;
 
-    };
+    }
 
 
 }

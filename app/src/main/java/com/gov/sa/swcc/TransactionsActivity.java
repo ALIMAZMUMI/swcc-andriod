@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,11 @@ ListView Transactions;
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
 
+        TextView Header=(TextView)findViewById(R.id.header);
+        String text = "<font color=#004C86>خدمات الموارد البشرية /</font> <font color=#0066CC>الحضور والانصراف</font>";
+        Header.setText(Html.fromHtml(text));
+
+
         global=new Global(TransactionsActivity.this);
         Transactions=(ListView)findViewById(R.id.Transactions);
 
@@ -48,15 +54,15 @@ ListView Transactions;
         }else {
             CallTransactions();
         }
-        TextView back=(TextView)findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TransactionsActivity.this.finish();
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-
-            }
-        });
+//        ImageView back=(TextView)findViewById(R.id.back);
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                TransactionsActivity.this.finish();
+//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+//
+//            }
+//        });
 
 
     }
@@ -84,7 +90,26 @@ ListView Transactions;
                             neworder.add(response.body().get(response.body().size()-(i+1)));
                         }
 
-                        TransactionAdapter adp=new TransactionAdapter(TransactionsActivity.this,neworder);
+
+                        List<TransactionsApiResult> newq =new ArrayList<>(response.body().size());
+
+                        TransactionsApiResult N=new TransactionsApiResult();
+                        N.setEmpCode("Header");
+                        N.setPunchState("حضور وانصراف اليوم");
+                        newq.add(N);
+
+
+                        for (int i=0;i<neworder.size();i++){
+if(i==2){
+     N=new TransactionsApiResult();
+    N.setEmpCode("Header");
+    N.setPunchState("حضور وانصراف الايام الماضية");
+    newq.add(N);
+}
+                            newq.add(neworder.get(i));
+                        }
+
+                        TransactionAdapter adp=new TransactionAdapter(TransactionsActivity.this,newq);
                         Transactions.setAdapter(adp);
 
 

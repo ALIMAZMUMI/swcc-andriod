@@ -46,34 +46,26 @@ public class GridSAdapter extends ArrayAdapter<GridItem> {
 
         View v = convertView;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        v = inflater.inflate(R.layout.griditem, null);
+        v = inflater.inflate(R.layout.gridbitemline, null);
         TextView textView = (TextView) v.findViewById(R.id.text);
         ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
 
-        textView.setTextSize(10);
-        textView.setTypeface(textView.getTypeface(), Typeface.NORMAL);
 
         textView.setText(birdList.get(position).getServiceName());
         imageView.setImageResource(birdList.get(position).getImage());
 
-        if(Wh==540){
-            if(x==1){
-            textView.setTextSize(8);
-            }else {
-                textView.setTextSize(10);
-            }
-            textView.setTypeface(textView.getTypeface(), Typeface.NORMAL);
-            imageView.getLayoutParams().height = 45;
-            imageView.getLayoutParams().height = 50;
-            textView.getLayoutParams().height = 60;
-        }else if(Wh>540){
-            float per= (float) (45.0/540.0);
-
-            textView.setTextSize(10);
-            textView.setTypeface(textView.getTypeface(), Typeface.NORMAL);
-            imageView.getLayoutParams().height =(int) (Wh*per);
-            textView.getLayoutParams().height = (int) (Wh*(70.0/540.0));
-        }
+//        if(Wh==540){
+//
+//            textView.setTypeface(textView.getTypeface(), Typeface.NORMAL);
+//            imageView.getLayoutParams().height = 45;
+//            imageView.getLayoutParams().height = 50;
+//            textView.getLayoutParams().height = 60;
+//        }else if(Wh>540){
+//            float per= (float) (45.0/540.0);
+//            textView.setTypeface(textView.getTypeface(), Typeface.NORMAL);
+//            imageView.getLayoutParams().height =(int) (Wh*per);
+//            textView.getLayoutParams().height = (int) (Wh*(70.0/540.0));
+//        }
 
         return v;
 

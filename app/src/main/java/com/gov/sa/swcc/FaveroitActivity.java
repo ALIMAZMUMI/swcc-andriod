@@ -1,0 +1,177 @@
+package com.gov.sa.swcc;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.Toast;
+
+import com.gov.sa.swcc.Adapter.GridAdapter;
+import com.gov.sa.swcc.Adapter.GridFavAdapter;
+import com.gov.sa.swcc.model.GridItem;
+
+import java.util.ArrayList;
+
+public class FaveroitActivity extends AppCompatActivity {
+Global global;
+int height,width;
+    GridFavAdapter adapter,adapter1;
+    ArrayList<GridItem> birdList,birdList1;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_faveroit);
+
+        Button submit=(Button)findViewById(R.id.submit);
+
+        global=new Global(FaveroitActivity.this);
+
+//        global.GetValue("HRFav");
+//        global.GetValue("TicFav");
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+        birdList = new ArrayList<GridItem>();
+        birdList.add(new GridItem("الحضور و الإنصراف",R.drawable.checkin,"HR3",global.GetValue("HRFav").contains("HR3")));
+
+        birdList.add(new GridItem("مسيّر الراتب",R.drawable.profile,"HR2",global.GetValue("HRFav").contains("HR2")));
+        birdList.add(new GridItem("الاجازات",R.drawable.leave,"HR1",global.GetValue("HRFav").contains("HR1")));
+
+
+        birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6",global.GetValue("HRFav").contains("HR6")));
+        birdList.add(new GridItem("البحث عن العاملين",R.drawable.findemppng,"HR5",global.GetValue("HRFav").contains("HR5")));
+        birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4",global.GetValue("HRFav").contains("HR4")));
+
+        adapter=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList,width,height,0);
+        GridView gridView=(GridView)findViewById(R.id.servicegrid1);
+        gridView.setAdapter(adapter);
+        getHeight(adapter,gridView);
+
+        Log.d("fav----",global.GetValue("HRFav"));
+        Log.d("fav----","ALI TEST");
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Log.d("fav----",i+"");
+                birdList.get(i).setChecked(!birdList.get(i).isChecked());
+                adapter=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList,width,height,0);
+                gridView.setAdapter(adapter);
+                getHeight(adapter,gridView);
+            }
+        });
+
+
+
+
+        birdList1 = new ArrayList<GridItem>();
+
+        birdList1.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3",global.GetValue("TEFav").contains("TE3")));
+        birdList1.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2",global.GetValue("TEFav").contains("TE2")));
+        birdList1.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1",global.GetValue("TEFav").contains("TE1")));
+
+        adapter1=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList1,width,height,0);
+        GridView gridView1=(GridView)findViewById(R.id.servicegrid2);
+        gridView1.setAdapter(adapter1);
+        getHeight(adapter1,gridView1);
+
+        Log.d("fav----",global.GetValue("HRFav"));
+        Log.d("fav----","ALI TEST");
+        Log.d("fav----",global.GetValue("TEFav"));
+
+
+        gridView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Log.d("fav----",i+"");
+                birdList1.get(i).setChecked(!birdList1.get(i).isChecked());
+                adapter1=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList1,width,height,0);
+                gridView1.setAdapter(adapter1);
+                getHeight(adapter1,gridView1);
+            }
+        });
+
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Log.d("fav----",i+"");
+                birdList.get(i).setChecked(!birdList.get(i).isChecked());
+                adapter=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList,width,height,0);
+                gridView.setAdapter(adapter);
+                getHeight(adapter,gridView);
+            }
+        });
+
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String HRFav="";
+                for(int i=0;i<birdList.size();i++){
+
+                    if(birdList.get(i).isChecked()){
+                        HRFav+=birdList.get(i).getType();
+                    }
+
+                }
+
+                global.SaveValue("HRFav",HRFav);
+
+
+                String TEFav="";
+                for(int i=0;i<birdList1.size();i++){
+
+                    if(birdList1.get(i).isChecked()){
+                        TEFav+=birdList1.get(i).getType();
+                    }
+
+                }
+
+                global.SaveValue("TEFav",TEFav);
+
+FaveroitActivity.this.finish();
+
+
+            }
+        });
+
+
+
+
+    }
+
+
+    public void getHeight(GridFavAdapter listadp, GridView listview)
+    {
+        int totalHeight = 0;
+        for (int i = 0; i < listadp.getCount(); i++) {
+            View listItem = listadp.getView(i, null, listview);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+            i=i+2;
+        }
+
+        ViewGroup.LayoutParams params = listview.getLayoutParams();
+        params.height = totalHeight + (listview.getVerticalSpacing() * ((int)(listadp.getCount()/3)));
+        listview.setLayoutParams(params);
+        listview.requestLayout();
+    }
+
+
+
+
+
+}

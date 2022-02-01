@@ -52,6 +52,10 @@ public class IndustrialSecurityActivity extends AppCompatActivity {
     EditText detials;
     Global global;
     int Image=0;
+
+    TextView removeimagetxt,addimagetxt;
+    ImageView removeimage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +63,7 @@ public class IndustrialSecurityActivity extends AppCompatActivity {
 
 
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-        TextView back=(TextView)findViewById(R.id.back);
+        //TextView back=(TextView)findViewById(R.id.back);
 
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,13 +73,7 @@ public class IndustrialSecurityActivity extends AppCompatActivity {
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-            }
-        });
+
 
 
         global=new Global(IndustrialSecurityActivity.this);
@@ -180,6 +178,24 @@ else
         });
 
 
+
+        removeimagetxt=(TextView) findViewById(R.id.removeimagetxt);
+        addimagetxt=(TextView)findViewById(R.id.addimagetxt);
+        removeimage=(ImageView) findViewById(R.id.removeimage);
+        removeimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addimagetxt.setVisibility(View.VISIBLE);
+                addimage.setVisibility(View.VISIBLE);
+                removeimage.setVisibility(View.GONE);
+                removeimagetxt.setVisibility(View.GONE);
+                Image=0;
+
+            }
+        });
+
+
+
     }
 
 
@@ -266,7 +282,7 @@ else
                             try {
                                 line = bufferedReader.readLine();
                                 if(connection.getResponseCode()==200){
-                                    global.ShowMessageF("تم ارسال الملاحظة بنجاح رقم الملاحظة "+line+" تم ارسال نسخة لبريدك ",IndustrialSecurityActivity.this);
+                                    global.ShowMessageNF("رقم الطلب :"+line,IndustrialSecurityActivity.this);
                                 }else {
                                     global.ShowMessage("حدث مشكلة اثناء الاتصال");
 
@@ -371,7 +387,10 @@ dialog.dismiss();
                                 Log.d("img", "true");
                                 //                            imageView.setImageURI(Uri.fromFile(imgFile));
                                 try {
-                                    addimage.setImageURI(Uri.fromFile(imgFile));
+                                    addimagetxt.setVisibility(View.GONE);
+                                    addimage.setVisibility(View.GONE);
+                                    removeimage.setVisibility(View.VISIBLE);
+                                    removeimagetxt.setVisibility(View.VISIBLE);
                                     Image=1;
                                 }catch (OutOfMemoryError ex){
                                 }

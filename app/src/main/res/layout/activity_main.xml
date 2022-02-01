@@ -13,25 +13,40 @@
     android:layout_height="70dp"
     android:orientation="horizontal"
     android:gravity="center"
+    android:background="#004C86"
     app:layout_constraintTop_toTopOf="parent"
+    android:weightSum="6"
     app:layout_constraintBottom_toTopOf="@+id/contant"
 
     >
-    <ImageView
-        android:id="@+id/sidemeun"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/menud"
-        android:padding="10dp"
-        />
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:src="@drawable/header"
-android:layout_marginRight="10dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logoicon"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="3"
         android:gravity="right"
         />
+   <LinearLayout
+       android:layout_width="0dp"
+       android:layout_height="match_parent"
+       android:layout_weight="3"
+       android:gravity="right"
+       android:layout_marginRight="10dp">
+
+       <ImageView
+           android:id="@+id/sidemeun"
+           android:layout_width="70dp"
+           android:layout_height="70dp"
+           android:src="@drawable/sideicon"
+           android:padding="15dp"
+           android:visibility="visible"
+
+           />
+   </LinearLayout>
+
+
 
 
 </LinearLayout>
@@ -54,12 +69,12 @@ android:layout_marginRight="10dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        android:background="?android:attr/windowBackground"
+        android:background="#004C86"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:itemTextColor="@color/colorPrimary"
-        app:itemIconTint="@color/colorPrimary"
+        app:itemTextColor="#ffffff"
+        app:itemIconTint="#ffffff"
         app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -54,6 +54,9 @@ public class ReturnDocmentsActivity extends AppCompatActivity {
     EditText detials;
     Global global;
     int Image=0;
+
+    TextView removeimagetxt,addimagetxt;
+    ImageView removeimage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,15 +64,15 @@ public class ReturnDocmentsActivity extends AppCompatActivity {
 
 
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-        TextView back=(TextView)findViewById(R.id.back);
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-            }
-        });
+//        TextView back=(TextView)findViewById(R.id.back);
+//
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+//            }
+//        });
 
 
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
@@ -156,6 +159,23 @@ city.setSelection(citystring.size()-1);
         });
 
 
+
+        removeimagetxt=(TextView) findViewById(R.id.removeimagetxt);
+        addimagetxt=(TextView)findViewById(R.id.addimagetxt);
+        removeimage=(ImageView) findViewById(R.id.removeimage);
+        removeimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addimagetxt.setVisibility(View.VISIBLE);
+                addimage.setVisibility(View.VISIBLE);
+                removeimage.setVisibility(View.GONE);
+                removeimagetxt.setVisibility(View.GONE);
+                Image=0;
+
+            }
+        });
+
+
     }
 
 
@@ -233,7 +253,7 @@ city.setSelection(citystring.size()-1);
                             try {
                                 line = bufferedReader.readLine();
                                 if(connection.getResponseCode()==200){
-                                    global.ShowMessageF("تم ارسال الطلب بنجاح رقم الطلب "+line+" تم ارسال نسخة لبريدك ",ReturnDocmentsActivity.this);
+                                    global.ShowMessageNF("رقم الطلب :"+line,ReturnDocmentsActivity.this);
                                 }else {
                                     global.ShowMessage("حدث مشكلة اثناء الاتصال");
 
@@ -339,7 +359,10 @@ city.setSelection(citystring.size()-1);
                                 Log.d("img", "true");
                                 //                            imageView.setImageURI(Uri.fromFile(imgFile));
                                 try {
-                                    addimage.setImageURI(Uri.fromFile(imgFile));
+                                    addimagetxt.setVisibility(View.GONE);
+                                    addimage.setVisibility(View.GONE);
+                                    removeimage.setVisibility(View.VISIBLE);
+                                    removeimagetxt.setVisibility(View.VISIBLE);
                                     Image=1;
                                 }catch (OutOfMemoryError ex){
                                 }
