@@ -105,7 +105,7 @@ String URLLink="";
             URLLink="https://www.swcc.gov.sa/ar";
         }
 
-
+//TODO
         mWebview.loadUrl(URLLink);
 
 
@@ -134,8 +134,14 @@ if(mWebview!=null) {
 
 
     public void setURLLink(String URLLink){
-        if(!mWebview.getUrl().equals(URLLink)) {
-            mWebview.loadUrl(URLLink);
+        try {
+
+
+            if (!mWebview.getUrl().equals(URLLink)) {
+                mWebview.loadUrl(URLLink);
+            }
+        }catch (Exception ex){
+
         }
     }
 

@@ -17,9 +17,41 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".FaveroitActivity"
+            android:name=".InternalEditorActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Translucent"/>
+        <activity
+            android:name=".ShareakReportActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".AddNoteActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".ShareakPartnerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".EmpRatingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".ProjectRatingEmpActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".LogOutMessageActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".OpenTeqActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".FaveroitActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".RequestMessageActivity"
             android:exported="false"

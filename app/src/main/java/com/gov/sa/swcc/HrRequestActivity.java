@@ -76,6 +76,7 @@ public class HrRequestActivity extends AppCompatActivity {
         String text = "<font color=#004C86>الدعم الفني /</font> <font color=#0066CC>العناية بالعاملين</font>";
         Header.setText(Html.fromHtml(text));
 
+        addimagetxt=(TextView)findViewById(R.id.addimagetxt);
 
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,7 +249,6 @@ city.setSelection(citystring.size()-1);
 
 
         removeimagetxt=(TextView) findViewById(R.id.removeimagetxt);
-        addimagetxt=(TextView)findViewById(R.id.addimagetxt);
         removeimage=(ImageView) findViewById(R.id.removeimage);
         removeimage.setOnClickListener(new View.OnClickListener() {
             @Override

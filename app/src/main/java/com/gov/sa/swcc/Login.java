@@ -112,11 +112,11 @@ global=new Global(getContext());
                     }
                 }
 
-                else if(global.GetPData("PersonalResult")!=null) {
-
-startActivity(new Intent(getActivity(),MainLGActivity.class));
-                    //MainActivity.changelayout(2);
-                }
+//                else if(global.GetPData("PersonalResult")!=null) {
+//
+//startActivity(new Intent(getActivity(),MainLGActivity.class));
+//                    //MainActivity.changelayout(2);
+//                }
 
                 //global.SaveValue("Username","u"+"208461");
 //

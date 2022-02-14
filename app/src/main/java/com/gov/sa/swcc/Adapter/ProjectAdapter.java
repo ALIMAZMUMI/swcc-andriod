@@ -36,17 +36,16 @@ public class ProjectAdapter extends ArrayAdapter<Sharekproject> {
 
         TextView rownum = (TextView) rowView.findViewById(R.id.rownum);
         TextView rowtext=(TextView) rowView.findViewById(R.id.rowtext);
+        TextView rowtext1=(TextView) rowView.findViewById(R.id.rowtext1);
+
         rownum.setText((position+1)+"");
 
 
 
-        rowtext.setText(Html.fromHtml(Titem.get(position).getProjectName()+
-                " مدينة "+"<font color='#e9893c'>("+Titem.get(position).getLocationNameLK()+")</font>"
-        +" تصنيف المشروع "+"<font color='#23415b'>("+Titem.get(position).getClassfcationLKName()+")</font>"
-                +" رقم المشروع "+"<font color='#c81336'>("+Titem.get(position).getProjectManagerId()+")</font>"));
+        rowtext.setText(Html.fromHtml("<font color='#004C86'>اسم المشروع:</font>"+"<font color='#0066CC'>  "+Titem.get(position).getProjectName()+"</font>"));
 
-
-
+        rowtext1.setText(Html.fromHtml("<font color='#004C86'>موقع المشروع:</font>"+"<font color='#000000'>  "+Titem.get(position).getLocationNameLK()+"<br/></font>"+
+                "<font color='#004C86'>تصنيف المشروع:</font>"+"<font color='#000000'>  "+Titem.get(position).getClassfcationLKName()+"<br/></font>"));
 
         return rowView;
 

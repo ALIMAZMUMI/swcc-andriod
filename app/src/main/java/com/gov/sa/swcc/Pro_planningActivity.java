@@ -45,15 +45,7 @@ Global global;
 
 global=new Global(Pro_planningActivity.this);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-        TextView back=(TextView)findViewById(R.id.back);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-            }
-        });
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

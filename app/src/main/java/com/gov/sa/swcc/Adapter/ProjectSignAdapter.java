@@ -33,16 +33,28 @@ public class ProjectSignAdapter extends ArrayAdapter<Signproject> {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.projectsignitem, null,true);
 
-        TextView rownum = (TextView) rowView.findViewById(R.id.rownum);
+        TextView name = (TextView) rowView.findViewById(R.id.name);
         TextView rowtext=(TextView) rowView.findViewById(R.id.rowtext);
         TextView rowempid=(TextView) rowView.findViewById(R.id.rowempid);
+        TextView date=(TextView) rowView.findViewById(R.id.date);
+        TextView rowtext1=(TextView) rowView.findViewById(R.id.rowtext1);
 
-        rownum.setText((position+1)+"");
-rowtext.setSingleLine(false);
-rowtext.setText("العامل : "+Titem.get(position).getEmployeeName()+"\n"+
-        "وقت الدخول : "+Titem.get(position).getFirstIn()+"\n"+
-        "وقت الخروج : "+Titem.get(position).getLastOut()+"");
+        name.setText(Html.fromHtml("<font color='#004C86'>اسم العامل: </font>"+"<font color='#0066CC'>"+Titem.get(position).getEmployeeName()+"</font>"));
+
+
+
+
+rowtext.setText(
+        Html.fromHtml("<font color='#EA5D11'>       الخروج:</font>"+"<font color='#0066CC'>"+Titem.get(position).getLastOut()+"</font>"));
+
+
+        rowtext1.setText(
+                Html.fromHtml("<font color='#2BBC00'>الدخول:</font>"+"<font color='#0066CC'>"+Titem.get(position).getFirstIn()+"</font>"));
+
             rowempid.setText(Titem.get(position).getEmployeeID());
+
+        date.setText(Titem.get(position).getDate().substring(0,10));
+
 //        rowtext.setText(Html.fromHtml(Titem.get(position).getProjectName()+
 //                " مدينة "+"<font color='#e9893c'>("+Titem.get(position).getLocationNameLK()+")</font>"
 //        +" تصنيف المشروع "+"<font color='#23415b'>("+Titem.get(position).getClassfcationLKName()+")</font>"

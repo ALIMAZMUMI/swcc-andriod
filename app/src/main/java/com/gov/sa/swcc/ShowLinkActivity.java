@@ -17,6 +17,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,7 @@ public class ShowLinkActivity extends AppCompatActivity {
 Global global;
     String url="";
     boolean Share,Auth;
-TextView Shear,back;
+    ImageView Shear;
     WebView mWebview;
     int click=0;
     @Override
@@ -38,15 +39,7 @@ TextView Shear,back;
 
 
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-        TextView back=(TextView)findViewById(R.id.back);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-            }
-        });
 
 
         global=new Global(ShowLinkActivity.this);
@@ -87,8 +80,7 @@ TextView Shear,back;
             }
         } , "ok" ) ;
 
-        Shear=(TextView)findViewById(R.id.Shear);
-        back=(TextView)findViewById(R.id.back);
+        Shear=(ImageView) findViewById(R.id.Shear);
 
         Shear.setVisibility(View.GONE);
         Shear.setOnClickListener(new View.OnClickListener() {
@@ -107,12 +99,7 @@ TextView Shear,back;
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShowLinkActivity.this.finish();
-            }
-        });
+      
 
 
 //        mWebview.setWebViewClient(new WebViewClient() {
@@ -163,7 +150,7 @@ TextView Shear,back;
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url)
             {
-                Toast.makeText(ShowLinkActivity.this,url,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ShowLinkActivity.this,url,Toast.LENGTH_SHORT).show();
                 view.loadUrl(url);
                 return true;
             }

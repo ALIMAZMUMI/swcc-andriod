@@ -45,6 +45,7 @@ Global global;
         Name=(EditText) findViewById(R.id.searchvalue);
         searchres=(ListView) findViewById(R.id.searchres);
         nodata=(TextView)findViewById(R.id.nodata);
+        nodata.setVisibility(View.VISIBLE);
 
         searchres.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -68,22 +68,21 @@ ImageView sidemeun;
         sidemeun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent side=new Intent(MainLGActivity.this,SideMenuActivity.class);
-//                side.putExtra("Home",Home);
-//
-//                startActivity(side);
+                Intent side=new Intent(MainLGActivity.this,SideMenuActivity.class);
+                startActivity(side);
             }
         });
 
 
     fm.beginTransaction().add(R.id.main_container, myworkFragment, "3").hide(myworkFragment).commit();
     fm.beginTransaction().add(R.id.main_container, services, "2").hide(services).commit();
-    fm.beginTransaction().add(R.id.main_container, home, "1").hide(home).commit();
+    fm.beginTransaction().add(R.id.main_container, home, "1").show(home).commit();
     active = home;
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navView.setSelectedItemId(R.id.navigation_home);
 
     }
 

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gov.sa.swcc.Adapter.GridAdapter;
@@ -35,6 +36,15 @@ int height,width;
 //        global.GetValue("HRFav");
 //        global.GetValue("TicFav");
 
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+//
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         height = displayMetrics.heightPixels;
@@ -47,7 +57,7 @@ int height,width;
 
 
         birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6",global.GetValue("HRFav").contains("HR6")));
-        birdList.add(new GridItem("البحث عن العاملين",R.drawable.findemppng,"HR5",global.GetValue("HRFav").contains("HR5")));
+        birdList.add(new GridItem("البحث عن العاملين",R.drawable.searchicon,"HR5",global.GetValue("HRFav").contains("HR5")));
         birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4",global.GetValue("HRFav").contains("HR4")));
 
         adapter=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList,width,height,0);
@@ -74,10 +84,9 @@ int height,width;
 
 
         birdList1 = new ArrayList<GridItem>();
-
-        birdList1.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3",global.GetValue("TEFav").contains("TE3")));
-        birdList1.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2",global.GetValue("TEFav").contains("TE2")));
         birdList1.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1",global.GetValue("TEFav").contains("TE1")));
+        birdList1.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2",global.GetValue("TEFav").contains("TE2")));
+        birdList1.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3",global.GetValue("TEFav").contains("TE3")));
 
         adapter1=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList1,width,height,0);
         GridView gridView1=(GridView)findViewById(R.id.servicegrid2);

@@ -29,6 +29,11 @@ boolean checked;
         Image = image;
     }
 
+    public GridItem(String serviceName, int image,String Type) {
+        ServiceName = serviceName;
+        Image = image;
+        this.Type=Type;
+    }
 
     public GridItem(String serviceName, int image,String Type,boolean checked) {
         ServiceName = serviceName;

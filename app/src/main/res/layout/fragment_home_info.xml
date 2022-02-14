@@ -1,13 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".HomeInfo">
-<ScrollView
+    tools:context=".HomeInfo"
+    android:orientation="vertical">
+    <com.smarteist.autoimageslider.SliderView
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        app:sliderAnimationDuration="600"
+        app:sliderAutoCycleDirection="back_and_forth"
+        app:sliderIndicatorAnimationDuration="600"
+        app:sliderIndicatorEnabled="true"
+        app:sliderIndicatorGravity="center_horizontal|bottom"
+        app:sliderIndicatorMargin="15dp"
+        app:sliderIndicatorOrientation="horizontal"
+        app:sliderIndicatorRadius="2dp"
+        app:sliderIndicatorSelectedColor="#5A5A5A"
+        app:sliderIndicatorUnselectedColor="#FFF"
+        app:sliderScrollTimeInSec="1" />
+
+    <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,41 +36,9 @@
         android:background="#FFFFFF"
         android:paddingHorizontal="20dp">
 
-        <com.smarteist.autoimageslider.SliderView
-            android:id="@+id/slider"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_centerInParent="true"
-            app:sliderAnimationDuration="600"
-            app:sliderAutoCycleDirection="back_and_forth"
-            app:sliderIndicatorAnimationDuration="600"
-            app:sliderIndicatorEnabled="true"
-            app:sliderIndicatorGravity="center_horizontal|bottom"
-            app:sliderIndicatorMargin="15dp"
-            app:sliderIndicatorOrientation="horizontal"
-            app:sliderIndicatorPadding="3dp"
-            app:sliderIndicatorRadius="2dp"
-            app:sliderIndicatorSelectedColor="#5A5A5A"
-            app:sliderIndicatorUnselectedColor="#FFF"
-            app:sliderScrollTimeInSec="1" />
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="المعلومات الشخصية"
-            android:textSize="17dp"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="30dp"
-            android:textColor="#004C86"/>
 
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="3dp"
-            android:background="@drawable/lgreenroundfull"
-            android:textSize="17dp"
-
-            />
 
 
 
@@ -102,6 +89,7 @@
                        android:textStyle="bold"
                        android:textColor="#004C86"
                        android:textSize="13dp"
+                       android:gravity="right|center"
                        android:layout_height="30dp" />
 
                </LinearLayout>
@@ -113,6 +101,7 @@
                     android:textStyle="bold"
                     android:textColor="#000000"
                     android:textSize="13dp"
+                    android:gravity="right|center"
                     android:layout_height="30dp" />
 
                 <TextView
@@ -121,6 +110,8 @@
                     android:textStyle="bold"
                     android:textColor="#0066CC"
                     android:textSize="13dp"
+                    android:gravity="right|center"
+
                     android:layout_height="30dp" />
             </LinearLayout>
 <!--            <androidx.cardview.widget.CardView-->
@@ -215,10 +206,10 @@
                 android:textColor="#000000"
                 android:textSize="14dp"
                 android:textStyle="bold" />
-</RelativeLayout>        <LinearLayout
+</RelativeLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="5"
         android:gravity="right"
             android:orientation="vertical">
 
@@ -246,7 +237,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:numColumns="3"
-                android:layout_weight="5"
+            android:rotationY="180"
                 android:layout_marginTop="20dp"
                 android:verticalSpacing="30dp"
                 />
@@ -893,4 +884,4 @@
 
     </LinearLayout>
 </ScrollView>
-</FrameLayout>
+</LinearLayout>

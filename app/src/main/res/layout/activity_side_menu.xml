@@ -8,235 +8,286 @@
     android:weightSum="6"
     tools:context=".SideMenuActivity">
 
-
+    <LinearLayout
+        android:id="@+id/rightli"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="#3E000000"
+        >
+    </LinearLayout>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:background="#0265cb"
+        android:layout_weight="5"
+        android:background="#ffffff"
         android:orientation="vertical"
         android:gravity="center|top"
         >
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center|top"
+        android:paddingLeft="40dp"
         >
-        <ImageView
-            android:id="@+id/side"
-            android:layout_width="50dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="15dp"
+            android:gravity="right|bottom"
+            >
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|right"
+                android:textColor="#0066CC"
+                android:paddingHorizontal="15dp"
+                android:textSize="15dp"
+                >
+
+            </TextView>
+            <LinearLayout
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:gravity="center"
+                android:background="@drawable/ligthblueimage">
+            <ImageView
+                android:id="@+id/emppic"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/menuw"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/swccweb"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/menuw"/>
-
-        <LinearLayout
-            android:id="@+id/main1"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
             android:orientation="horizontal"
-            android:layout_marginHorizontal="10dp"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:background="@drawable/darkblueroundfull">
-
-<ImageView
-    android:id="@+id/menuimg"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:padding="5dp"
-
-    android:src="@drawable/downw"/>
+            android:gravity="right|center"
+            >
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center|right"
-                android:textColor="#ffffff"
-                android:text="من نحن"
-                android:textSize="20dp"/>
-        </LinearLayout>
-        <ListView
-            android:visibility="gone"
-            android:id="@+id/sub1"
-            android:divider="@null"
-            android:layout_marginHorizontal="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                android:textColor="#0066CC"
+                android:paddingHorizontal="15dp"
+                android:textSize="15dp"
 
-        <LinearLayout
-            android:id="@+id/main2"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:layout_marginHorizontal="10dp"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:background="@drawable/darkblueroundfull">
+                android:text="موقع مؤسسة تحلية المياه"
+                >
 
+            </TextView>
             <ImageView
-                android:id="@+id/menuimg2"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:padding="5dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="10dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/swccweb"/>
 
-                android:src="@drawable/downw"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|right"
-                android:textColor="#ffffff"
-                android:text="خدماتنا"
-                android:textSize="20dp"/>
         </LinearLayout>
-        <ListView
-            android:visibility="gone"
-            android:id="@+id/sub2"
-            android:divider="@null"
-
-            android:layout_marginHorizontal="10dp"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="2dp"
+            android:gravity="center|right"
+            android:background="#33CACCCE"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
 
 
         <LinearLayout
-            android:id="@+id/main3"
+            android:id="@+id/empgate"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="50dp"
             android:orientation="horizontal"
-            android:layout_marginHorizontal="10dp"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:background="@drawable/darkblueroundfull">
-
-            <ImageView
-                android:id="@+id/menuimg3"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:padding="5dp"
-
-                android:src="@drawable/downw"/>
+            android:gravity="right|center"
+            >
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center|right"
-                android:textColor="#ffffff"
-                android:text="عملائنا"
-                android:textSize="20dp"/>
-        </LinearLayout>
-        <ListView
-            android:visibility="gone"
-            android:id="@+id/sub3"
-            android:divider="@null"
+                android:textColor="#0066CC"
+                android:paddingHorizontal="15dp"
+                android:textSize="15dp"
 
-            android:layout_marginHorizontal="10dp"
+                android:text="بوابة الموظفين"
+                >
+
+            </TextView>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="10dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/employeegate"/>
+
+        </LinearLayout>
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="2dp"
+            android:gravity="center|right"
+            android:background="#33CACCCE"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
 
 
         <LinearLayout
-            android:id="@+id/main4"
+            android:id="@+id/Sharkhom"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="50dp"
             android:orientation="horizontal"
-            android:layout_marginHorizontal="10dp"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:background="@drawable/darkblueroundfull">
-
-            <ImageView
-                android:id="@+id/menuimg4"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:padding="5dp"
-                android:src="@drawable/downw"
-                />
+            android:gravity="right|center"
+            >
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center|right"
-                android:textColor="#ffffff"
-                android:text="الاستدامة"
-                android:textSize="20dp"/>
-        </LinearLayout>
-        <ListView
-            android:visibility="gone"
-            android:id="@+id/sub4"
-            android:divider="@null"
+                android:textColor="#0066CC"
+                android:paddingHorizontal="15dp"
+                android:textSize="15dp"
 
-            android:layout_marginHorizontal="10dp"
+                android:text="شاركهم"
+                >
+
+            </TextView>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="10dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/sharkhomicon"/>
+
+        </LinearLayout>
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="2dp"
+            android:gravity="center|right"
+            android:background="#33CACCCE"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
 
         <LinearLayout
-            android:id="@+id/main5"
+            android:id="@+id/acadyme"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="50dp"
             android:orientation="horizontal"
-            android:layout_marginHorizontal="10dp"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:background="@drawable/darkblueroundfull">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                />
+            android:gravity="right|center"
+            >
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center|right"
-                android:textColor="#ffffff"
-                android:text="اتصل بنا"
-                android:textSize="20dp"/>
+                android:textColor="#0066CC"
+                android:paddingHorizontal="15dp"
+                android:textSize="15dp"
+
+                android:text="اكاديمية المياه"
+                >
+
+            </TextView>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="10dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/acadym"/>
+
         </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:gravity="center|right"
+            android:background="#33CACCCE"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
 
         <LinearLayout
-            android:id="@+id/main6"
+            android:id="@+id/pro_plan"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="50dp"
             android:orientation="horizontal"
-            android:layout_marginHorizontal="10dp"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:background="@drawable/darkblueroundfull">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                />
+            android:gravity="right|center"
+            >
             <TextView
-                android:id="@+id/sing"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center|right"
-                android:textColor="#ffffff"
-                android:text="تسجيل الدخول"
-                android:textSize="20dp"/>
+                android:textColor="#0066CC"
+                android:paddingHorizontal="15dp"
+                android:textSize="15dp"
+
+                android:text="بيانات الانتاج"
+                >
+
+            </TextView>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="10dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/component"/>
+
         </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="right|bottom"
+            >
+
+            <LinearLayout
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                android:gravity="right|top"
+                >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:gravity="center|right"
+                android:textColor="#0066CC"
+                android:paddingHorizontal="15dp"
+                android:textSize="15dp"
+                android:layout_marginTop="20dp"
+                android:text="تسجيل الخروج"
+                >
+
+            </TextView>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/logout"/>
+            </LinearLayout>
+        </LinearLayout>
+
 
     </LinearLayout>
-</ScrollView>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/rightli"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:background="#00000000"
-        >
 
-    </LinearLayout>
 
 
 

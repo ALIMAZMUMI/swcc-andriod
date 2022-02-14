@@ -29,7 +29,7 @@ public class ProjectSignActivity extends AppCompatActivity {
     Global global ;
     ListView projrcts;
     ImageView next,prev;
-    TextView saldate,header;
+    TextView saldate;
     Calendar c,Current;
 String SelDate;
     @Override
@@ -61,7 +61,7 @@ String SelDate;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         SelDate=sdf.format(c.getTime());
         saldate=(TextView)findViewById(R.id.saldate);
-        header=(TextView)findViewById(R.id.header);
+
         String ID=getIntent().getExtras().getString("Sid","");
 
         next=(ImageView) findViewById(R.id.next);
@@ -70,7 +70,7 @@ String SelDate;
         }else{
             saldate.setText(SelDate);
             CallSharek(ID,SelDate);
-            header.setText("بيانات يوم : "+SelDate);
+           // header.setText(SelDate);
         }
 
 
@@ -84,7 +84,6 @@ String SelDate;
                     }else{
                         saldate.setText(SelDate);
                         CallSharek(ID,SelDate);
-                        header.setText("بيانات يوم : "+SelDate);
                     }
                 }else {
                     c.add(Calendar.DATE,-1);
@@ -102,7 +101,6 @@ String SelDate;
                     }else{
                         saldate.setText(SelDate);
                         CallSharek(ID,SelDate);
-                        header.setText("بيانات يوم : "+SelDate);
                     }
 
                 }catch (Exception e){

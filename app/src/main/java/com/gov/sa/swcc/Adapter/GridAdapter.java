@@ -50,10 +50,10 @@ public class GridAdapter extends ArrayAdapter<GridItem> {
 
 
             if (Wh == 540) {
-                imageView.getLayoutParams().height = 110;
+                imageView.getLayoutParams().height = 108;
                 textView.setVisibility(View.GONE);
             } else if (Wh > 540) {
-                float per = (float) (110.0 / 540.0);
+                float per = (float) (108.0 / 540.0);
 
                 imageView.getLayoutParams().height = (int) (Wh * per);
 
@@ -94,5 +94,7 @@ public class GridAdapter extends ArrayAdapter<GridItem> {
         return v;
 
     }
+
+
 
 }

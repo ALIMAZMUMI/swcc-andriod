@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -25,15 +26,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.gov.sa.swcc.Adapter.GridAdapter;
-import com.gov.sa.swcc.Adapter.PaysilpAdapter;
 import com.gov.sa.swcc.Adapter.SliderAdapter;
 import com.gov.sa.swcc.model.GridItem;
 import com.gov.sa.swcc.model.PersonalResult;
@@ -49,10 +49,11 @@ public class HomeInfo extends Fragment {
 
 
     public HomeInfo() {
-        // Required empty public constructor
     }
 TextView Emppic,EmpName,EmpJob;
     Global global;
+    GridView gridView;
+    GridAdapter adapter;
     CardView idCard,detials,Transactions
             ,sal_cer,leave,salmonth,ITCom,EskanService,IndustrialSecurity,HrRequest,InsuranceInfo
             ,Sharkhom,EmpCard,photolip,Proplan,libiry,logout;
@@ -60,6 +61,7 @@ TextView Emppic,EmpName,EmpJob;
 
 
     TextView Empdept,EmpID,EmpNat,EmpNatID,EmpMobile,JobTitle,down,badge;
+    ArrayList<GridItem> birdList;
 
     LinearLayout moreinfo;
     int height,width;
@@ -76,18 +78,12 @@ TextView Emppic,EmpName,EmpJob;
         SliderView sliderView = view.findViewById(R.id.slider);
 
         // adding the urls inside array list
-        sliderDataArrayList.add(new SliderData(R.drawable.slide1));
-        sliderDataArrayList.add(new SliderData(R.drawable.slide2));
-        sliderDataArrayList.add(new SliderData(R.drawable.slide3));
+        sliderDataArrayList.add(new SliderData(R.drawable.slide11));
+        sliderDataArrayList.add(new SliderData(R.drawable.slide22));
+        sliderDataArrayList.add(new SliderData(R.drawable.slide33));
 
         // passing this array list inside our adapter class.
-        SliderAdapter adapter1 = new SliderAdapter(getContext(), sliderDataArrayList);
 
-        // below method is used to set auto cycle direction in left to
-        // right direction you can change according to requirement.
-        // sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
-
-        sliderView.setSliderAdapter(adapter1);
 
         // below method is use to set
         // scroll time in seconds.
@@ -103,7 +99,12 @@ TextView Emppic,EmpName,EmpJob;
 
 
 
-
+        ((ImageView)view.findViewById(R.id.showQr)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(),QRCodeActivity.class));
+            }
+        });
 
 
         global=new Global(getContext());
@@ -164,83 +165,57 @@ TextView Emppic,EmpName,EmpJob;
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         height = displayMetrics.heightPixels;
         width = displayMetrics.widthPixels;
-        ArrayList<GridItem> birdList = new ArrayList<GridItem>();
+        birdList = new ArrayList<GridItem>();
 
 
+        SliderAdapter adapter1 = new SliderAdapter(getContext(), sliderDataArrayList,width,width);
+
+        // below method is used to set auto cycle direction in left to
+        // right direction you can change according to requirement.
+        // sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
+
+        sliderView.setSliderAdapter(adapter1);
 
 if(global.GetValue("HRFav").contains("HR3")) {
-    birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+    birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin,"HR3"));
 }
-        if(global.GetValue("HRFav").contains("HR2")) {
-            birdList.add(new GridItem("مسيّر الراتب",R.drawable.profile));
+if(global.GetValue("HRFav").contains("HR2")) {
+            birdList.add(new GridItem("مسيّر الراتب",R.drawable.profile,"HR2"));
         }
-
         if(global.GetValue("HRFav").contains("HR1")) {
-            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+            birdList.add(new GridItem("الاجازات",R.drawable.leave,"HR1"));
         }
         if(global.GetValue("HRFav").contains("HR6")) {
-            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+            birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6"));
         }
         if(global.GetValue("HRFav").contains("HR5")) {
-            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+            birdList.add(new GridItem("البحث عن العاملين",R.drawable.searchicon,"HR5"));
         }
         if(global.GetValue("HRFav").contains("HR4")) {
-            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+            birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4"));
         }
-        if(global.GetValue("HRFav").contains("HR3")) {
-            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
-        }
-        if(global.GetValue("HRFav").contains("HR3")) {
-            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
-        }
-        if(global.GetValue("HRFav").contains("HR3")) {
-            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin));
+        if(global.GetValue("TEFav").contains("TE1")) {
+            birdList.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
         }
 
+        if(global.GetValue("TEFav").contains("TE2")) {
+            birdList.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2"));
+        }
+
+        if(global.GetValue("TEFav").contains("TE3")) {
+            birdList.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3"));
+        }
 
 
 
 
 
-        birdList.add(new GridItem("مسيّر الراتب",R.drawable.profile,"HR2",global.GetValue("HRFav").contains("HR2")));
-        birdList.add(new GridItem("الاجازات",R.drawable.leave,"HR1",global.GetValue("HRFav").contains("HR1")));
+
+        birdList.add(new GridItem("AddItem",R.drawable.plus,""));
 
 
-        birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6",global.GetValue("HRFav").contains("HR6")));
-        birdList.add(new GridItem("البحث عن العاملين",R.drawable.findemppng,"HR5",global.GetValue("HRFav").contains("HR5")));
-        birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4",global.GetValue("HRFav").contains("HR4")));
-
-        birdList.add(new GridItem("AddItem",R.drawable.idcard));
-
-//        birdList.add(new GridItem("بطاقة العمل",R.drawable.idcard));
-//        birdList.add(new GridItem("بياناتي",R.drawable.profile));
-//        birdList.add(new GridItem("الحضور و الإنصراف",R.drawable.checkin));
-//
-//        birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary));
-//        birdList.add(new GridItem("الإجازات",R.drawable.leave));
-//        birdList.add(new GridItem("مسير الراتب",R.drawable.salary_cer));
-//
-//        birdList.add(new GridItem("بحث العاملين",R.drawable.findemppng));
-//        birdList.add(new GridItem("خدمات الإسكان",R.drawable.eskan));
-//        birdList.add(new GridItem("تقنية المعلومات",R.drawable.it));
-//
-//        birdList.add(new GridItem("ملاحظات السلامة",R.drawable.safety));
-//        birdList.add(new GridItem("العناية بالعاملين",R.drawable.hr));
-//        birdList.add(new GridItem("التامين الصحي",R.drawable.insur));
-//        birdList.add(new GridItem("بطاقة أعمال",R.drawable.qremp));
-//
-//        birdList.add(new GridItem("المكتبة المصورة",R.drawable.photo));
-//        birdList.add(new GridItem("بيانات الانتاج",R.drawable.proplanb));
-//        birdList.add(new GridItem("شاركهم",R.drawable.sharkhom));
-//
-//        birdList.add(new GridItem("أكاديمية التحلية",R.drawable.trainingb));
-//        birdList.add(new GridItem("شارك",R.drawable.findemppng));
-//
-//        birdList.add(new GridItem("تسجيل الخروج",R.drawable.logout));
-
-
-        GridAdapter adapter=new GridAdapter(getContext(),R.layout.griditem,birdList,width,height,0);
-        GridView gridView=(GridView)view.findViewById(R.id.servicegrid);
+        adapter=new GridAdapter(getContext(),R.layout.griditem,birdList,width,height,0);
+        gridView=(GridView)view.findViewById(R.id.servicegrid);
         gridView.setAdapter(adapter);
         getHeight(adapter,gridView);
 
@@ -260,87 +235,117 @@ if(global.GetValue("HRFav").contains("HR3")) {
                     public void run() {
                         view.startAnimation(animZoomOut);
 
-
-                        if(i==0){
-                            startActivity(new Intent(getActivity(),FaveroitActivity.class));
-
-                        }else if(i==0){
-                            startActivity(new Intent(getActivity(),EmpCardActivity.class));
-
-                        }
-                        else if(i==1){
-                            startActivity(new Intent(getActivity(),JobDetailsActivity.class));
-                        }
-                        else if(i==2){
+                        if(birdList.get(i).getType().contains("HR3")) {
                             startActivity(new Intent(getActivity(),TransactionsActivity.class));
                         }
-                        else if(i==3){
-                            startActivity(new Intent(getActivity(),EmployeeIdentificationActivity.class));
-                        }
-                        else if(i==4){
-                            startActivity(new Intent(getActivity(),LeaveActivity.class));
-                        }
-                        else if(i==5){
+                        if(birdList.get(i).getType().contains("HR2")) {
                             startActivity(new Intent(getActivity(),PayslipActivity.class));
                         }
-                        else if(i==6){
+                        if(birdList.get(i).getType().contains("HR1")) {
+                            startActivity(new Intent(getActivity(),LeaveActivity.class));
+                        }
+                        if(birdList.get(i).getType().contains("HR6")) {
+                            startActivity(new Intent(getActivity(),EmployeeIdentificationActivity.class));
+                        }
+                        if(birdList.get(i).getType().contains("HR5")) {
                             startActivity(new Intent(getActivity(),EmpSearchActivity.class));
                         }
-                        else if(i==7){
-                            startActivity(new Intent(getActivity(),EskanServiceActivity.class));
-                        }
-                        else if(i==8){
-                            startActivity(new Intent(getActivity(),ITComActivity.class));
-                        }
-                        else if(i==9){
-                            startActivity(new Intent(getActivity(),IndustrialSecurityActivity.class));
-                        }
-                        else if(i==10){
-                            startActivity(new Intent(getActivity(),HrRequestActivity.class));
-                        }
-                        else if(i==11){
+                        if(birdList.get(i).getType().contains("HR4")) {
                             startActivity(new Intent(getActivity(),InsuranceInfoActivity.class));
                         }
-                        else if(i==12){
-                            startActivity(new Intent(getActivity(),QRCodeActivity.class));
+                        if(birdList.get(i).getType().contains("TE3")) {
+                            startActivity(new Intent(getActivity(),OpenTeqActivity.class));
                         }
-                        else if(i==13){
-                            Intent Link=new Intent(getActivity(),ShowLinkActivity.class);
-                        Link.putExtra("URL_LINK","https://ext.swcc.gov.sa/elib");
-                        Link.putExtra("Auth","T");
-                        Link.putExtra("Share","0");
-                        startActivity(Link);
+                        if(birdList.get(i).getType().contains("TE2")) {
+                            startActivity(new Intent(getActivity(),HrRequestActivity.class));
                         }
-                        else if(i==14){
-                            startActivity(new Intent(getActivity(),Pro_planningActivity.class));
+                        if(birdList.get(i).getType().contains("TE1")) {
+                            startActivity(new Intent(getActivity(),ITComActivity.class));
                         }
-                        else if(i==15){
-                            Intent Link=new Intent(getActivity(),ShowLinkActivity.class);
-                        Link.putExtra("URL_LINK","https://ext.swcc.gov.sa/news");
-                        Link.putExtra("Auth","T");
-                        Link.putExtra("Share","0");
-                        startActivity(Link);
+                        if(birdList.get(i).getServiceName().contains("AddItem")){
+                            startActivityForResult(new Intent(getActivity(),FaveroitActivity.class),1001);
                         }
-                        else if(i==16){
-                            startActivity(new Intent(getActivity(),TrainingActivity.class));
 
-                        }
-                        else if(i==18){
-                            global.SaveValue("Home","N");
-                global.SaveValue("Authentication","YY");
-                global.SaveValue("Username","");
-                global.SaveValue("Password","");
-                Bundle bundle = new Bundle();
-                MainActivity.login.setArguments(bundle);
-                MainActivity.Home="n";
-                MainActivity.changelayout(0);
-                        }else if(i==17){
-
-                            startActivity(new Intent(getActivity(),SharekMenuActivity.class));
-
-
-
-                        }
+//                        if(i==0){
+//                            startActivity(new Intent(getActivity(),FaveroitActivity.class));
+//
+//                        }else if(i==0){
+//                            startActivity(new Intent(getActivity(),EmpCardActivity.class));
+//
+//                        }
+//                        else if(i==1){
+//                            startActivity(new Intent(getActivity(),JobDetailsActivity.class));
+//                        }
+//                        else if(i==2){
+//                            startActivity(new Intent(getActivity(),TransactionsActivity.class));
+//                        }
+//                        else if(i==3){
+//                            startActivity(new Intent(getActivity(),EmployeeIdentificationActivity.class));
+//                        }
+//                        else if(i==4){
+//                            startActivity(new Intent(getActivity(),LeaveActivity.class));
+//                        }
+//                        else if(i==5){
+//                            startActivity(new Intent(getActivity(),PayslipActivity.class));
+//                        }
+//                        else if(i==6){
+//                            startActivity(new Intent(getActivity(),EmpSearchActivity.class));
+//                        }
+//                        else if(i==7){
+//                            startActivity(new Intent(getActivity(),EskanServiceActivity.class));
+//                        }
+//                        else if(i==8){
+//                            startActivity(new Intent(getActivity(),ITComActivity.class));
+//                        }
+//                        else if(i==9){
+//                            startActivity(new Intent(getActivity(),IndustrialSecurityActivity.class));
+//                        }
+//                        else if(i==10){
+//                            startActivity(new Intent(getActivity(),HrRequestActivity.class));
+//                        }
+//                        else if(i==11){
+//                            startActivity(new Intent(getActivity(),InsuranceInfoActivity.class));
+//                        }
+//                        else if(i==12){
+//                            startActivity(new Intent(getActivity(),QRCodeActivity.class));
+//                        }
+//                        else if(i==13){
+//                            Intent Link=new Intent(getActivity(),ShowLinkActivity.class);
+//                        Link.putExtra("URL_LINK","https://ext.swcc.gov.sa/elib");
+//                        Link.putExtra("Auth","T");
+//                        Link.putExtra("Share","0");
+//                        startActivity(Link);
+//                        }
+//                        else if(i==14){
+//                            startActivity(new Intent(getActivity(),Pro_planningActivity.class));
+//                        }
+//                        else if(i==15){
+//                            Intent Link=new Intent(getActivity(),ShowLinkActivity.class);
+//                        Link.putExtra("URL_LINK","https://ext.swcc.gov.sa/news");
+//                        Link.putExtra("Auth","T");
+//                        Link.putExtra("Share","0");
+//                        startActivity(Link);
+//                        }
+//                        else if(i==16){
+//                            startActivity(new Intent(getActivity(),TrainingActivity.class));
+//
+//                        }
+//                        else if(i==18){
+//                            global.SaveValue("Home","N");
+//                global.SaveValue("Authentication","YY");
+//                global.SaveValue("Username","");
+//                global.SaveValue("Password","");
+//                Bundle bundle = new Bundle();
+//                MainActivity.login.setArguments(bundle);
+//                MainActivity.Home="n";
+//                MainActivity.changelayout(0);
+//                        }else if(i==17){
+//
+//                            startActivity(new Intent(getActivity(),SharekMenuActivity.class));
+//
+//
+//
+//                        }
 
 
                     }
@@ -705,6 +710,48 @@ if(global.GetValue("HRFav").contains("HR3")) {
         return view;
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        birdList = new ArrayList<GridItem>();
+
+
+        if(global.GetValue("HRFav").contains("HR3")) {
+            birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin,"HR3"));
+        }
+        if(global.GetValue("HRFav").contains("HR2")) {
+            birdList.add(new GridItem("مسيّر الراتب",R.drawable.profile,"HR2"));
+        }
+        if(global.GetValue("HRFav").contains("HR1")) {
+            birdList.add(new GridItem("الاجازات",R.drawable.leave,"HR1"));
+        }
+        if(global.GetValue("HRFav").contains("HR6")) {
+            birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6"));
+        }
+        if(global.GetValue("HRFav").contains("HR5")) {
+            birdList.add(new GridItem("البحث عن العاملين",R.drawable.searchicon,"HR5"));
+        }
+        if(global.GetValue("HRFav").contains("HR4")) {
+            birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4"));
+        }
+        if(global.GetValue("TEFav").contains("TE3")) {
+            birdList.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3"));
+        }
+        if(global.GetValue("TEFav").contains("TE2")) {
+            birdList.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2"));
+        }
+        if(global.GetValue("TEFav").contains("TE1")) {
+            birdList.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
+        }
+        birdList.add(new GridItem("AddItem",R.drawable.idcard,""));
+
+        GridAdapter adapter=new GridAdapter(getContext(),R.layout.griditem,birdList,width,height,0);
+        gridView.setAdapter(adapter);
+        getHeight(adapter,gridView);
+    }
+
     public void getHeight(GridAdapter listadp, GridView listview)
     {
         int totalHeight = 0;
@@ -716,7 +763,7 @@ if(global.GetValue("HRFav").contains("HR3")) {
         }
 
         ViewGroup.LayoutParams params = listview.getLayoutParams();
-        params.height = totalHeight + (listview.getVerticalSpacing() * ((int)(listadp.getCount()/3)));
+        params.height = totalHeight + (listview.getVerticalSpacing() * ((int)(listadp.getCount()/3)))+100;
         listview.setLayoutParams(params);
         listview.requestLayout();
     }

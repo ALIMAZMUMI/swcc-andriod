@@ -2,6 +2,7 @@ package com.gov.sa.swcc;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -205,9 +206,13 @@ global=new Global(getContext());
 
 
                         Bundle bundle = new Bundle();
-                        MainActivity.homeInfo.setArguments(bundle);
-                        ((HomeInfo)MainActivity.homeInfo).update();
-                        MainActivity.changelayout(2);
+//                        MainActivity.homeInfo.setArguments(bundle);
+//                        ((HomeInfo)MainActivity.homeInfo).update();
+//                        MainActivity.changelayout(2);
+
+                        Intent intent = new Intent(getActivity(), MainLGActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
 //                        HomeInfo nextFrag= new HomeInfo();
 //                        Bundle bundle = new Bundle();
 //                        nextFrag.setArguments(bundle);

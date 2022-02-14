@@ -73,8 +73,7 @@ public class TrainingActivity extends AppCompatActivity {
         t3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://www.swacademy.com/wp-content/uploads/2021-%D9%85%D8%B6%D8%BA%D9%88%D8%B7.pdf";
-
+                String url = "https://firebasestorage.googleapis.com/v0/b/selfservicesmobapp.appspot.com/o/swacademy_courses.pdf?alt=media";
                 Intent Link=  new Intent(TrainingActivity.this,ShowLinkActivity.class);
                 Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+url);
                 Link.putExtra("Auth","N");
@@ -120,7 +119,7 @@ public class TrainingActivity extends AppCompatActivity {
         instable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://www.swacademy.com/wp-content/uploads/2021-%D9%85%D8%B6%D8%BA%D9%88%D8%B7.pdf";
+                String url = "https://firebasestorage.googleapis.com/v0/b/selfservicesmobapp.appspot.com/o/swacademy_courses.pdf?alt=media";
                 Intent Link=  new Intent(TrainingActivity.this,ShowLinkActivity.class);
                 Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+url);
                 Link.putExtra("Auth","N");

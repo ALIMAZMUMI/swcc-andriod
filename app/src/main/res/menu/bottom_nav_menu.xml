@@ -3,16 +3,21 @@
     <item
         android:id="@+id/navigation_login"
         android:icon="@drawable/myprofile"
-        android:title="الموظف" />
+        android:title="الموظف"
+        android:checked="false"
+        />
 
     <item
         android:id="@+id/navigation_service"
         android:icon="@drawable/servicesicon"
-        android:title="الخدمات" />
+        android:title="الخدمات"
+        android:checked="false"/>
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/homeicon"
-        android:title="الرئيسية" />
+        android:title="الرئيسية"
+        android:checked="true"
+        />
 
 
 

@@ -74,7 +74,7 @@ if(errorCode==BiometricPrompt.BIOMETRIC_ERROR_CANCELED){
             public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result)
             {
                 super.onAuthenticationSucceeded(result);
-                Intent home=new Intent(AuthActivity.this,MainActivity.class);
+                Intent home=new Intent(AuthActivity.this,MainLGActivity.class);
                 global.SaveValue("Home","y");
                 home.putExtra("Home","y");
                 //MainActivity.changelayout(3);

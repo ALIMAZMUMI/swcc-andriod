@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PersonalCardActivity extends AppCompatActivity {
@@ -30,7 +31,13 @@ TextView Name,EnName,Badge,phone,city,email,emailbtn,cisco;
         String [] empdata=Emp.split("#\\$#");
 
 
-
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
 //        email.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

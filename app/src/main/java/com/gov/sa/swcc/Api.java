@@ -6,8 +6,11 @@ import com.gov.sa.swcc.model.ITRequest;
 import com.gov.sa.swcc.model.ITRoot;
 import com.gov.sa.swcc.model.InsuranceInfo;
 import com.gov.sa.swcc.model.LoginResult;
+import com.gov.sa.swcc.model.PartnerModel;
 import com.gov.sa.swcc.model.PersonalResult;
 import com.gov.sa.swcc.model.ProPlanning;
+import com.gov.sa.swcc.model.RatingModel;
+import com.gov.sa.swcc.model.ReportModel;
 import com.gov.sa.swcc.model.Sharekproject;
 import com.gov.sa.swcc.model.Signproject;
 import com.gov.sa.swcc.model.TransactionsApiResult;
@@ -84,6 +87,47 @@ String Sharek="https://apitest.swcc.gov.sa/FupsApi/api/EmployeeEvaluation/";
             ,"secretToken: 123456789"})
     @GET("GetEmployeeTransactions")
     Call<List<Signproject>> GetEmployeeTransactions(@Query("SuperVisorId") String ID, @Query("date") String Date);
+
+
+
+    @Headers({"Accept: application/json","Content-Type: application/json"
+            ,"secretToken: 123456789"})
+    @GET("GetAllLookupEvaluation")
+    Call<List<RatingModel>> GetAllLookupEvaluation(@Query("SupervisorUID") String ID);
+
+
+
+
+    @Headers({"Accept: application/json","Content-Type: application/json"
+            ,"secretToken: 123456789"})
+    @POST("InsertEmployeeEvaluation")
+    Call<Boolean> InsertContractsEvaluation(@Body List<RatingModel> ratingModel);
+
+
+
+    @Headers({"Accept: application/json","Content-Type: application/json"
+            ,"secretToken: 123456789"})
+    @GET("GetAllContractElementsEvaluation")
+    Call<List<PartnerModel>> GetAllContractElementsEvaluation(@Query("ProjectMangerId") String ProjectMangerId
+    ,@Query("SupervisorId") String SupervisorId
+    ,@Query("Classfcation_LK") String Classfcation_LK
+    ,@Query("roundNumber") String roundNumber
+    ,@Query("date") String date);
+
+
+
+    @Headers({"Accept: application/json","Content-Type: application/json"
+            ,"secretToken: 123456789"})
+    @POST("InsertContractsEvaluation")
+    Call<Boolean> InsertContractsEvaluation1(@Body List<PartnerModel> partnerModels);
+
+
+
+
+    @Headers({"Accept: application/json","Content-Type: application/json"
+            ,"secretToken: 123456789"})
+    @GET("GetReportProjects")
+    Call<List<ReportModel>> GetReportProjects(@Query("UID") String ID);
 
 
 

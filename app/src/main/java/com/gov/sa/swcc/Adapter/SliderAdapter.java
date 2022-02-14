@@ -1,6 +1,9 @@
 package com.gov.sa.swcc.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +21,14 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 
     // list for storing urls of images.
     private final List<SliderData> mSliderItems;
-
+Context context;
+int w,h;
     // Constructor
-    public SliderAdapter(Context context, ArrayList<SliderData> sliderDataArrayList) {
+    public SliderAdapter(Context context, ArrayList<SliderData> sliderDataArrayList,int w,int h) {
         this.mSliderItems = sliderDataArrayList;
+        this.context=context;
+        this.w=w;
+        this.h=h;
     }
 
     // We are inflating the slider_layout
@@ -39,10 +46,18 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 
         final SliderData sliderItem = mSliderItems.get(position);
 
+
+        Drawable dr = context.getResources().getDrawable(sliderItem.getImgUrl());
+        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+// Scale it to 50 x 50
+int hi=(int)(w/2.7);
+        Drawable d = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(bitmap, w, hi, true));
+// Set your new, scaled drawable "d"
         // Glide is use to load image
         // from url in your imageview.
         Glide.with(viewHolder.itemView)
-                .load(sliderItem.getImgUrl())
+.load(d)
+            //    .load(sliderItem.getImgUrl())
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);
     }

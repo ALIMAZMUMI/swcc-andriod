@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+   >
+
+
+    <TextView
+        android:id="@+id/spinneritem"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="خدمات الصيانة"
+        android:textSize="13dp"
+        android:gravity="center|right"
+        android:paddingHorizontal="10dp"
+        android:textColor="#004C86"/>
+</FrameLayout>

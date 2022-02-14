@@ -8,7 +8,8 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/myprofile"
-        android:title="صفحتي" />
+        android:title="صفحتي"
+        android:checked="true"/>
     <item
         android:id="@+id/navigation_service"
         android:icon="@drawable/servicesicon"

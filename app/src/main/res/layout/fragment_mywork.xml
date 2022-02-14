@@ -3,12 +3,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyworkFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    >
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:background="#00000000"
+        android:layout_gravity="center|bottom"
+        android:gravity="center">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:background="#ffffff"
+                android:weightSum="5"
+                android:gravity="center|top">
+
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="نظام شريك"
+                            android:textSize="17dp"
+                            android:paddingVertical="5dp"
+                            android:textColor="#004C86"/>
+
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="3dp"
+                            android:background="@drawable/lgreenroundfull"
+                            android:textSize="17dp"
+
+                            />
+
+                        <GridView
+                            android:id="@+id/servicegrid1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:numColumns="3"
+                            android:layout_weight="5"
+                            android:layout_marginTop="20dp"
+                            android:verticalSpacing="10dp"
+                            android:horizontalSpacing="0dp"
+                            android:gravity="right"
+                            android:rotationY="180"
+
+                            android:textDirection="rtl"/>
+
+
+                    </LinearLayout>
+
+
+                </ScrollView>
+
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/back"-->
+                <!--                    android:layout_width="100dp"-->
+                <!--                    android:layout_height="80dp"-->
+                <!--                    android:background="@drawable/down"-->
+                <!--                    />-->
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
 
 </FrameLayout>

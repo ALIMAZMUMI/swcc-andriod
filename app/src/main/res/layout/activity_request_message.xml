@@ -43,30 +43,30 @@
                     android:gravity="center|top">
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="#050066CC"
-                    >
-
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        />
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:text="تم ارسال الملاحظة بنجاح"
-                        android:textColor="#004C86"
-                        android:textSize="15dp"
-                        android:gravity="center"/>
+                        android:layout_height="90dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="#050066CC"
+                        >
+
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text="تم ارسال الملاحظة بنجاح"
+                            android:textColor="#004C86"
+                            android:textSize="15dp"
+                            android:gravity="center"/>
 
 
 
-                </LinearLayout>
+                    </LinearLayout>
 
 
 

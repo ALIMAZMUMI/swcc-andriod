@@ -54,6 +54,19 @@ SSID=getIntent().getExtras().getString("SSID","");
                     startActivity(intent);
                 }
 
+                if(SSID.equals("2")){
+                    Intent intent=new Intent(SharekProjectsActivity.this,ProjectRatingEmpActivity.class);
+                    intent.putExtra("Sid",sharekproject.get(i).getSupervisorId().toString());
+                    startActivity(intent);
+                }
+                if(SSID.equals("3")){
+                    Intent intent=new Intent(SharekProjectsActivity.this,ShareakPartnerActivity.class);
+                    intent.putExtra("Sid",sharekproject.get(i).getSupervisorId().toString());
+                    intent.putExtra("ProjectMangerId",sharekproject.get(i).getProjectManagerId().toString());
+                    intent.putExtra("Classfcation_LK",sharekproject.get(i).getClassfcationLK().toString());
+                    startActivity(intent);
+                }
+
             }
         });
 

@@ -90,15 +90,6 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
         });
 
 
-TextView back=(TextView)findViewById(R.id.back);
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EmployeeIdentificationActivity.this.finish();
-                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-            }
-        });
          per=global.GetPData("PersonalResult");
 
         try {

@@ -83,6 +83,12 @@ public class GridFavAdapter extends ArrayAdapter<GridItem> {
             textView.setTextSize(9);
         }
 
+        radio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                birdList.get(position).setChecked(radio.isChecked());
+            }
+        });
         return v;
 
     }

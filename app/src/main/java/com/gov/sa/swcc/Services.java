@@ -18,7 +18,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.gov.sa.swcc.Adapter.GridAdapter;
 import com.gov.sa.swcc.Adapter.GridBAdapter;
@@ -44,6 +43,8 @@ public class Services extends Fragment {
     CardView proplan,Eskan,Trinning,research0,research1,research2,research3
             ,camputerper,car,cardpercontractor,cameraper,returnper,cardper,docment,truck;
     int height,width;
+    SliderView sliderView;
+    ArrayList<SliderData> sliderDataArrayList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,24 +57,27 @@ public class Services extends Fragment {
 
 
 
-        ArrayList<SliderData> sliderDataArrayList = new ArrayList<>();
+      sliderDataArrayList = new ArrayList<>();
 
         // initializing the slider view.
-        SliderView sliderView = view.findViewById(R.id.slider);
+        sliderView = view.findViewById(R.id.slider);
 
         // adding the urls inside array list
-        sliderDataArrayList.add(new SliderData(R.drawable.slide1));
-        sliderDataArrayList.add(new SliderData(R.drawable.slide2));
-        sliderDataArrayList.add(new SliderData(R.drawable.slide3));
+        sliderDataArrayList.add(new SliderData(R.drawable.slide11));
+        sliderDataArrayList.add(new SliderData(R.drawable.slide22));
+        sliderDataArrayList.add(new SliderData(R.drawable.slide33));
 
         // passing this array list inside our adapter class.
-        SliderAdapter adapter1 = new SliderAdapter(getContext(), sliderDataArrayList);
+
+
+
+
+
 
         // below method is used to set auto cycle direction in left to
         // right direction you can change according to requirement.
        // sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
 
-        sliderView.setSliderAdapter(adapter1);
 
         // below method is use to set
         // scroll time in seconds.
@@ -92,7 +96,7 @@ public class Services extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
          height = displayMetrics.heightPixels;
          width = displayMetrics.widthPixels;
-
+Log.d("wksdjhbfsilkf",width+"");
 //        proplan=(CardView)view.findViewById(R.id.proplan);
 //        Eskan=(CardView)view.findViewById(R.id.Eskan);
 //        Trinning=(CardView)view.findViewById(R.id.Trinning);
@@ -470,6 +474,18 @@ public class Services extends Fragment {
 //        });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        sliderView.post(new Runnable() {
+            @Override
+            public void run() {
+                SliderAdapter adapter1 = new SliderAdapter(getContext(), sliderDataArrayList,width,150);
+                sliderView.setSliderAdapter(adapter1);
+            }
+        });
     }
 
     public void getHeight(GridAdapter listadp, GridView listview)

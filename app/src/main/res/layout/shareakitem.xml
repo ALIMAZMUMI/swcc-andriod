@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/shreakblueborder"
+    android:orientation="horizontal"
+    android:weightSum="4">
+    <TextView
+        android:id="@+id/EmpName"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:text=""
+        android:layout_weight="4"
+        android:textSize="16dp"
+        android:paddingHorizontal="10dp"
+        android:textColor="#0066CC"
+        android:gravity="center|right"
+        />
+</LinearLayout>
