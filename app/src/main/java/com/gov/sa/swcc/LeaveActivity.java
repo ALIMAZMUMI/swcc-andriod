@@ -82,8 +82,8 @@ Log.d("Error --------",e.toString());
     private void CallLeaves() throws IOException, XmlPullParserException {
         Date cDate = new Date();
 
-        ProgressDialog dialog = ProgressDialog.show(LeaveActivity.this, "", "يرجى الإنتظار", true);
-
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -104,7 +104,7 @@ Log.d("Error --------",e.toString());
                             "           </urn:ZhrLeavesInfo>\n" +
                             "        </soap:Body>\n" +
                             "     </soap:Envelope>";
-                    URL url = new URL("https://l650075-iflmap.hcisbp.sa1.hana.ondemand.com/cxf/employeeLeavesService2MobileApp");
+                    URL url = new URL("https://"+Api.Domain+"/GatewayControlPanel/EmployeePayroll/EmployeeLeavesService");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                     // Set timeout as per needs

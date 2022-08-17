@@ -1,9 +1,11 @@
 package com.gov.sa.swcc.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +48,7 @@ int w,h;
 
         final SliderData sliderItem = mSliderItems.get(position);
 
-
+        if(sliderItem.getImgU()==null){
         Drawable dr = context.getResources().getDrawable(sliderItem.getImgUrl());
         Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
 // Scale it to 50 x 50
@@ -60,6 +62,23 @@ int hi=(int)(w/2.7);
             //    .load(sliderItem.getImgUrl())
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);
+        }else{
+
+            Glide.with(viewHolder.itemView)
+                    .load(sliderItem.getImgU())
+                    //    .load(sliderItem.getImgUrl())
+                    .fitCenter()
+                    .into(viewHolder.imageViewBackground);
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(sliderItem.getLink()));
+                    context.startActivity(i);
+                }
+            });
+        }
     }
 
     // this method will return

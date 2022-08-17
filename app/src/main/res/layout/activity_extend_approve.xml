@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    tools:context=".ExtendApproveActivity">
+    <LinearLayout
+        android:id="@+id/backgroundlin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#00000000"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            >
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="12dp"
+                android:id="@+id/idCard"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp"
+                android:background="#ffffff"
+                android:layout_centerHorizontal="true">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:weightSum="5"
+                    android:gravity="center|top">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="#050066CC"
+                        >
+
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/logout"
+                            android:visibility="gone"
+                            />
+                        <TextView
+                            android:id="@+id/header"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="طلب تمديد مهمة"
+                            android:textColor="#004C86"
+                            android:textSize="14dp"
+                            android:gravity="center"/>
+
+
+
+                    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_marginHorizontal="10dp"
+    android:background="@drawable/ligthgrayborder"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center|right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/taskname"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center|right"
+            android:paddingHorizontal="10dp"
+            android:text="تصميم تطبيق SWCC"
+            android:textColor="#0066CC"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="عنوان المهمة:"
+            android:textColor="#004C86"
+            android:textSize="15dp"
+            android:paddingHorizontal="10dp"
+            android:gravity="center|right"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center|right"
+        android:visibility="gone"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="الجوهره العفتان"
+            android:id="@+id/empname"
+            android:textColor="#0066CC"
+            android:textSize="15dp"
+            android:visibility="gone"
+            android:paddingHorizontal="10dp"
+            android:gravity="center|right"/>
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:textColor="#004C86"
+            android:layout_marginRight="10dp"
+            android:textSize="15dp"
+            android:visibility="gone"
+            android:background="@drawable/personicon"
+            android:paddingHorizontal="10dp"
+            android:gravity="center|right"/>
+    </LinearLayout>
+
+    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@drawable/ligthgrayborder"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="سبب طلب التمديد"
+                            android:id="@+id/message"
+                            android:textColor="#004C86"
+                            android:layout_marginTop="10dp"
+                            android:textSize="13dp"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center|right"/>
+                    <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:text=""
+                                android:id="@+id/tasknote"
+                                android:textColor="#0066CC"
+                                android:textSize="13dp"
+                                android:paddingHorizontal="10dp"
+                                android:gravity="center|right"/>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_marginTop="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@drawable/ligthgrayborder"
+                        android:weightSum="10"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:layout_weight="6"
+                            android:textColor="#0066CC"
+                            android:textSize="13dp"
+                            android:id="@+id/EmpName"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center|right"/>
+<ImageView
+    android:layout_width="20dp"
+    android:layout_height="20dp"
+    android:src="@drawable/personicon"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="صاحب المهمة:"
+                            android:textColor="#004C87"
+                            android:textSize="15dp"
+                            android:layout_weight="4"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center|right"/>
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="فرص التمديد"
+                        android:textColor="#004C86"
+                        android:layout_marginTop="10dp"
+                        android:textSize="15dp"
+                        android:paddingHorizontal="10dp"
+                        android:gravity="center|right"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@drawable/ligthgrayborder"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/chance"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text="الفرصة الاولى"
+                            android:textColor="#000000"
+                            android:textSize="12dp"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center|right"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:text=""
+                            android:id="@+id/chatitle"
+                            android:textColor="#80000000"
+                            android:textSize="13dp"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center|right"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:text=""
+                            android:id="@+id/chatitle1"
+                            android:textColor="#0066CC"
+                            android:textSize="13dp"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center|right"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="30dp"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/cancel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="رفض"
+                            android:paddingHorizontal="40dp"
+                            android:textColor="#CC0000"
+                            android:layout_marginRight="50dp"
+                            android:background="@drawable/redborder"
+                            />
+
+                        <Button
+                            android:id="@+id/submit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="قبول"
+                            android:paddingHorizontal="40dp"
+                            android:textColor="#ffffff"
+                            android:background="@drawable/blueroundfull"
+                            />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

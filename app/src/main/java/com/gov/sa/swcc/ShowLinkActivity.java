@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.webkit.HttpAuthHandler;
 import android.webkit.JavascriptInterface;
@@ -115,8 +116,8 @@ Global global;
 //                onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
 //            }
 //        });
-        ProgressDialog dialog = ProgressDialog.show(ShowLinkActivity.this, "",
-                "يرجى الإنتظار", true);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
 
 
         mWebview.setWebViewClient(new WebViewClient() {
@@ -213,6 +214,8 @@ Global global;
         } else {
 
             url= extras.getString("URL_LINK");
+
+            Log.d("LINK------",url);
             Share=false;
             if(extras.getString("Share").equals("1")){
                 Share=true;

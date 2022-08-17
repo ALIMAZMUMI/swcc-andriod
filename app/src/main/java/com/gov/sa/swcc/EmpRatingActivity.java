@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -32,12 +33,14 @@ public class EmpRatingActivity extends AppCompatActivity {
     ListView projrcts;
     String EID,EName;
     TextView textheader;
+    Button submit;
     int w;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emp_rating);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        global=new Global(EmpRatingActivity.this);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -46,10 +49,26 @@ public class EmpRatingActivity extends AppCompatActivity {
         textheader=(TextView)findViewById(R.id.textheader);
         EID=getIntent().getExtras().getString("EID");
         EName=getIntent().getExtras().getString("EName");
+        submit=(Button) findViewById(R.id.submit);
+        Button back=(Button) findViewById(R.id.back);
 
+        ((TextView)findViewById(R.id.headertxt)).setText(getIntent().getExtras().getString("HT",""));
+        ((ImageView)findViewById(R.id.backarrow)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+        if (global.GetValue("Lan").equals("en")) {
+            textheader.setText("employee evaluation "+EName);
+            submit.setText("send");
+            back.setText("back");
 
-
+        }else
+            {
         textheader.setText("تقييم العامل "+EName);
+        }
 
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +79,6 @@ public class EmpRatingActivity extends AppCompatActivity {
         });
 
 
-        global=new Global(EmpRatingActivity.this);
         projrcts=(ListView)findViewById(R.id.projrcts);
         //String ID=getIntent().getExtras().getString("Sid","");
 
@@ -71,8 +89,18 @@ public class EmpRatingActivity extends AppCompatActivity {
 
         CallSharek("",SelDate);
 
-Button submit=(Button) findViewById(R.id.submit);
-        Button back=(Button) findViewById(R.id.back);
+
+        submit.setBackgroundResource(R.drawable.grayroundbtn);
+        submit.setEnabled(false);
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,13 +130,32 @@ break;
         });
 
 
+
+
+    }
+
+
+    public void change(){
+
+        EmpRaitingAdapter adapter=(EmpRaitingAdapter)projrcts.getAdapter();
+int i=0;
+        for (i=0;i<adapter.getCount();i++){
+            if(adapter.getItem(i).getValue()==0){
+                submit.setBackgroundResource(R.drawable.grayroundbtn);
+                submit.setEnabled(false);
+                break;
+            }else {
+                submit.setBackgroundResource(R.drawable.blueroundfull);
+                submit.setEnabled(true);
+            }
+        }
     }
 
     private void CallSharek(String ID,String Date) {
         String user=global.GetValue("Username").replace("u","");
-        Call<List<RatingModel>> call = RetrofitClient.getInstance(Api.Sharek).getMyApi().GetAllLookupEvaluation(user);
-        ProgressDialog dialog = ProgressDialog.show(EmpRatingActivity.this, "",
-                "يرجى الإنتظار", true);
+        Call<List<RatingModel>> call = RetrofitClient.getInstance(Api.Global).getMyApi().GetAllLookupEvaluation(user);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         call.enqueue(new Callback<List<RatingModel>>() {
             @Override
             public void onResponse(Call<List<RatingModel>> call, Response<List<RatingModel>> response) {
@@ -144,9 +191,9 @@ break;
 
     private void InsertContractsEvaluation(List<RatingModel> List) {
         String user=global.GetValue("Username").replace("u","");
-        Call<Boolean> call = RetrofitClient.getInstance(Api.Sharek).getMyApi().InsertContractsEvaluation(List);
-        ProgressDialog dialog = ProgressDialog.show(EmpRatingActivity.this, "",
-                "يرجى الإنتظار", true);
+        Call<Boolean> call = RetrofitClient.getInstance(Api.Global).getMyApi().InsertContractsEvaluation(List);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -156,7 +203,13 @@ break;
 
                     if(response.body()){
                         dialog.dismiss();
+                        if(global.GetValue("Lan").equals("en")){
+                            global.ShowMessageNF("Thanks","en",EmpRatingActivity.this);
+
+                        }
+                        else{
                         global.ShowMessageNF("شكرا لك !",EmpRatingActivity.this);
+                        }
                     }else {
                         dialog.dismiss();
                         global.ShowMessage("لا يوجد بيانات مسجلة");

@@ -19,9 +19,16 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.gov.sa.swcc.model.GetToken.GetToken;
+import com.gov.sa.swcc.model.MangerCount.MangerCount;
+
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AuthActivity extends AppCompatActivity {
     private CancellationSignal cancellationSignal = null;
@@ -36,7 +43,8 @@ boolean finger=false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         global=new Global(AuthActivity.this);
-
+//        GetToken();
+//        GetTaskCount();
         authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
             // here we need to implement two methods
             // onAuthenticationError and
@@ -74,12 +82,13 @@ if(errorCode==BiometricPrompt.BIOMETRIC_ERROR_CANCELED){
             public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result)
             {
                 super.onAuthenticationSucceeded(result);
-                Intent home=new Intent(AuthActivity.this,MainLGActivity.class);
-                global.SaveValue("Home","y");
-                home.putExtra("Home","y");
-                //MainActivity.changelayout(3);
-                startActivity(home);
-AuthActivity.this.finish();
+GetToken();
+//Intent home=new Intent(AuthActivity.this,MainLGActivity.class);
+//                global.SaveValue("Home","y");
+//                home.putExtra("Home","y");
+//                //MainActivity.changelayout(3);
+//                startActivity(home);
+//                AuthActivity.this.finish();
                 // or start a new Activity
             }
         };
@@ -249,5 +258,143 @@ AuthActivity.this.finish();
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    private void GetToken() {
+//ToDo
 
+
+        Intent home=new Intent(AuthActivity.this,MainLGActivity.class);
+        global.SaveValue("Home","y");
+        home.putExtra("Home","y");
+        //MainActivity.changelayout(3);
+        startActivity(home);
+        AuthActivity.this.finish();
+
+
+
+//        String user=global.GetValue("Username").replace("u","").replace("U","");
+//        //String user="290550";
+//        //String user="290404";
+//
+//        Call<GetToken> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetToken(user,"NDlEOTBGQzI4NDc5NDE3MjgwNTUyNEVBNkYwRUE0MzE=",global.GetValue("NotfToken"));
+//        PorgressDilog dialog =  new PorgressDilog(AuthActivity.this);
+//        dialog.show();
+//        call.enqueue(new Callback<GetToken>() {
+//            @Override
+//            public void onResponse(Call<GetToken> call, Response<GetToken> response) {
+//                Log.d("Resp",response.message()+"");
+//                if(response.isSuccessful())
+//                {
+//                    dialog.dismiss();
+//                    global.SaveValue("TaskToken","Bearer "+response.body().getData());
+//                    global.SaveValue("IsSuper",response.body().getIsSupervisorUser());
+//                    global.SaveValue("MID",user);
+//
+//                    if(response.body().getIsSupervisorUser().contains("rue")) {
+//                        GetTaskCount();
+//                    }else{
+//                        Intent home=new Intent(AuthActivity.this,MainLGActivity.class);
+//                        global.SaveValue("Home","y");
+//                        home.putExtra("Home","y");
+//                        //MainActivity.changelayout(3);
+//                        startActivity(home);
+//                        AuthActivity.this.finish();
+//
+//
+//                    }
+//                    Log.d("Reeeeeeeeeee","TaskToken");
+//
+//
+////                    if(response.body()==1){
+////                        dialog.dismiss();
+////                        global.ShowMessageNF(response.body().getMessage(),TaskAddTimeActivity.this);
+////
+////
+////                    }else {
+////                        dialog.dismiss();
+////                        global.ShowMessage("");
+////                    }
+//
+//                }else {
+//
+//                    dialog.dismiss();
+//                    GetToken();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GetToken>call, Throwable t) {
+//                dialog.dismiss();
+//                GetToken();
+//
+//                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+//
+//            }
+//
+//
+//        });
+    }
+
+
+
+
+    private void GetTaskCount() {
+//ToDo
+        String user=global.GetValue("Username").replace("u","").replace("U","");
+        //String user="290550";
+        //String user="290404";
+
+        Call<MangerCount> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetManagerTasksCount(global.GetValue("TaskToken"));
+        PorgressDilog dialog =  new PorgressDilog(AuthActivity.this);
+        dialog.show();
+        call.enqueue(new Callback<MangerCount>() {
+            @Override
+            public void onResponse(Call<MangerCount> call, Response<MangerCount> response) {
+                Log.d("Resp",response.message()+"");
+                if(response.isSuccessful())
+                {
+                    dialog.dismiss();
+                    global.SaveValue("EmpTaskCount",response.body().getModel().getActiveTasksCount()+"");
+                    global.SaveValue("ApprovalWaiting",(response.body().getModel().getIncreaseTaskTimeRequestsCount()+response.body().getModel().getApproveRequestTaskCount()+response.body().getModel().getReturnedTasksCount())+"");
+
+
+
+                    Intent home=new Intent(AuthActivity.this,MainLGActivity.class);
+                    global.SaveValue("Home","y");
+                    home.putExtra("Home","y");
+                    //MainActivity.changelayout(3);
+                    startActivity(home);
+                    AuthActivity.this.finish();
+
+
+                    Log.d("Reeeeeeeeeee","TaskToken");
+
+
+//                    if(response.body()==1){
+//                        dialog.dismiss();
+//                        global.ShowMessageNF(response.body().getMessage(),TaskAddTimeActivity.this);
+//
+//
+//                    }else {
+//                        dialog.dismiss();
+//                        global.ShowMessage("");
+//                    }
+
+                }else {
+
+                    dialog.dismiss();
+                    GetTaskCount();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MangerCount>call, Throwable t) {
+                dialog.dismiss();
+                GetTaskCount();
+                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+
+            }
+
+
+        });
+    }
 }

@@ -46,7 +46,7 @@ ImageView sidemeun;
                 case R.id.navigation_home:
                     Bundle bundle = new Bundle();
                     //bundle.putString("URLLink", "https://www.swcc.gov.sa/ar");
-                    ((Home)home).setURLLink("https://www.swcc.gov.sa/ar");
+                    ((Home)home).setURLLink("https://swcc.gov.sa/ar");
                     home.setArguments(bundle);
                     fm.beginTransaction().hide(active).show(home).commit();
                     active = home;

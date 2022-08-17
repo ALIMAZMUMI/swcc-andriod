@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-feature android:name="android.hardware.bluetooth" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -15,11 +16,96 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/swcc"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="false">
+        <activity
+            android:name=".SharekActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ShareakReportNActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Emp_Edit_TaskActivity"
+            android:exported="false"
+            android:theme="@style/Custom" />
+        <activity
+            android:name=".ApproveCompleteActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".EmployeesTransActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmpTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SharekShowActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".MangerTaskActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RatingTaskActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".ExtendApproveActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".ApprovalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TaskEmpSearchActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".DeleteTaskActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".TaskAddTimeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".ReturnTaskActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".Task_Done_Activity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".TaskDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyTaskActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Task_Add_EmpActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".Emp_Add_TaskActivity"
+            android:exported="false"
+            android:theme="@style/Custom" />
+        <activity
+            android:name=".EmpTaskActivity"
+            android:exported="false"
+            android:label="@string/title_activity_emp_task"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".InternalEditorNActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".BankActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".InternalEditorActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Translucent"/>
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".ShareakReportActivity"
             android:exported="false"

@@ -16,6 +16,21 @@ public class ResultObject {
     @SerializedName("LastNameAr")
     @Expose
     private String lastNameAr;
+
+
+
+    @SerializedName("JwtToken")
+    @Expose
+    private String JwtToken;
+    public String getJwtToken() {
+        if(JwtToken==null)
+            return "";
+        return JwtToken;
+    }
+
+    public void setJwtToken(String jwtToken) {
+        JwtToken = jwtToken;
+    }
     @SerializedName("FirstNameEn")
     @Expose
     private String firstNameEn;

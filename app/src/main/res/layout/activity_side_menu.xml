@@ -69,42 +69,7 @@
         </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/swccweb"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:gravity="right|center"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center|right"
-                android:textColor="#0066CC"
-                android:paddingHorizontal="15dp"
-                android:textSize="15dp"
 
-                android:text="موقع مؤسسة تحلية المياه"
-                >
-
-            </TextView>
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:padding="10dp"
-                android:layout_marginEnd="22dp"
-                android:background="@drawable/swccweb"/>
-
-        </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:gravity="center|right"
-            android:background="#33CACCCE"
-            android:layout_marginLeft="30dp"
-            android:textSize="15dp"
-            />
 
 
         <LinearLayout
@@ -241,6 +206,81 @@
                 android:padding="10dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/component"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:gravity="center|right"
+            android:background="#33CACCCE"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/bank"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="right|center"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|right"
+                android:textColor="#0066CC"
+                android:paddingHorizontal="15dp"
+                android:textSize="15dp"
+
+                android:text="الاستعلام عن الضمانات البنكية"
+                >
+
+            </TextView>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="10dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/swccweb"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:gravity="center|right"
+            android:background="#33CACCCE"
+            android:layout_marginLeft="30dp"
+            android:textSize="15dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/swccweb"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="right|center"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|right"
+                android:textColor="#0066CC"
+                android:paddingHorizontal="15dp"
+                android:textSize="15dp"
+
+                android:text="موقع المؤسسة على الانترنت"
+                >
+
+            </TextView>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="10dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/swccweb"/>
 
         </LinearLayout>
 

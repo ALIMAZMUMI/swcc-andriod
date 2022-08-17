@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gov.sa.swcc.Adapter.ProjectAdapter;
@@ -45,6 +47,9 @@ public class ShareakReportActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
+
+        ((TextView)findViewById(R.id.headertxt)).setText("اصدار التقارير");
+
         // TextView back=(TextView)findViewById(R.id.back);
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,9 +64,42 @@ public class ShareakReportActivity extends AppCompatActivity {
         date=(Spinner) findViewById(R.id.date);
 
 
+
+//        projecttype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                if(i==categories.size()-1)
+//                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+//
+//        city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                if(i==citystring.size()-1)
+//                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+//
         projecttype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if(i>=sharekproject.size()-1)
+                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
+
+
+
                 if(i<sharekproject.size()-1){
 if(sharekproject.get(i).getRoleType().equals("PM")) {
 
@@ -79,6 +117,8 @@ if(sharekproject.get(i).getRoleType().equals("PM")) {
             return reporttypetxt.size() - 1;
         }
     };
+
+
 
     reporttype.setAdapter(project);
     reporttype.setSelection(reporttypetxt.size()-1);
@@ -123,6 +163,11 @@ if(sharekproject.get(i).getRoleType().equals("PM")) {
         reporttype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                if(i==reporttypetxt.size()-1)
+                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
+
 
                 if(reporttype.getSelectedItemPosition()!=(reporttypetxt.size()-1)) {
 
@@ -187,7 +232,7 @@ if(sharekproject.get(i).getRoleType().equals("PM")) {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String URLLink="https://apitest.swcc.gov.sa/FupsApi/reports/";
+                String URLLink="https://"+Api.Domain+"/GatewayControlPanel/Shareek/Reports/";
                 if(projecttype.getSelectedItemPosition()==(projectname.size()-1)||reporttype.getSelectedItemPosition()==(reporttypetxt.size()-1))
                 {
                     Toast.makeText(ShareakReportActivity.this,"فضلا تحديد جميع الخيارات",Toast.LENGTH_SHORT).show();
@@ -199,29 +244,29 @@ if(sharekproject.get(i).getRoleType().equals("PM")) {
                     if(sharekproject.get((projecttype.getSelectedItemPosition())).getRoleType().equals("PM"))
                     {
                             if(reporttype.getSelectedItemPosition()==0){
-                                URLLink+="GetProjectEval?year="+Year.get(date.getSelectedItemPosition())+"&ProjectsManagerId="+sharekproject.get(projecttype.getSelectedItemPosition()).getProjectsManagerId()+"&month="+Month.get(date.getSelectedItemPosition());
+                                URLLink+="GetProjectEval?year="+Year.get(date.getSelectedItemPosition())+"&ProjectsManagerId="+sharekproject.get(projecttype.getSelectedItemPosition()).getProjectsManagerId()+"&month="+Month.get(date.getSelectedItemPosition())+"&secretToken="+ Api.SharekKey;
                             }else if(reporttype.getSelectedItemPosition()==1){
-                                URLLink+="GetChartOfAttendanceByProjectManagerId?year="+Year.get(date.getSelectedItemPosition())+"&ProjectsManagerId="+sharekproject.get(projecttype.getSelectedItemPosition()).getProjectsManagerId()+"&month="+Month.get(date.getSelectedItemPosition());
+                                URLLink+="GetChartOfAttendanceByProjectManagerId?year="+Year.get(date.getSelectedItemPosition())+"&ProjectsManagerId="+sharekproject.get(projecttype.getSelectedItemPosition()).getProjectsManagerId()+"&month="+Month.get(date.getSelectedItemPosition())+"&secretToken="+ Api.SharekKey;
 
                             }
                     }else {
 
                         if(reporttype.getSelectedItemPosition()==0){
                             URLLink+="GetEmployeeTransactions?date="+Year.get(date.getSelectedItemPosition())+"-"+Month.get(date.getSelectedItemPosition())+"-"
-                                    +Day.get(date.getSelectedItemPosition())+"&SuperVisorId="+sharekproject.get(projecttype.getSelectedItemPosition()).getSupervisorsId();
+                                    +Day.get(date.getSelectedItemPosition())+"&SuperVisorId="+sharekproject.get(projecttype.getSelectedItemPosition()).getSupervisorsId()+"&secretToken="+ Api.SharekKey;
                         }else if(reporttype.getSelectedItemPosition()==1){
-                            URLLink+="GetEmpEval?year="+Year.get(date.getSelectedItemPosition())+"&SupervisorId="+sharekproject.get(projecttype.getSelectedItemPosition()).getSupervisorsId()+"&month="+Month.get(date.getSelectedItemPosition());
+                            URLLink+="GetEmpEval?year="+Year.get(date.getSelectedItemPosition())+"&SupervisorId="+sharekproject.get(projecttype.getSelectedItemPosition()).getSupervisorsId()+"&month="+Month.get(date.getSelectedItemPosition())+"&secretToken="+ Api.SharekKey;
 
                         }else if(reporttype.getSelectedItemPosition()==2){
-                            URLLink+="GetEmployeeTransactionsMonthaly?year="+Year.get(date.getSelectedItemPosition())+"&SupervisorId="+sharekproject.get(projecttype.getSelectedItemPosition()).getSupervisorsId()+"&month="+Month.get(date.getSelectedItemPosition());
+                            URLLink+="GetEmployeeTransactionsMonthaly?year="+Year.get(date.getSelectedItemPosition())+"&SupervisorId="+sharekproject.get(projecttype.getSelectedItemPosition()).getSupervisorsId()+"&month="+Month.get(date.getSelectedItemPosition())+"&secretToken="+ Api.SharekKey;
 
                         }else if(reporttype.getSelectedItemPosition()==3){
-                            URLLink+="GetChartOfAttendanceBySupervisorId?year="+Year.get(date.getSelectedItemPosition())+"&SupervisorId="+sharekproject.get(projecttype.getSelectedItemPosition()).getSupervisorsId()+"&month="+Month.get(date.getSelectedItemPosition());
+                            URLLink+="GetChartOfAttendanceBySupervisorId?year="+Year.get(date.getSelectedItemPosition())+"&SupervisorId="+sharekproject.get(projecttype.getSelectedItemPosition()).getSupervisorsId()+"&month="+Month.get(date.getSelectedItemPosition())+"&secretToken="+ Api.SharekKey;
 
                         }
                     }
 
-                    Intent Link=  new Intent(ShareakReportActivity.this,ShowLinkActivity.class);
+                    Intent Link=  new Intent(ShareakReportActivity.this,SharekShowActivity.class);
                     Link.putExtra("URL_LINK",URLLink);
                     Link.putExtra("Auth","N");
                     Link.putExtra("Share","0");
@@ -288,9 +333,9 @@ if(sharekproject.get(i).getRoleType().equals("PM")) {
 
 
 
-        Call<List<ReportModel>> call = RetrofitClient.getInstance(Api.Sharek).getMyApi().GetReportProjects(user);
-        ProgressDialog dialog = ProgressDialog.show(ShareakReportActivity.this, "",
-                "يرجى الإنتظار", true);
+        Call<List<ReportModel>> call = RetrofitClient.getInstance(Api.Global).getMyApi().GetReportProjects(user);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         call.enqueue(new Callback<List<ReportModel>>() {
             @Override
             public void onResponse(Call<List<ReportModel>> call, Response<List<ReportModel>> response) {

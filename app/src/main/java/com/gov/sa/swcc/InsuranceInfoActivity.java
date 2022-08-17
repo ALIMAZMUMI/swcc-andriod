@@ -151,9 +151,9 @@ Insur.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
 
-        Call<InsuranceInfo> call = RetrofitClient.getInstance(Api.Insur).getMyApi().Insurance(user);
-        ProgressDialog dialog = ProgressDialog.show(InsuranceInfoActivity.this, "",
-                "يرجى الإنتظار", true);
+        Call<InsuranceInfo> call = RetrofitClient.getInstance(Api.Global).getMyApi().Insurance(user);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         call.enqueue(new Callback<InsuranceInfo>() {
             @Override
             public void onResponse(Call<InsuranceInfo> call, Response<InsuranceInfo> response) {

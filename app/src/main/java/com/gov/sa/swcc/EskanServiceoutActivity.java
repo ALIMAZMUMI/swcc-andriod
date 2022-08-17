@@ -10,6 +10,7 @@ package com.gov.sa.swcc;
         import android.content.Intent;
         import android.content.pm.PackageManager;
         import android.graphics.Bitmap;
+        import android.graphics.Color;
         import android.graphics.drawable.BitmapDrawable;
         import android.net.Uri;
         import android.os.AsyncTask;
@@ -18,7 +19,9 @@ package com.gov.sa.swcc;
         import android.os.Environment;
         import android.os.StrictMode;
         import android.provider.MediaStore;
+        import android.text.Editable;
         import android.text.Html;
+        import android.text.TextWatcher;
         import android.util.Base64;
         import android.util.Log;
         import android.view.View;
@@ -56,6 +59,8 @@ public class EskanServiceoutActivity extends AppCompatActivity {
     EditText detials;
     Global global;
     int Image=0;
+    Button submit;
+
 
     TextView removeimagetxt,addimagetxt;
     ImageView removeimage;
@@ -137,6 +142,55 @@ public class EskanServiceoutActivity extends AppCompatActivity {
             }
         };
 
+
+
+
+        servicetype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i==categories.size()-1)
+                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
+
+                if(detials.getText().length()>3&&servicetype.getSelectedItemPosition()!=servicetype.getAdapter().getCount()
+                        &&city.getSelectedItemPosition()!=city.getAdapter().getCount()){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i==citystring.size()-1)
+                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
+
+                if(detials.getText().length()>3&&servicetype.getSelectedItemPosition()!=servicetype.getAdapter().getCount()
+                        &&city.getSelectedItemPosition()!=city.getAdapter().getCount()){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         // Drop down layout style - list view with radio button
 
         // attaching data adapter to spinner
@@ -158,7 +212,38 @@ public class EskanServiceoutActivity extends AppCompatActivity {
         });
 
         detials=(EditText)findViewById(R.id.detials);
-        Button submit=(Button) findViewById(R.id.submit);
+         submit=(Button) findViewById(R.id.submit);
+
+
+
+
+        detials.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//
+                if(detials.getText().length()>3&&servicetype.getSelectedItemPosition()!=servicetype.getAdapter().getCount()
+                        &&city.getSelectedItemPosition()!=city.getAdapter().getCount()){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
+            }
+        });
+        submit.setBackgroundResource(R.drawable.grayroundbtn);
+        submit.setEnabled(false);
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -176,10 +261,7 @@ public class EskanServiceoutActivity extends AppCompatActivity {
 
                     }
 
-
                 }
-
-
             }
         });
 
@@ -211,8 +293,8 @@ public class EskanServiceoutActivity extends AppCompatActivity {
         String user=global.GetValue("Username");
         PersonalResult per=global.GetPData("PersonalResult");
 
-        ProgressDialog dialog = ProgressDialog.show(EskanServiceoutActivity.this, "", "يرجى الإنتظار", true);
-
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -239,7 +321,7 @@ public class EskanServiceoutActivity extends AppCompatActivity {
                     post=post.replaceAll("'","\"");
 
                     Log.d("Ex------",post);
-                    URL url = new URL("https://apitest.swcc.gov.sa/swccmobile/api/FootPrint/CreateIndustrialSecurityRequest");
+                    URL url = new URL("https://"+Api.Domain+"/GatewayControlPanel/FootPrint/CreateIndustrialSecurityRequest");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                     // Set timeout as per needs

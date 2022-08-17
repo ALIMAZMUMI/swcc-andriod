@@ -6,10 +6,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,7 +38,14 @@ public class ProjectRatingEmpActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
 
-
+        ((TextView)findViewById(R.id.headertxt)).setText(getIntent().getExtras().getString("HT",""));
+        ((ImageView)findViewById(R.id.backarrow)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +60,15 @@ public class ProjectRatingEmpActivity extends AppCompatActivity {
         String ID=getIntent().getExtras().getString("Sid","");
 
 
+
+
+        if (global.GetValue("Lan").equals("en")) {
+            ((TextView)findViewById(R.id.textheader)).setText("select employee");
+            //((LinearLayout)findViewById(R.id.sline)).setGravity(Gravity.LEFT);
+
+
+        }
+
         Calendar Current=Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String SelDate=sdf.format(Current.getTime());
@@ -62,9 +80,11 @@ projrcts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Intent intent=new Intent(ProjectRatingEmpActivity.this,EmpRatingActivity.class);
-        intent.putExtra("EID",employee.get(i).getId());
-        intent.putExtra("EName",employee.get(i).getEmployeeName());
-        startActivity(intent);
+
+                intent.putExtra("HT",getIntent().getExtras().getString("HT",""));
+                intent.putExtra("EID",employee.get(i).getId());
+                intent.putExtra("EName",employee.get(i).getEmployeeName());
+                startActivity(intent);
 
     }
 });
@@ -81,9 +101,9 @@ projrcts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
 
-        Call<List<Signproject>> call = RetrofitClient.getInstance(Api.Sharek).getMyApi().GetEmployeeTransactions(ID,Date);
-        ProgressDialog dialog = ProgressDialog.show(ProjectRatingEmpActivity.this, "",
-                "يرجى الإنتظار", true);
+        Call<List<Signproject>> call = RetrofitClient.getInstance(Api.Global).getMyApi().GetEmployeeTransactions(ID,Date);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         call.enqueue(new Callback<List<Signproject>>() {
             @Override
             public void onResponse(Call<List<Signproject>> call, Response<List<Signproject>> response) {

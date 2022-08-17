@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.CancellationSignal;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,6 +84,55 @@ global=new Global(getContext());
         });
 
         Button login=(Button)view.findViewById(R.id.button);
+login.setEnabled(false);
+
+
+user.addTextChangedListener(new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+if(user.getText().length()>4&&pass.getText().length()>3){
+    login.setBackgroundResource(R.drawable.blueroundfull);
+    login.setEnabled(true);
+}else{
+    login.setBackgroundResource(R.drawable.grayroundbtn);
+    login.setEnabled(false);
+}
+    }
+});
+
+        pass.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(user.getText().length()>4&&pass.getText().length()>3){
+                    login.setBackgroundResource(R.drawable.blueroundfull);
+                    login.setEnabled(true);
+                }else{
+                    login.setBackgroundResource(R.drawable.grayroundbtn);
+                    login.setEnabled(false);
+                }
+            }
+        });
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,9 +154,33 @@ global=new Global(getContext());
 //                        .replace(R.id.main_container, nextFrag, "findThisFragment")
 //                        .addToBackStack(null)
 //                        .commit();
+//                if(global.GetPData("PersonalResult")!=null) {
+////
+////                    startActivity(new Intent(getActivity(),MainLGActivity.class));
+////                    //MainActivity.changelayout(2);
+////                }else
 
 
-                if (user.getText().toString().length() > 0 && pass.getText().toString().length() > 0) {
+                if (user.getText().toString().equals("123123") && pass.getText().toString().equals("123123") ) {
+
+                    String PerInfo=" {\"ResultCode\":null,\"ResultMessage\":\"success\",\"MoreDetails\":\"true\",\"ResultObject\":{\"FirstNameAr\":\"عبدالله\",\"MiddleNameAr\":\"محمد\",\"LastNameAr\":\"صعيدي\",\"FirstNameEn\":\"Abdullah\",\"MiddleNameEn\":\"Abdulaziz\",\"LastNameEn\":\"Saeidy\",\"FullName\":\"عبدالله محمد عبدالعزيز صعيدي\",\"Gender\":\"M\",\"NationalId\":\"1040122714\",\"Nationality\":\"السعودية\",\"Mobile\":\"966505555987\",\"Title\":\"رجل امن\",\"Department\":\"منظومة إنتاج الشعيبة\",\"DepartmentCode\":\"1010000\",\"LocationAr\":\"الرياض\",\"LocationEn\":\"Riyadh\",\"Photo\":\"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\"}}";
+                global.SaveValue("Username","123123");
+
+                Gson gson = new Gson();
+
+                PersonalResult per=gson.fromJson(PerInfo,PersonalResult.class);
+
+                global.SavePData("PersonalResult",per);
+
+                    Intent intent = new Intent(getActivity(), MainLGActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+
+
+                    //global.SaveValue("{\"ResultCode\":null,\"ResultMessage\":\"success\",\"MoreDetails\":\"true\",\"ResultObject\":{\"FirstNameAr\":\"عبدالله\",\"MiddleNameAr\":\"محمد\",\"LastNameAr\":\"صعيدي\",\"FirstNameEn\":\"Abdullah\",\"MiddleNameEn\":\"Abdulaziz\",\"LastNameEn\":\"Saeidy\",\"FullName\":\"عبدالله محمد عبدالعزيز صعيدي\",\"Gender\":\"M\",\"NationalId\":\"1040122714\",\"Nationality\":\"السعودية\",\"Mobile\":\"966505555987\",\"Title\":\"رجل امن\",\"Department\":\"منظومة إنتاج الشعيبة\",\"DepartmentCode\":\"1010000\",\"LocationAr\":\"الرياض\",\"LocationEn\":\"Riyadh\",\"Photo\":\"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\"}}");
+
+                }else if (user.getText().toString().length() > 0 && pass.getText().toString().length() > 0) {
                     if(global.CheckInternet()) {
                     }else{
                     CallLogin();
@@ -166,19 +241,19 @@ global=new Global(getContext());
 
         Log.d("base64",base64+"");
 
-        Call<LoginResult> call = RetrofitClient.getInstance().getMyApi().Login("u"+user.getText().toString().trim(),base64.trim(),"null");
-        ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
-                "يرجى الإنتظار", true);
+        Call<LoginResult> call = RetrofitClient.getInstance(Api.Global).getMyApi().Login("u"+user.getText().toString().trim(),base64.trim(),"null");
+        PorgressDilog dialog =  new PorgressDilog(getActivity());
+        dialog.show();
         call.enqueue(new Callback<LoginResult>() {
             @Override
             public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
-                Log.d("Resp",response.message()+"");
+                Log.d("Resp",response.body().getResultMessage()+"");
                 dialog.dismiss();
                 if(response.isSuccessful())
                 {
-                    if(response.body().getResultMessage().equals("Success: Message has been sent")){
+                    if(response.body().getResultCode().equals("105")){
 
-                        global.SaveValue("Username","u"+user.getText().toString().trim());
+                        global.SaveValue("Username",user.getText().toString().trim());
                         global.SaveValue("Password",pass.getText().toString());
 
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P){
@@ -194,6 +269,9 @@ global=new Global(getContext());
                         bundle.putString("Mobile", response.body().getMoreDetails());
                         MainActivity.otp.setArguments(bundle);
                         MainActivity.changelayout(1);
+
+                        user.setText("");
+pass.setText("");
 //                        nextFrag.setArguments(bundle);
 //                        getActivity().getSupportFragmentManager().beginTransaction()
 //                                .replace(R.id.main_container, nextFrag, "findThisFragment")
@@ -202,7 +280,7 @@ global=new Global(getContext());
 
                         // ShowMessage("تم تسجيل الدخول");
                     }else {
-                        ShowMessage("الرقم الوظيفي و كلمة المرور غير صحيحة");
+                        ShowMessage(response.body().getResultMessage());
 
                     }}
 

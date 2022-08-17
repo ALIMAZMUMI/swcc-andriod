@@ -14,6 +14,7 @@
         android:layout_height="40dp"
         android:text="خدمات الصيانة"
         android:gravity="center|right"
+        android:textSize="12dp"
         android:paddingHorizontal="10dp"
-        android:textColor="#004C86"/>
+        android:textColor="#0066CC"/>
 </FrameLayout>

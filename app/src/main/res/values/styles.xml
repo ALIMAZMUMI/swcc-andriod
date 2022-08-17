@@ -9,10 +9,45 @@
         <item name="android:fontFamily">@font/swcc</item>
         <item name="android:layoutDirection">ltr</item>
 
+
+
     </style>
 
 
+    <style name="Custom" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:background">@android:color/transparent</item>
+        <!--on below line we are displaying the windowNotitle as true as we are not displaying our status bar-->
+        <item name="android:windowNoTitle">true</item>
+        <!--on below line we are setting our window background as transparent color-->
+        <item name="android:windowBackground">#3E000000</item>
+        <!--on below line we are setting color background cache hint as null-->
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <!--on below line we are adding a window translucent as true-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--on below line we are adding a window animationstyle-->
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:layoutDirection">ltr</item>
+        <item name="android:fontFamily">@font/swcc</item>
 
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+
+
+
+    </style>
+
+    <style name="ChipGroup" parent="Widget.MaterialComponents.ChipGroup">
+
+    </style>
+    <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layoutDirection">ltr</item>
+
+    </style>
 
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Light.NoActionBar">
         <!--on below line we are setting background as transparent color-->

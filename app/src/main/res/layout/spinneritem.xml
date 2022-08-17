@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="خدمات الصيانة"
-        android:textSize="13dp"
+        android:textSize="11dp"
         android:gravity="center|right"
         android:paddingHorizontal="10dp"
-        android:textColor="#004C86"/>
+        android:textColor="#0066CC"/>
 </FrameLayout>

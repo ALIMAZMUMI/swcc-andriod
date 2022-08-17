@@ -44,6 +44,7 @@ public class PersonalResult {
     }
 
     public ResultObject getResultObject() {
+
         return resultObject;
     }
 

@@ -6,10 +6,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeInfo"
     android:orientation="vertical">
+
+
     <com.smarteist.autoimageslider.SliderView
         android:id="@+id/slider"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+
         android:layout_centerInParent="true"
         app:sliderAnimationDuration="600"
         app:sliderAutoCycleDirection="back_and_forth"
@@ -19,22 +22,157 @@
         app:sliderIndicatorMargin="15dp"
         app:sliderIndicatorOrientation="horizontal"
         app:sliderIndicatorRadius="2dp"
-        app:sliderIndicatorSelectedColor="#5A5A5A"
-        app:sliderIndicatorUnselectedColor="#FFF"
-        app:sliderScrollTimeInSec="1" />
+        app:sliderIndicatorSelectedColor="#fff"
+        app:sliderIndicatorUnselectedColor="#004C86"
+        app:sliderScrollTimeInSec="1"
+        android:visibility="gone"/>
 
-    <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="right"
-        android:gravity="right"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:weightSum="10"
+        android:layout_marginTop="15dp"
         android:background="#FFFFFF"
-        android:paddingHorizontal="20dp">
+        >
+        <LinearLayout
+            android:id="@+id/m4"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:layout_marginHorizontal="5dp"
+            android:gravity="center"
+            android:background="@drawable/mainborder"
+            >
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/m4"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="الهوية الموسيقية"
+                android:textSize="9dp"
+                android:gravity="center"
+                android:textColor="#0066CC"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/m3"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="3"
+
+            android:gravity="center"
+            android:background="@drawable/mainborder"
+            >
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/m3"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="الهوية البصرية"
+                android:textSize="9dp"
+                android:gravity="center"
+                android:textColor="#0066CC"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/m2"
+            android:layout_weight="3"
+
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:gravity="center"
+            android:background="@drawable/mainborder"
+            >
+<ImageView
+    android:layout_width="28dp"
+    android:layout_height="28dp"
+    android:src="@drawable/m2"
+    />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="مكتبة الصور"
+                android:textSize="9dp"
+                android:gravity="center"
+                android:textColor="#0066CC"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/m1"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="11dp"
+            android:gravity="center"
+            android:background="@drawable/mainborder"
+            >
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/m1"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="سويك ستوديو"
+                android:textSize="9dp"
+                android:gravity="center"
+                android:textColor="#0066CC"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="20dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="المعلومات الشخصية"
+        android:textSize="17dp"
+        android:paddingVertical="5dp"
+        android:layout_marginTop="30dp"
+        android:textColor="#004C86"/>
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="3dp"
+        android:background="@drawable/lgreenroundfull"
+        android:textSize="17dp"
+        android:layout_gravity="right"
+
+        />
+
+
+
 
 
 

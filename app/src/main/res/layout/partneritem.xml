@@ -74,6 +74,7 @@ android:background="#00000000"
         android:background="@drawable/emptycircl"
                 android:gravity="center|right"/>
     <TextView
+        android:id="@+id/check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

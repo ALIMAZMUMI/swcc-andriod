@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,14 +33,25 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.gov.sa.swcc.Adapter.GridAdapter;
 import com.gov.sa.swcc.Adapter.SliderAdapter;
+import com.gov.sa.swcc.model.ExtendTask.ExtendTask;
+import com.gov.sa.swcc.model.GetToken.GetToken;
 import com.gov.sa.swcc.model.GridItem;
 import com.gov.sa.swcc.model.PersonalResult;
+import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -57,7 +69,7 @@ TextView Emppic,EmpName,EmpJob;
     CardView idCard,detials,Transactions
             ,sal_cer,leave,salmonth,ITCom,EskanService,IndustrialSecurity,HrRequest,InsuranceInfo
             ,Sharkhom,EmpCard,photolip,Proplan,libiry,logout;
-
+    PersonalResult per;
 
 
     TextView Empdept,EmpID,EmpNat,EmpNatID,EmpMobile,JobTitle,down,badge;
@@ -65,38 +77,144 @@ TextView Emppic,EmpName,EmpJob;
 
     LinearLayout moreinfo;
     int height,width;
+    ArrayList<SliderData> sliderDataArrayList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view=inflater.inflate(R.layout.fragment_home_info, container, false);
 
+        global=new Global(getContext());
 
 
-        ArrayList<SliderData> sliderDataArrayList = new ArrayList<>();
+        per=global.GetPData("PersonalResult");
 
-        // initializing the slider view.
+
         SliderView sliderView = view.findViewById(R.id.slider);
 
-        // adding the urls inside array list
-        sliderDataArrayList.add(new SliderData(R.drawable.slide11));
-        sliderDataArrayList.add(new SliderData(R.drawable.slide22));
-        sliderDataArrayList.add(new SliderData(R.drawable.slide33));
-
-        // passing this array list inside our adapter class.
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
 
 
-        // below method is use to set
-        // scroll time in seconds.
-        sliderView.setScrollTimeInSec(3);
+        FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
 
-        // to set it scrollable automatically
-        // we use below method.
-        sliderView.setAutoCycle(true);
+        mFirebaseRemoteConfig.fetchAndActivate()
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Boolean> task) {
+                        if (task.isSuccessful()) {
+                            boolean updated = task.getResult();
+                            boolean visbile = FirebaseRemoteConfig.getInstance().getBoolean("headerads_hide");// empty string
+if(visbile)
+{
+    sliderView.setVisibility(View.GONE);
+}else {
+    sliderView.setVisibility(View.VISIBLE);
 
-        // to start autocycle below method is used.
-        sliderView.startAutoCycle();
+}
+
+boolean onlineVersion = FirebaseRemoteConfig.getInstance().getBoolean("headerads_stop");// empty string
 
 
+                            String ImgURL = FirebaseRemoteConfig.getInstance().getString("headerads_image");// empty string
+                            String ClicURL = FirebaseRemoteConfig.getInstance().getString("headerads_link");// empty string
+                            if(onlineVersion){
+
+
+
+
+                                sliderDataArrayList = new ArrayList<>();
+                                // initializing the slider view.
+                                // adding the urls inside array list
+                                sliderDataArrayList.add(new SliderData(ImgURL,ClicURL));
+
+                                // passing this array list inside our adapter class.
+                                // below method is use to set
+                                // scroll time in seconds.
+                                sliderView.setScrollTimeInSec(3);
+
+                                // to set it scrollable automatically
+                                // we use below method.
+                                sliderView.setAutoCycle(false);
+
+                                // to start autocycle below method is used.
+                                sliderView.startAutoCycle();
+//                                sliderView.setOnIndicatorClickListener(new DrawController.ClickListener() {
+//                                    @Override
+//                                    public void onIndicatorClicked(int position) {
+//
+//                                    }
+//                                });
+
+
+                            }else{
+                               sliderDataArrayList = new ArrayList<>();
+                                // initializing the slider view.
+                                // adding the urls inside array list
+                                sliderDataArrayList.add(new SliderData(R.drawable.slide11));
+                                sliderDataArrayList.add(new SliderData(R.drawable.slide22));
+                                sliderDataArrayList.add(new SliderData(R.drawable.slide33));
+
+                                // passing this array list inside our adapter class.
+                                // below method is use to set
+                                // scroll time in seconds.
+                                sliderView.setScrollTimeInSec(3);
+
+                                // to set it scrollable automatically
+                                // we use below method.
+                                sliderView.setAutoCycle(true);
+
+                                // to start autocycle below method is used.
+                                sliderView.startAutoCycle();
+                            }
+
+
+                        } else {
+
+                             sliderDataArrayList = new ArrayList<>();
+
+                            // initializing the slider view.
+
+                            // adding the urls inside array list
+                            sliderDataArrayList.add(new SliderData(R.drawable.slide11));
+                            sliderDataArrayList.add(new SliderData(R.drawable.slide22));
+                            sliderDataArrayList.add(new SliderData(R.drawable.slide33));
+
+                            // passing this array list inside our adapter class.
+
+
+                            // below method is use to set
+                            // scroll time in seconds.
+                            sliderView.setScrollTimeInSec(3);
+
+                            // to set it scrollable automatically
+                            // we use below method.
+                            sliderView.setAutoCycle(true);
+
+                            // to start autocycle below method is used.
+                            sliderView.startAutoCycle();
+
+                        }
+
+
+
+
+
+
+                        SliderAdapter adapter1 = new SliderAdapter(getContext(), sliderDataArrayList,width,width);
+
+                        // below method is used to set auto cycle direction in left to
+                        // right direction you can change according to requirement.
+                        // sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
+
+                        sliderView.setSliderAdapter(adapter1);
+                    }
+                });
 
 
         ((ImageView)view.findViewById(R.id.showQr)).setOnClickListener(new View.OnClickListener() {
@@ -107,7 +225,61 @@ TextView Emppic,EmpName,EmpJob;
         });
 
 
-        global=new Global(getContext());
+        ((LinearLayout)view.findViewById(R.id.m1)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PersonalResult per=global.GetPData("PersonalResult");
+Log.d("PersonalResult",global.GetPData("PersonalResult").getResultObject().getDepartment());
+                if(per.getResultObject().getJwtToken().length()>9){
+                String url = "https://studio.swcc.gov.sa/?platform=android&Mob="+per.getResultObject().getJwtToken();
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+}else{
+    global.ShowMessageLogout("انتهت صلاحية تسجيل دخولك فضلا قم بتسجيل دخولك لتطبيق مرة اخر");
+
+}
+            }
+        });
+        ((LinearLayout)view.findViewById(R.id.m2)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "https://ext.swcc.gov.sa/elib";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+        ((LinearLayout)view.findViewById(R.id.m3)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String url = "https://www.swcc.gov.sa/ar/Pages/Index/VisualIdentity";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+//                Intent Link=  new Intent(getActivity(),ShowLinkActivity.class);
+//                Link.putExtra("URL_LINK","https://www.swcc.gov.sa/ar/Pages/Index/VisualIdentity");
+//                Link.putExtra("Auth","N");
+//                Link.putExtra("Share","1");
+//                startActivity(Link);
+            }
+        });
+        ((LinearLayout)view.findViewById(R.id.m4)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "https://swcc.gov.sa/uploads/music.pdf";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+//                Intent Link=  new Intent(getActivity(),ShowLinkActivity.class);
+//                Link.putExtra("URL_LINK","http://docs.google.com/gview?embedded=true&url="+"https://swcc.gov.sa/uploads/music.pdf");
+//                Link.putExtra("Auth","N");
+//                Link.putExtra("Share","1");
+//                startActivity(Link);
+            }
+        });
+
         Emppic=(TextView)view.findViewById(R.id.Emppic);
         EmpName=(TextView)view.findViewById(R.id.EmpName);
         EmpJob=(TextView)view.findViewById(R.id.EmpJob);
@@ -122,6 +294,7 @@ TextView Emppic,EmpName,EmpJob;
         down=(TextView)view.findViewById(R.id.down);
         moreinfo=(LinearLayout) view.findViewById(R.id.moreinfo);
         badge=(TextView)view.findViewById(R.id.badge);
+        birdList = new ArrayList<GridItem>();
 
 
         down.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +313,6 @@ TextView Emppic,EmpName,EmpJob;
             }
         });
 
-        PersonalResult per=global.GetPData("PersonalResult");
 
         String text = "<font color=#000000>الادارة: </font> <font color=#0066CC> "+per.getResultObject().getDepartment()+"</font>";
         Empdept.setText(Html.fromHtml(text));
@@ -161,20 +333,7 @@ TextView Emppic,EmpName,EmpJob;
 
 
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        height = displayMetrics.heightPixels;
-        width = displayMetrics.widthPixels;
-        birdList = new ArrayList<GridItem>();
 
-
-        SliderAdapter adapter1 = new SliderAdapter(getContext(), sliderDataArrayList,width,width);
-
-        // below method is used to set auto cycle direction in left to
-        // right direction you can change according to requirement.
-        // sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
-
-        sliderView.setSliderAdapter(adapter1);
 
 if(global.GetValue("HRFav").contains("HR3")) {
     birdList.add(new GridItem("الحضور و الإنصراف", R.drawable.checkin,"HR3"));
@@ -189,13 +348,13 @@ if(global.GetValue("HRFav").contains("HR2")) {
             birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6"));
         }
         if(global.GetValue("HRFav").contains("HR5")) {
-            birdList.add(new GridItem("البحث عن العاملين",R.drawable.searchicon,"HR5"));
+            birdList.add(new GridItem("دليل العاملين",R.drawable.searchicon,"HR5"));
         }
         if(global.GetValue("HRFav").contains("HR4")) {
             birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4"));
         }
         if(global.GetValue("TEFav").contains("TE1")) {
-            birdList.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
+            //birdList.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
         }
 
         if(global.GetValue("TEFav").contains("TE2")) {
@@ -205,6 +364,12 @@ if(global.GetValue("HRFav").contains("HR2")) {
         if(global.GetValue("TEFav").contains("TE3")) {
             birdList.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3"));
         }
+
+
+        if(global.GetValue("HRFav").contains("HR7")) {
+            birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7"));
+        }
+
 
 
 
@@ -264,6 +429,9 @@ if(global.GetValue("HRFav").contains("HR2")) {
                         }
                         if(birdList.get(i).getServiceName().contains("AddItem")){
                             startActivityForResult(new Intent(getActivity(),FaveroitActivity.class),1001);
+                        }
+                        if(birdList.get(i).getType().contains("HR7")) {
+                            startActivity(new Intent(getActivity(),EmpTransactionActivity.class));
                         }
 
 //                        if(i==0){
@@ -704,6 +872,10 @@ if(global.GetValue("HRFav").contains("HR2")) {
                         // Get new FCM registration token
                         String token = task.getResult();
                         Log.d("Token+++",token);
+                        global.SaveValue("NotfToken",token);
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("fcmTokens/Android_"+global.GetValue("Username").replace("u","").replace("U",""));
+                        myRef.setValue(token);
 
                     }
                 });
@@ -731,7 +903,7 @@ if(global.GetValue("HRFav").contains("HR2")) {
             birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6"));
         }
         if(global.GetValue("HRFav").contains("HR5")) {
-            birdList.add(new GridItem("البحث عن العاملين",R.drawable.searchicon,"HR5"));
+            birdList.add(new GridItem("دليل العاملين",R.drawable.searchicon,"HR5"));
         }
         if(global.GetValue("HRFav").contains("HR4")) {
             birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4"));
@@ -743,8 +915,15 @@ if(global.GetValue("HRFav").contains("HR2")) {
             birdList.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2"));
         }
         if(global.GetValue("TEFav").contains("TE1")) {
-            birdList.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
+           // birdList.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
         }
+
+
+        if(global.GetValue("HRFav").contains("HR7")) {
+            birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7"));
+        }
+
+
         birdList.add(new GridItem("AddItem",R.drawable.idcard,""));
 
         GridAdapter adapter=new GridAdapter(getContext(),R.layout.griditem,birdList,width,height,0);
@@ -782,6 +961,10 @@ if(global.GetValue("HRFav").contains("HR2")) {
 
         }
     }
+
+
+
+
 
     @Override
     public void onResume() {

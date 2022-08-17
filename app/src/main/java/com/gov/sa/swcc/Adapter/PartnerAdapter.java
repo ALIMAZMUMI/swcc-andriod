@@ -2,6 +2,7 @@ package com.gov.sa.swcc.Adapter;
 
 import android.app.Activity;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,17 @@ this.ProjectMangerId=ProjectMangerId;
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String SelDate=sdf.format(c.getTime());
+
+
+        if (global.GetValue("Lan").equals("en")) {
+
+            ((TextView)rowView.findViewById(R.id.check)).setText("check");
+            ((TextView)rowView.findViewById(R.id.addnote)).setText("add note");
+
+
+//            rowtext1.setGravity(Gravity.LEFT);
+
+        }
         if(Titem.get(position).getRoundNumber()==2) {
         if(!global.GetValue(SelDate+"1"+Classfcation_LK+ProjectMangerId).equals("true")){
 

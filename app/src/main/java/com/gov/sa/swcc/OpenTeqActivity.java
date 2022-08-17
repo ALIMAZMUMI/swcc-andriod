@@ -54,7 +54,7 @@ startActivity(new Intent(OpenTeqActivity.this,IndustrialSecurityActivity.class))
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(OpenTeqActivity.this,InternalEditorActivity.class));
+                startActivity(new Intent(OpenTeqActivity.this,InternalEditorNActivity.class));
 
             }
         });

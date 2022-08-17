@@ -55,8 +55,10 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:src="@drawable/checkmark"
                             />
                         <TextView
+                            android:id="@+id/hedar"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:text="تم ارسال الملاحظة بنجاح"

@@ -248,9 +248,8 @@ LinearLayout sectionpay99;
     private void CallPayslip(String Type,String Date) throws IOException, XmlPullParserException {
         Date cDate = new Date();
 
-
-        ProgressDialog dialog = ProgressDialog.show(PayslipActivity.this, "", "يرجى الإنتظار", true);
-
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -274,7 +273,7 @@ LinearLayout sectionpay99;
                             "</soap:Envelope>";
 
 
-                    URL url = new URL("https://l650075-iflmap.hcisbp.sa1.hana.ondemand.com/cxf/employeePayslipService2MobileApp");
+                    URL url = new URL("https://"+Api.Domain+"/GatewayControlPanel/EmployeePayroll/EmployeePayslipService");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                     // Set timeout as per needs

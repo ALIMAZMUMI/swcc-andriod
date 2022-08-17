@@ -2,6 +2,7 @@ package com.gov.sa.swcc;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.gov.sa.swcc.model.GetToken.GetToken;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainLGActivity extends AppCompatActivity {
     private TextView mTextMessage;
@@ -23,6 +29,7 @@ public class MainLGActivity extends AppCompatActivity {
 
     public static  Fragment active = home;
 ImageView sidemeun;
+Global global;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -61,7 +68,7 @@ ImageView sidemeun;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainlg);
-        Global global=new Global(MainLGActivity.this);
+         global=new Global(MainLGActivity.this);
 
         fm=getSupportFragmentManager();
         sidemeun=(ImageView)findViewById(R.id.sidemeun);
@@ -83,8 +90,9 @@ ImageView sidemeun;
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navView.setSelectedItemId(R.id.navigation_home);
-
+        //GetToken();
     }
+
 
 
 

@@ -10,6 +10,7 @@ package com.gov.sa.swcc;
         import android.content.Intent;
         import android.content.pm.PackageManager;
         import android.graphics.Bitmap;
+        import android.graphics.Color;
         import android.graphics.drawable.BitmapDrawable;
         import android.net.Uri;
         import android.os.AsyncTask;
@@ -22,6 +23,7 @@ package com.gov.sa.swcc;
         import android.util.Log;
         import android.view.View;
         import android.view.ViewGroup;
+        import android.widget.AdapterView;
         import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.EditText;
@@ -105,6 +107,19 @@ public class ReturnDocmentsActivity extends AppCompatActivity {
         citystring.add("إختر المدينة");
 
 
+
+        city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i==citystring.size()-1)
+                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         // Creating adapter for spinner
         ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(this, R.layout.spinnericon,R.id.spinneritem, citystring)
         {
@@ -185,8 +200,8 @@ city.setSelection(citystring.size()-1);
         String user=global.GetValue("Username");
         PersonalResult per=global.GetPData("PersonalResult");
 
-        ProgressDialog dialog = ProgressDialog.show(ReturnDocmentsActivity.this, "", "يرجى الإنتظار", true);
-
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -213,7 +228,7 @@ city.setSelection(citystring.size()-1);
                     post=post.replaceAll("'","\"");
 
                     Log.d("Ex------",post);
-                    URL url = new URL("https://apitest.swcc.gov.sa/swccmobile/api/FootPrint/CreateIndustrialSecurityRequest");
+                    URL url = new URL("https://"+Api.Domain+"/GatewayControlPanel/FootPrint/CreateIndustrialSecurityRequest");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                     // Set timeout as per needs

@@ -19,8 +19,8 @@
         app:sliderIndicatorMargin="15dp"
         app:sliderIndicatorOrientation="horizontal"
         app:sliderIndicatorRadius="2dp"
-        app:sliderIndicatorSelectedColor="#5A5A5A"
-        app:sliderIndicatorUnselectedColor="#FFF"
+        app:sliderIndicatorSelectedColor="#fff"
+        app:sliderIndicatorUnselectedColor="#004C86"
         app:sliderScrollTimeInSec="1" />
 
     <ScrollView

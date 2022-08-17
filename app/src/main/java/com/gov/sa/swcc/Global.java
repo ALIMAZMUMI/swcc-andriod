@@ -2,6 +2,7 @@ package com.gov.sa.swcc;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,18 +10,28 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.gov.sa.swcc.Adapter.SearchAdapter;
 import com.gov.sa.swcc.model.PersonalResult;
+import com.gov.sa.swcc.model.SearchEmpItem;
+import com.gov.sa.swcc.model.SearchItem;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Global {
 
@@ -72,6 +83,14 @@ public class Global {
         return obj;
     }
 
+    public void ShowMessageT(String Message){
+
+
+        Toast.makeText(context,Message,Toast.LENGTH_SHORT).show();
+
+
+
+    }
 
     public void ShowMessage(String Message){
 
@@ -97,6 +116,42 @@ public class Global {
         alertDialog1.show();
 
     }
+
+    public void ShowMessageLogout(String Message){
+
+
+
+        AlertDialog alertDialog1 = new AlertDialog.Builder(
+                context).create();
+
+        // Setting Dialog Title
+        alertDialog1.setTitle("");
+
+        // Setting Dialog Message
+        alertDialog1.setMessage(Message);
+
+        alertDialog1.setButton("موافق", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+
+                SaveValue("Home","N");
+                SaveValue("Authentication","YY");
+                SaveValue("Username","");
+                SaveValue("Password","");
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                ((Activity)context).finish();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog1.show();
+
+    }
+
+
+
 
     public void ShowMessageF(String Message, Activity activity){
 
@@ -130,6 +185,18 @@ public class Global {
         this.activity=activity;
         Intent intent=new Intent(context,RequestMessageActivity.class);
         intent.putExtra("Message",Message);
+        context.startActivity(intent);
+
+    }
+
+    public void ShowMessageNF(String Message,String Lan, Activity activity){
+
+
+        this.activity=activity;
+        Intent intent=new Intent(context,RequestMessageActivity.class);
+        intent.putExtra("Message",Message);
+        intent.putExtra("Lan",Message);
+
         context.startActivity(intent);
 
     }
@@ -193,81 +260,109 @@ return true;
     public String GetEmail(String Bagde){
 
 
-        try {
-            InputStream is = context.getAssets().open("accounts_and_emails.txt");
-
-            // We guarantee that the available method returns the total
-            // size of the asset...  of course, this does mean that a single
-            // asset can't be more than 2 gigs.
-            int size = is.available();
-
-            // Read the entire asset into a local byte buffer.
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-
-            // Convert the buffer into a string.
-            String text = new String(buffer);
-String [] Emp=text.split("#%#");
-
-for(int i=0;i<Emp.length;i++){
-    String [] E=Emp[i].split("#");
-    if(E.length==3){
-    String Ba=E[0].replaceAll("#","");
-    String Email=E[2].replaceAll("#","");
-
-        if(Ba.toLowerCase().contains(Bagde.toLowerCase())){
-
-            return Email;
-    }
-
-    }
-
+String Email="";
+if(GetValue("Email").length()>5){
+    return GetValue("Email");
+}else{
+    CallSearch(GetPData("PersonalResult").getResultObject().getFullName(),context);
 }
-            // Finally stick the string into the text view.
-            // Replace with whatever you need to have the text into.
+
+
 
 return "";
 
-        } catch (IOException e) {
-            return e.getMessage();
-        }
     }
 
-    public List<String> GetEmps(String Name){
-        List<String> Employee=new ArrayList<>();
+    private void CallSearch(String word,Context context) {
 
-        try {
-            InputStream is = context.getAssets().open("name_and_phone.txt");
 
-            // We guarantee that the available method returns the total
-            // size of the asset...  of course, this does mean that a single
-            // asset can't be more than 2 gigs.
-            int size = is.available();
 
-            // Read the entire asset into a local byte buffer.
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
+        Call<SearchEmpItem> call = RetrofitClient.getInstance(Api.Global).getMyApi().SwccEmps(word,"lg33fHafsghgd");
+        PorgressDilog dialog =  new PorgressDilog((Activity) context);
+        dialog.show();
+        call.enqueue(new Callback<SearchEmpItem>() {
+            @Override
+            public void onResponse(Call<SearchEmpItem> call, Response<SearchEmpItem> response) {
+                Log.d("Resp",response.message()+"");
+                dialog.dismiss();
 
-            // Convert the buffer into a string.
-            String text = new String(buffer);
-            String [] Emp=text.split("#%#");
+                if(response.isSuccessful())
+                {
 
-            for(int i=0;i<Emp.length;i++){
-                if(Emp[i].contains(Name)){
-                    Employee.add(Emp[i]);
+                    if(response.body().getResult().size()>0){
+
+
+                        List<SearchItem> Detiles=new ArrayList<>();
+                        for(int i=0;i<response.body().getResult().size();i++)
+                        {
+                          if(response.body().getResult().get(i).getUid().contains(GetValue("Username").replaceAll("u",""))){
+                           SaveValue("Email",response.body().getResult().get(i).getEmail());
+                        }
+                        }
+
+                    }
+
+                }else {
+                    dialog.dismiss();
                 }
             }
-            // Finally stick the string into the text view.
-            // Replace with whatever you need to have the text into.
 
-            return Employee;
+            @Override
+            public void onFailure(Call<SearchEmpItem>call, Throwable t) {
+                dialog.dismiss();
+                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+            }
 
-        } catch (IOException e) {
-            return Employee;
-        }
+
+        });
     }
 
 
+    public String GetDateFormat(String Date){
+        try {
+
+            String strDate = Date;
+
+            //current date format
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+            Date objDate = dateFormat.parse(strDate);
+
+            //Expected date format
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+
+            String finalDate = dateFormat2.format(objDate);
+return finalDate;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Date;
+
+        }
+    }
+
+    public String GetTime(String Date){
+        try {
+
+            String strDate = Date;
+
+            //current date format
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+            Date objDate = dateFormat.parse(strDate);
+
+            //Expected date format
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("HH:mm");
+
+            String finalDate = dateFormat2.format(objDate);
+            return finalDate;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Date;
+
+        }
+    }
+
 }
+

@@ -2,12 +2,14 @@ package com.gov.sa.swcc.Adapter;
 
 import android.app.Activity;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.gov.sa.swcc.Global;
 import com.gov.sa.swcc.R;
 import com.gov.sa.swcc.model.Signproject;
 
@@ -34,9 +36,16 @@ public class ProjectRaitingAdapter extends ArrayAdapter<Signproject> {
 
         TextView name = (TextView) rowView.findViewById(R.id.EmpName);
 
-        name.setText(Html.fromHtml("<font color='#004C86'>اسم العامل: </font>"+"<font color='#0066CC'>"+Titem.get(position).getEmployeeName()+"</font>"));
+        Global global=new Global(context);
 
+        if (global.GetValue("Lan").equals("en")) {
+            //((LinearLayout)findViewById(R.id.sline)).setGravity(Gravity.LEFT);
+            name.setText(Html.fromHtml("<font color='#004C86'>employee name: </font>" + "<font color='#0066CC'>" + Titem.get(position).getEmployeeName() + "</font>"));
+            name.setGravity(Gravity.LEFT|Gravity.CENTER);
+        }else {
+            name.setText(Html.fromHtml("<font color='#004C86'>اسم العامل: </font>" + "<font color='#0066CC'>" + Titem.get(position).getEmployeeName() + "</font>"));
 
+        }
 
 
 

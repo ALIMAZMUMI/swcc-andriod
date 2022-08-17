@@ -5,13 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="#0064CC"
+android:background="@color/darkblue"
     tools:context=".Auth2Activity">
 
+<!--    <pl.droidsonroids.gif.GifImageView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:src="@drawable/eidblue"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        />-->
+
     <ImageView
-        android:id="@+id/start_authentication"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/swccb"
+    android:background="@drawable/swccww"
+
+            android:id="@+id/start_authentication"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         />
+
+
+
 </LinearLayout>

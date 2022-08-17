@@ -14,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,10 +39,11 @@ Global global;
     TextView saldate;
     Calendar c,Current;
     String SelDate;
+    TextView persangage,curnttxt,plandtxt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pro_planning);
+        setContentView(R.layout.activity_pro_planning_n);
 
 global=new Global(Pro_planningActivity.this);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
@@ -54,6 +56,11 @@ global=new Global(Pro_planningActivity.this);
             }
         });
 
+
+        persangage=(TextView) findViewById(R.id.persangage);
+        curnttxt=(TextView) findViewById(R.id.curnttxt);
+        plandtxt=(TextView) findViewById(R.id.plandtxt);
+
         c = Calendar.getInstance();
         Current=Calendar.getInstance();
         c.add(Calendar.DATE,-1);
@@ -62,7 +69,7 @@ global=new Global(Pro_planningActivity.this);
 
 
         saldate=(TextView)findViewById(R.id.saldate);
-        addimage=(ImageView) findViewById(R.id.addimage);
+        //addimage=(ImageView) findViewById(R.id.addimage);
         next=(ImageView) findViewById(R.id.next);
         prev=(ImageView) findViewById(R.id.prev);
         if(global.CheckInternet(Pro_planningActivity.this)) {
@@ -123,7 +130,72 @@ global=new Global(Pro_planningActivity.this);
         return new String(chars);
     }
 
+
     private void CallProPlanning(String Date) {
+
+
+        String date=arabicToDecimal(Date);
+        Log.d("Date----",date+"");
+
+
+
+        Call<ProPlanning> call = RetrofitClient.getInstance(Api.ProPlaning).getMyApi().ProPlaning(date);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
+        call.enqueue(new Callback<ProPlanning>() {
+            @Override
+            public void onResponse(Call<ProPlanning> call, Response<ProPlanning> response) {
+                Log.d("Resp",response.message()+"");
+                if(response.isSuccessful())
+                {
+
+                    if(true){
+                        dialog.dismiss();
+
+                        String V1=response.body().getResultObject().substring(11,response.body().getResultObject().indexOf(","));
+                        String V2=response.body().getResultObject().substring(response.body().getResultObject().indexOf("forecast_exp")+13,response.body().getResultObject().length());
+                        float v1=Float.parseFloat(V1);
+                        float v2=Float.parseFloat(V2);
+                        float pers=(v1/v2)*100;
+
+
+                        String text = "<font color=#ffffff>نسبة المتحقق</font> <font color=#B3E931><big>"+(int)pers+"%</big></font>";
+                        persangage.setText(Html.fromHtml(text));
+
+                        text = "<font color=#0066CC><big>"+V1+"</big></font> <font color=#0066CC> مليون متر مكعب</font>";
+                        curnttxt.setText(Html.fromHtml(text));
+
+                        text = "<font color=#0066CC><big>"+V2+"</big></font> <font color=#0066CC> مليون متر مكعب</font>";
+                        plandtxt.setText(Html.fromHtml(text));
+
+                        //addimage.setBackground(writeTextOnDrawable(Date,V1,V2,Math.round(pers)+"%"));
+
+                    }else {
+                        dialog.dismiss();
+
+                        global.ShowMessage("");
+                    }
+
+                }else {
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProPlanning> call, Throwable t) {
+                dialog.dismiss();
+                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+
+            }
+
+
+        });
+    }
+
+
+
+
+    /*private void CallProPlanning(String Date) {
 
 
         String date=arabicToDecimal(Date);
@@ -174,7 +246,7 @@ float pers=(v1/v2)*100;
         });
     }
 
-
+*/
 
 
     private BitmapDrawable writeTextOnDrawable(String date_pro,String V1,String V2,String V3) {

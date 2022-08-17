@@ -2,7 +2,6 @@ package com.gov.sa.swcc;
 
 
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -31,7 +30,7 @@ String URLLink="";
     }
     int runtime=0;
     static WebView mWebview;
-    static ProgressDialog dialog;
+    static PorgressDilog dialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,8 +66,8 @@ String URLLink="";
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                dialog =   ProgressDialog.show(getActivity(), "",
-                        "يرجى الإنتظار", true);
+                 dialog =  new PorgressDilog(getActivity());
+                dialog.show();
             }
 
             @Override
@@ -99,10 +98,10 @@ String URLLink="";
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            URLLink = bundle.getString("URLLink","https://www.swcc.gov.sa/ar");
+            URLLink = bundle.getString("URLLink","https://swcc.gov.sa/ar");
         }else
         {
-            URLLink="https://www.swcc.gov.sa/ar";
+            URLLink="https://swcc.gov.sa/ar";
         }
 
 //TODO
@@ -120,9 +119,9 @@ if(mWebview!=null) {
     if(!mWebview.getUrl().equals(URLLink)){
     Bundle bundle = this.getArguments();
     if (bundle != null) {
-        URLLink = bundle.getString("URLLink", "https://www.swcc.gov.sa/ar");
+        URLLink = bundle.getString("URLLink", "https://swcc.gov.sa/ar");
     } else {
-        URLLink = "https://www.swcc.gov.sa/ar";
+        URLLink = "https://swcc.gov.sa/ar";
     }
 
     mWebview.loadUrl(URLLink);

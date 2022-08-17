@@ -52,7 +52,6 @@ public class RetrofitClient {
 
 
 
-
     public static synchronized RetrofitClient getInstance() {
             instance = new RetrofitClient();
 

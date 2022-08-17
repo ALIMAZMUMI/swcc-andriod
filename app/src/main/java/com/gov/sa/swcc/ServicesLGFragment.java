@@ -86,10 +86,11 @@ public class ServicesLGFragment extends Fragment {
         birdList.add(new GridItem("مسيّر الراتب",R.drawable.profile,"HR2"));
         birdList.add(new GridItem("الاجازات",R.drawable.leave,"HR1"));
 
-
         birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6"));
-        birdList.add(new GridItem("البحث عن العاملين",R.drawable.searchicon,"HR5"));
+        birdList.add(new GridItem("دليل العاملين",R.drawable.searchicon,"HR5"));
         birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4"));
+
+        birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7"));
 
         adapter=new GridAdapter(getContext(),R.layout.griditem,birdList,width,height,0);
         GridView gridView=(GridView)view.findViewById(R.id.servicegrid1);
@@ -123,6 +124,9 @@ public class ServicesLGFragment extends Fragment {
                     startActivity(new Intent(getActivity(),InsuranceInfoActivity.class));
                 }
 
+                if(birdList.get(i).getType().contains("HR7")) {
+                    startActivity(new Intent(getActivity(),EmpTransactionActivity.class));
+                }
             }
         });
 
@@ -130,7 +134,7 @@ public class ServicesLGFragment extends Fragment {
 
 
         birdList1 = new ArrayList<GridItem>();
-        birdList1.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
+        //birdList1.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
         birdList1.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2"));
         birdList1.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3"));
 

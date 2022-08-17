@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    tools:context=".ApproveCompleteActivity">
+    <LinearLayout
+        android:id="@+id/backgroundlin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#00000000"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            >
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="12dp"
+                android:id="@+id/idCard"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp"
+                android:background="#ffffff"
+                android:layout_centerHorizontal="true">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:weightSum="5"
+                    android:gravity="center|top">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:weightSum="10"
+                        android:background="#050066CC"
+                        >
+
+
+
+
+                        <TextView
+                            android:id="@+id/header"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:text="طلب اعتماد مهمة"
+                            android:textColor="#004C86"
+                            android:textSize="14dp"
+                            android:layout_weight="9"
+                            android:gravity="center"/>
+                        <ImageView
+                            android:id="@+id/close"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:background="@drawable/close"
+                            android:elevation="12dp"
+
+                            android:layout_gravity="center"
+                            />
+
+
+                    </LinearLayout>
+
+
+
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="27dp"
+                        app:cardBackgroundColor="#26CACCCE"
+                        android:paddingVertical="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="20dp"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            >
+                        <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                        android:weightSum="10"
+                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tasktitle"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:textSize="17dp"
+                            android:layout_weight="7"
+                            android:textColor="#0066CC"
+                            android:gravity="center|right"
+/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:textSize="15dp"
+                            android:layout_weight="3"
+                            android:gravity="center|right"
+                            android:paddingRight="10dp"
+                            android:textColor="#004C87"
+                            android:text="عنوان المهمة:"
+                            />
+                </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:weightSum="10"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/taskdate"
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:textSize="11dp"
+                                android:layout_weight="5"
+                                android:textColor="#59000000"
+                                android:gravity="center|right"
+                                android:text=""
+                                />
+                            <ImageView
+                                android:layout_margin="5dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/calendergray"/>
+
+                            <TextView
+                                android:id="@+id/empname"
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:textSize="11dp"
+                                android:layout_weight="5"
+                                android:gravity="center|right"
+                                android:textColor="#0066CC"
+                                android:text="عنوان المهمة:"
+                                />
+                            <ImageView
+                                android:layout_margin="5dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/personicon"/>
+                        </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:textSize="15dp"
+                        android:layout_marginHorizontal="27dp"
+                        android:textColor="#004C87"
+                        android:gravity="center|right"
+                        android:text="وصف المهمة"
+                        />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="27dp"
+                        app:cardBackgroundColor="#26CACCCE"
+                        android:paddingVertical="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        android:paddingTop="5dp"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingVertical="10dp"
+                                android:weightSum="10"
+                                android:layout_gravity="center|top"
+                                android:paddingHorizontal="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/detials"
+                                    android:layout_width="0dp"
+                                    android:layout_height="30dp"
+                                    android:textSize="13dp"
+
+                                    android:layout_weight="10"
+                                    android:gravity="center|right"
+                                    android:textColor="#0066CC"
+                                    android:text="عنوان المهمة:"
+                                    />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:weightSum="10"
+                        android:paddingVertical="10dp"
+                        android:layout_gravity="center|top"
+                        android:paddingHorizontal="27dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/attach"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:textSize="13dp"
+                            android:layout_weight="10"
+                            android:gravity="center|right"
+                            android:textColor="#0066CC"
+
+                            android:text="تحميل 1 مرفق"
+                            />
+                        <ImageView
+                            android:layout_margin="5dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/attach"/>
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:textSize="15dp"
+                        android:layout_marginHorizontal="27dp"
+                        android:textColor="#004C87"
+                        android:gravity="center|right"
+                        android:text="الملاحظات"
+                        />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="27dp"
+                        app:cardBackgroundColor="#26CACCCE"
+                        android:paddingVertical="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        android:paddingTop="5dp"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:weightSum="10"
+                                android:paddingVertical="10dp"
+                                android:layout_gravity="center|top"
+                                android:paddingHorizontal="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/note"
+                                    android:layout_width="0dp"
+                                    android:layout_height="30dp"
+                                    android:textSize="13dp"
+                                    android:layout_weight="10"
+                                    android:gravity="center|right"
+                                    android:textColor="#0066CC"
+
+                                    android:text="عنوان المهمة:"
+                                    />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="30dp"    android:gravity="center"
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/cancel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="ارجاع المهمة"
+                            android:paddingHorizontal="15dp"
+                            android:textColor="#0066CC"
+                            android:layout_marginRight="50dp"
+                            android:background="@drawable/blueborder"
+                            />
+
+                        <Button
+                            android:id="@+id/submit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="اعتماد"
+                            android:paddingHorizontal="40dp"
+                            android:textColor="#ffffff"
+                            android:background="@drawable/blueroundfull"
+                            />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

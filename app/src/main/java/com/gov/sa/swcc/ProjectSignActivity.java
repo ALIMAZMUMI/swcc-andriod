@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,7 +43,14 @@ String SelDate;
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
 
-
+        ((TextView)findViewById(R.id.headertxt)).setText(getIntent().getExtras().getString("HT",""));
+        ((ImageView)findViewById(R.id.backarrow)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +81,14 @@ String SelDate;
             saldate.setText(SelDate);
             CallSharek(ID,SelDate);
            // header.setText(SelDate);
+        }
+
+
+        if (global.GetValue("Lan").equals("en")) {
+            ((TextView)findViewById(R.id.textheader)).setText("employee attendance");
+            ((LinearLayout)findViewById(R.id.sline)).setGravity(Gravity.LEFT);
+
+
         }
 
 
@@ -121,9 +139,9 @@ String SelDate;
 
 
 
-        Call<List<Signproject>> call = RetrofitClient.getInstance(Api.Sharek).getMyApi().GetEmployeeTransactions(ID,Date);
-        ProgressDialog dialog = ProgressDialog.show(ProjectSignActivity.this, "",
-                "يرجى الإنتظار", true);
+        Call<List<Signproject>> call = RetrofitClient.getInstance(Api.Global).getMyApi().GetEmployeeTransactions(ID,Date);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         call.enqueue(new Callback<List<Signproject>>() {
             @Override
             public void onResponse(Call<List<Signproject>> call, Response<List<Signproject>> response) {

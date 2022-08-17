@@ -14,12 +14,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -44,6 +48,8 @@ int index,Round;
     ImageView removeimage;
     RadioButton radioButton1,radioButton2,radioButton3;
     Button submit,cancel;
+Global global;
+    String Pri,Cmt,Photo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +58,71 @@ int index,Round;
         header=getIntent().getStringExtra("header");
         index=getIntent().getIntExtra("index",-1);
 Round=getIntent().getIntExtra("Round",-1);
-        TextView header=(TextView)findViewById(R.id.header);
+
+
+        Pri=getIntent().getStringExtra("Prio");
+        Cmt=getIntent().getStringExtra("Cmt");
+        Photo=getIntent().getStringExtra("image");
+
+global=new Global(AddNoteActivity.this);
+
+
+
+
+
+TextView header=(TextView)findViewById(R.id.header);
         header.setText(""+this.header);
         EditText detials=(EditText)findViewById(R.id.detials);
 
 
+
+
+
         submit=(Button)findViewById(R.id.submit);
 
+
+        detials.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//
+
+
+                if(detials.getText().length()>3){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                    submit.setVisibility(View.VISIBLE);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                    submit.setVisibility(View.GONE);
+
+                }
+
+                if(Cmt !=null){
+                    if(!Cmt.equals(detials.getText().toString())){
+                    submit.setText("حفظ التغيرات");
+                        if (global.GetValue("Lan").equals("en")) {
+                            submit.setText("save");}
+                    }else
+                    {
+                        submit.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
+        submit.setEnabled(false);
+        submit.setVisibility(View.GONE);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +158,9 @@ Round=getIntent().getIntExtra("Round",-1);
                 }
             }
         });
+
+
+
         cancel=(Button)findViewById(R.id.cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +170,9 @@ Round=getIntent().getIntExtra("Round",-1);
                 finish();
             }
         });
+
+
+
         radioButton1=(RadioButton) findViewById(R.id.radioButton1);
         radioButton2=(RadioButton) findViewById(R.id.radioButton2);
 
@@ -134,6 +204,93 @@ Round=getIntent().getIntExtra("Round",-1);
             }
         });
 
+
+        radioButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Pri !=null){
+                    submit.setText("حفظ التغيرات");
+                    if (global.GetValue("Lan").equals("en")) {
+                        submit.setText("save");}
+                    submit.setVisibility(View.VISIBLE);
+
+                }
+            }
+        });
+
+        radioButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Pri !=null){
+                    submit.setText("حفظ التغيرات");
+                    if (global.GetValue("Lan").equals("en")) {
+                        submit.setText("save");}
+                    submit.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        radioButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Pri !=null){
+                    submit.setText("حفظ التغيرات");
+                    if (global.GetValue("Lan").equals("en")) {
+                        submit.setText("save");}
+                    submit.setVisibility(View.VISIBLE);
+
+                }
+            }
+        });
+
+
+if(Pri!=null){
+        if(Pri.length()>0){
+            radioButton1.setChecked(false);
+            radioButton2.setChecked(false);
+            radioButton3.setChecked(false);
+
+            if (Pri.equals("1")){
+                radioButton1.setChecked(true);
+            }else if (Pri.equals("2")){
+                radioButton2.setChecked(true);
+            }else if (Pri.equals("3")){
+                radioButton3.setChecked(true);
+            }
+        }
+}
+
+        if(Cmt!=null){
+        if(Cmt.length()>0){
+detials.setText(Cmt);
+        }}
+
+
+
+        if (global.GetValue("Lan").equals("en")) {
+            submit.setText("save");
+
+
+            ((TextView)findViewById(R.id.noteh)).setText("write note");
+            detials.setHint("write note");
+            ((TextView)findViewById(R.id.message)).setText("level of importance of observation?");
+            addimagetxt.setText("Take and upload a photo");
+
+            //((LinearLayout)findViewById(R.id.sline)).setGravity(Gravity.LEFT);
+            radioButton1.setText("high");
+            radioButton2.setText("medium");
+            radioButton3.setText("low");
+cancel.setText("cancel");
+
+//            rowtext1.setGravity(Gravity.LEFT);
+        }
+//        if(Photo.length()>0){
+//            addimagetxt.setVisibility(View.GONE);
+//            addimage.setVisibility(View.GONE);
+//            removeimage.setVisibility(View.VISIBLE);
+//            removeimagetxt.setVisibility(View.VISIBLE);
+//            Image=1;
+//        }
 
 
     }

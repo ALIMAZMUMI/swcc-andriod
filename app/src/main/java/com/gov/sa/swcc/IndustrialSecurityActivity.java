@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,10 +18,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,7 +56,7 @@ public class IndustrialSecurityActivity extends AppCompatActivity {
     EditText detials;
     Global global;
     int Image=0;
-
+    Button submit;
     TextView removeimagetxt,addimagetxt;
     ImageView removeimage;
 
@@ -133,7 +137,49 @@ public class IndustrialSecurityActivity extends AppCompatActivity {
             }
         };
         // Drop down layout style - list view with radio button
+        servicetype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i==categories.size()-1)
+                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
 
+                if(detials.getText().length()>3&&servicetype.getSelectedItemPosition()!=servicetype.getAdapter().getCount()
+                        &&city.getSelectedItemPosition()!=city.getAdapter().getCount()){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i==citystring.size()-1)
+                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
+
+                if(detials.getText().length()>3&&servicetype.getSelectedItemPosition()!=servicetype.getAdapter().getCount()
+                        &&city.getSelectedItemPosition()!=city.getAdapter().getCount()){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         // attaching data adapter to spinner
         servicetype.setAdapter(serviceAdapter);
         city.setAdapter(cityAdapter);
@@ -151,7 +197,36 @@ public class IndustrialSecurityActivity extends AppCompatActivity {
         });
 
         detials=(EditText)findViewById(R.id.detials);
-        Button submit=(Button) findViewById(R.id.submit);
+
+        detials.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//
+                if(detials.getText().length()>3&&servicetype.getSelectedItemPosition()!=servicetype.getAdapter().getCount()
+                        &&city.getSelectedItemPosition()!=city.getAdapter().getCount()){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
+            }
+        });
+         submit=(Button) findViewById(R.id.submit);
+
+
+        submit.setBackgroundResource(R.drawable.grayroundbtn);
+        submit.setEnabled(false);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -205,14 +280,15 @@ else
         String user=global.GetValue("Username");
         PersonalResult per=global.GetPData("PersonalResult");
 
-        ProgressDialog dialog = ProgressDialog.show(IndustrialSecurityActivity.this, "", "يرجى الإنتظار", true);
-
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
 
                 try {
 
+                    String Email=global.GetEmail(user);
 
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
@@ -223,7 +299,7 @@ else
                             "'LastName' : '"+per.getResultObject().getLastNameEn()+"'," +
                             "'Title' : '"+TOR+"'," +
                             "'Department' : '"+per.getResultObject().getDepartment()+"'," +
-                            "'Email' : '"+global.GetEmail(user)+"'," +
+                            "'Email' : '"+Email+"'," +
                             "'City' : '"+per.getResultObject().getLocationAr()+"'," +
                             "'TypeRequest' : '"+TOR+"'," +
                             "'Location' : '"+City+"'," +
@@ -233,7 +309,7 @@ else
                     post=post.replaceAll("'","\"");
 
                     Log.d("Ex------",post);
-                    URL url = new URL("https://apitest.swcc.gov.sa/swccmobile/api/FootPrint/CreateIndustrialSecurityRequest");
+                    URL url = new URL("https://"+Api.Domain+"/GatewayControlPanel/FootPrint/CreateIndustrialSecurityRequest");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                     // Set timeout as per needs

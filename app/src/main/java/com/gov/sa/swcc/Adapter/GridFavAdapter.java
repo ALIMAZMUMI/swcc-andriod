@@ -86,6 +86,9 @@ public class GridFavAdapter extends ArrayAdapter<GridItem> {
         radio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //radio.setChecked(!radio.isChecked());
+
                 birdList.get(position).setChecked(radio.isChecked());
             }
         });

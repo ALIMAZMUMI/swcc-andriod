@@ -5,15 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.gov.sa.swcc.Adapter.GridAdapter;
 import com.gov.sa.swcc.Adapter.PartnerAdapter;
@@ -50,10 +54,17 @@ public class ShareakPartnerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shareak_partner);
          global=new Global(ShareakPartnerActivity.this);
 
-
-
-
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+        ((TextView)findViewById(R.id.headertxt)).setText(getIntent().getExtras().getString("HT",""));
+        ((ImageView)findViewById(R.id.backarrow)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
 
         // TextView back=(TextView)findViewById(R.id.back);
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
@@ -212,6 +223,12 @@ if(Day1.get(i).getRoundResult()!=null) {
                         intent.putExtra("index",i);
                         intent.putExtra("Round",Day1.get(i).getRoundNumber());
 
+
+                        intent.putExtra("Prio",Day1.get(i).getPriorityLK());
+                        intent.putExtra("Cmt",Day1.get(i).getCmt());
+                        intent.putExtra("image",Day1.get(i).getPhoto());
+
+
                         startActivityForResult(intent,1001);
                     }
                 }}
@@ -236,6 +253,19 @@ if(Day1.get(i).getRoundResult()!=null) {
                     }}
             }
         });
+
+
+
+        if (global.GetValue("Lan").equals("en")) {
+
+            button1.setText("first visit");
+            button2.setText("second visit");
+            ((TextView)findViewById(R.id.hname)).setText("task evaluations");
+            ((LinearLayout)findViewById(R.id.sline)).setGravity(Gravity.LEFT);
+
+//            rowtext1.setGravity(Gravity.LEFT);
+submit.setText("send");
+        }
     }
 
 
@@ -302,9 +332,9 @@ else if(round==2){
 
     private void InsertContractsEvaluation(List<PartnerModel> List) {
         String user=global.GetValue("Username").replace("u","");
-        Call<Boolean> call = RetrofitClient.getInstance(Api.Sharek).getMyApi().InsertContractsEvaluation1(List);
-        ProgressDialog dialog = ProgressDialog.show(ShareakPartnerActivity.this, "",
-                "يرجى الإنتظار", true);
+        Call<Boolean> call = RetrofitClient.getInstance(Api.Global).getMyApi().InsertContractsEvaluation1(List);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -355,13 +385,13 @@ else if(round==2){
             ,String roundNumber
             ,String date) {
 
-        Call<List<PartnerModel>> call = RetrofitClient.getInstance(Api.Sharek).getMyApi().GetAllContractElementsEvaluation( ProjectMangerId
+        Call<List<PartnerModel>> call = RetrofitClient.getInstance(Api.Global).getMyApi().GetAllContractElementsEvaluation( ProjectMangerId
                 , SupervisorId
                 , Classfcation_LK
                 , roundNumber
                 ,date);
-        ProgressDialog dialog = ProgressDialog.show(ShareakPartnerActivity.this, "",
-                "يرجى الإنتظار", true);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         call.enqueue(new Callback<List<PartnerModel>>() {
             @Override
             public void onResponse(Call<List<PartnerModel>> call, Response<List<PartnerModel>> response) {

@@ -24,7 +24,7 @@ import com.gov.sa.swcc.model.PersonalResult;
 import java.util.ArrayList;
 
 public class SideMenuActivity extends AppCompatActivity {
-LinearLayout main1,main2,main3,main4,main5,main6;
+LinearLayout main1,main2,main3,main4,main5,main6,main7;
 
 ListView sub1,sub2,sub3,sub4;
 ImageView menuimg,menuimg2,menuimg3,menuimg4,side;
@@ -62,9 +62,16 @@ ImageView pic=(ImageView) findViewById(R.id.emppic);
         main4=(LinearLayout)findViewById(R.id.acadyme);
         main5=(LinearLayout)findViewById(R.id.pro_plan);
         main6=(LinearLayout)findViewById(R.id.logout);
+main7=(LinearLayout)findViewById(R.id.bank);
 
+        main7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SideMenuActivity.this,BankActivity.class));
+                SideMenuActivity.this.finish();
 
-
+            }
+        });
         main1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

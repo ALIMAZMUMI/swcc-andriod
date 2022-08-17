@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,7 +18,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -101,6 +104,12 @@ public class HrRequestActivity extends AppCompatActivity {
         Spinner city = (Spinner) findViewById(R.id.city);
 
         // Spinner click listener
+        Button submit=(Button) findViewById(R.id.submit);
+
+
+
+
+
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
@@ -109,7 +118,7 @@ public class HrRequestActivity extends AppCompatActivity {
         categories.add("الإسكان و المرافق");
         categories.add("الأمن و السلامة");
         categories.add("اخرى");
-        categories.add("إخترالطلب يتعلق ب");
+        categories.add("اختر الادارة المطلوبة");
 
 
 
@@ -118,7 +127,11 @@ public class HrRequestActivity extends AppCompatActivity {
         ArrayAdapter<String> serviceAdapter = new ArrayAdapter<String>(this, R.layout.spinnericon,R.id.spinneritem, categories)
         {
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+
+
                 return super.getDropDownView(position , convertView, parent);
+
             }
 
             public int getCount() {
@@ -129,6 +142,29 @@ public class HrRequestActivity extends AppCompatActivity {
 
 
 
+
+        city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i==citystring.size()-1)
+                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
+
+                if(detials.getText().length()>3&&servicetype.getSelectedItemPosition()!=servicetype.getAdapter().getCount()
+                        &&city.getSelectedItemPosition()!=city.getAdapter().getCount()){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 
 
@@ -141,6 +177,18 @@ public class HrRequestActivity extends AppCompatActivity {
         servicetype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if(i==categories.size()-1)
+                    ((TextView) adapterView.getChildAt(0).findViewById(R.id.spinneritem)).setTextColor(Color.parseColor("#CACCCE"));
+
+                if(detials.getText().length()>3&&servicetype.getSelectedItemPosition()!=servicetype.getAdapter().getCount()
+                        &&city.getSelectedItemPosition()!=city.getAdapter().getCount()){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
                 if(i==0){
                   citystring = new ArrayList<String>();
                     citystring.add("مستحقات ماليه");
@@ -158,6 +206,8 @@ public class HrRequestActivity extends AppCompatActivity {
                     ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(HrRequestActivity.this, R.layout.spinnericon,R.id.spinneritem, citystring)
                     {
                         public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+
                             return super.getDropDownView(position , convertView, parent);
                         }
 
@@ -176,7 +226,7 @@ public class HrRequestActivity extends AppCompatActivity {
                     citystring.add("استفسار");
                     citystring.add("شكوى");
                     citystring.add("أخرى");
-                    citystring.add("إختر نوع الخدمة");
+                    citystring.add("تحديد نوع الخدمة");
 
                     ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(HrRequestActivity.this, R.layout.spinnericon,R.id.spinneritem, citystring)
                     {
@@ -220,7 +270,36 @@ city.setSelection(citystring.size()-1);
         });
 
         detials=(EditText)findViewById(R.id.detials);
-        Button submit=(Button) findViewById(R.id.submit);
+
+
+
+
+        detials.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//
+                if(detials.getText().length()>3&&servicetype.getSelectedItemPosition()!=servicetype.getAdapter().getCount()
+                &&city.getSelectedItemPosition()!=city.getAdapter().getCount()){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
+            }
+        });
+
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -272,14 +351,15 @@ city.setSelection(citystring.size()-1);
         String user=global.GetValue("Username");
         PersonalResult per=global.GetPData("PersonalResult");
 
-        ProgressDialog dialog = ProgressDialog.show(HrRequestActivity.this, "", "يرجى الإنتظار", true);
-
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
 
                 try {
 
+                    String Email=global.GetEmail(user);
 
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
@@ -290,7 +370,7 @@ city.setSelection(citystring.size()-1);
                             "'LastName' : '"+per.getResultObject().getLastNameEn()+"'," +
                             "'Title' : '"+TOR+"'," +
                             "'Department' : '"+per.getResultObject().getDepartment()+"'," +
-                            "'Email' : '"+global.GetEmail(user)+"'," +
+                            "'Email' : '"+Email+"'," +
                             "'City' : '"+per.getResultObject().getLocationAr()+"'," +
                             "'MainCategory' : '"+City+"'," +
                             "'ConcernedParty' : '"+TOR+"'," +
@@ -301,8 +381,9 @@ city.setSelection(citystring.size()-1);
                     post=post.replaceAll("'","\"");
 
                     Log.d("Ex------",post);
-                    URL url = new URL("https://apitest.swcc.gov.sa/swccmobile/api/FootPrint/CreateHrRequest");
+                    URL url = new URL("https://"+Api.Domain+"/GatewayControlPanel/FootPrint/CreateHrRequest");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    Log.d("Ex------",url.getPath());
 
                     // Set timeout as per needs
                     connection.setConnectTimeout(60000);
@@ -338,8 +419,11 @@ city.setSelection(citystring.size()-1);
                             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                             String line = "";
+
                             try {
                                 line = bufferedReader.readLine();
+                                Log.d("Ex------",line);
+
                                 if(connection.getResponseCode()==200){
                                     global.ShowMessageNF("رقم الطلب :"+line,HrRequestActivity.this);
                                 }else {

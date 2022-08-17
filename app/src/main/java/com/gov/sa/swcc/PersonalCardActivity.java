@@ -12,8 +12,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gov.sa.swcc.model.SearchResult;
+
 public class PersonalCardActivity extends AppCompatActivity {
 TextView Name,EnName,Badge,phone,city,email,emailbtn,cisco;
+public static SearchResult searchResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +30,8 @@ TextView Name,EnName,Badge,phone,city,email,emailbtn,cisco;
         //email=(TextView) findViewById(R.id.email);
         emailbtn=(TextView) findViewById(R.id.emailbtn);
         cisco=(TextView) findViewById(R.id.ciscobtn);
-        String Emp=getIntent().getExtras().getString("Emp","");
-        String [] empdata=Emp.split("#\\$#");
+//        String Emp=getIntent().getExtras().getString("Emp","");
+//        String [] empdata=Emp.split("#\\$#");
 
 
         ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
@@ -57,7 +60,7 @@ TextView Name,EnName,Badge,phone,city,email,emailbtn,cisco;
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{empdata[10]});
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{searchResult.getEmail()});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "");
                 intent.putExtra(Intent.EXTRA_TEXT,"");
                 if (intent.resolveActivity(getPackageManager()) != null) {
@@ -69,7 +72,7 @@ TextView Name,EnName,Badge,phone,city,email,emailbtn,cisco;
         cisco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse("ciscotel:"+empdata[7]);
+                Uri uri = Uri.parse("ciscotel:"+searchResult.getExt());
                 Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
 
                 likeIng.setPackage("com.cisco.im");
@@ -85,15 +88,15 @@ TextView Name,EnName,Badge,phone,city,email,emailbtn,cisco;
             }
         });
 
-        Log.d("EmpName",Emp);
-        if(empdata.length>1){
-            Name.setText(empdata[0]);
-            EnName.setText(empdata[2]+" " +empdata[3]);
-            Badge.setText(empdata[1]);
+        if(searchResult!=null){
+            Log.d("EmpName",searchResult.getFirstNameEn());
+            Name.setText(searchResult.getFirstNameAr()+" "+searchResult.getMiddleNameAr()+" "+searchResult.getLastNameAr());
+            EnName.setText(searchResult.getFirstNameEn()+" "+searchResult.getMiddleNameEn()+" "+searchResult.getLastNameEn());
+            Badge.setText("U"+searchResult.getUid());
             //phone.setText("التحويلة : "+empdata[7]);
-            city.setText(empdata[6]);
-            emailbtn.setText(empdata[10]);
-            cisco.setText(empdata[7]);
+            city.setText(searchResult.getNameAr());
+            emailbtn.setText(searchResult.getEmail());
+            cisco.setText(searchResult.getExt());
 //            String first = "البريد : ";
 //            String next = "<font color='#0971ce'>"+empdata[10]+"</font>";
 //            email.setText(Html.fromHtml(first + next));

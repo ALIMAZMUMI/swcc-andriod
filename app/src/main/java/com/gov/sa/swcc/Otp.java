@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +20,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.gov.sa.swcc.model.GetToken.GetToken;
 import com.gov.sa.swcc.model.LoginResult;
+import com.gov.sa.swcc.model.MangerCount.MangerCount;
 import com.gov.sa.swcc.model.PersonalResult;
 
 import java.nio.charset.StandardCharsets;
@@ -67,7 +71,6 @@ global=new Global(getContext());
         }
         try {
             Mobmsg.setText("تم إرسال الرمز للجوال ******"+Mobile.substring(Mobile.length()-4));
-
         }catch (Exception ex){
 
         }
@@ -111,7 +114,32 @@ global=new Global(getContext());
         });
 
 
+        otp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//
+                if(otp.getText().length()>=4){
+                    sub_otp.setBackgroundResource(R.drawable.blueroundfull);
+                    sub_otp.setEnabled(true);
+                }else{
+                    sub_otp.setBackgroundResource(R.drawable.grayroundbtn);
+                    sub_otp.setEnabled(false);
+                }
+            }
+        });
+
+        sub_otp.setBackgroundResource(R.drawable.grayroundbtn);
+        sub_otp.setEnabled(false);
 
 
 
@@ -132,10 +160,11 @@ global=new Global(getContext());
         String base64 = Base64.encodeToString(data, Base64.DEFAULT);
 
         Log.d("base64",base64+"");
+        Call<LoginResult> call = RetrofitClient.getInstance(Api.Global).getMyApi().Login(user,base64.trim(),"null");
 
-        Call<LoginResult> call = RetrofitClient.getInstance().getMyApi().Login(user,base64.trim(),"null");
-        ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
-                "يرجى الإنتظار", true);
+        //Call<LoginResult> call = RetrofitClient.getInstance().getMyApi().Login(user,base64.trim(),"null");
+        PorgressDilog dialog =  new PorgressDilog(getActivity());
+        dialog.show();
         call.enqueue(new Callback<LoginResult>() {
             @Override
             public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
@@ -143,15 +172,14 @@ global=new Global(getContext());
                 dialog.dismiss();
                 if(response.isSuccessful())
                 {
-                    if(response.body().getResultMessage().equals("Success: Message has been sent")){
 
 
+                    if(response.body().getResultCode().equals("105")){
                         Timer.start();
                         resend.setVisibility(View.GONE);
                         resend_pro.setVisibility(View.VISIBLE);
                     }else {
-                        global.ShowMessage("الرقم الوظيفي و كلمة المرور غير صحيحة");
-
+                        global.ShowMessage(response.body().getResultMessage());
                     }
 
                 }
@@ -179,9 +207,9 @@ global=new Global(getContext());
 
         Log.d("base64",base64+"");
 
-        Call<PersonalResult> call = RetrofitClient.getInstance().getMyApi().LoginOTP(user,base64.trim(),Otp);
-        ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
-                "يرجى الإنتظار", true);
+        Call<PersonalResult> call = RetrofitClient.getInstance(Api.Global).getMyApi().LoginOTP(user,base64.trim(),Otp,"");
+        PorgressDilog dialog =  new PorgressDilog(getActivity());
+        dialog.show();
         call.enqueue(new Callback<PersonalResult>() {
             @Override
             public void onResponse(Call<PersonalResult> call, Response<PersonalResult> response) {
@@ -190,9 +218,14 @@ global=new Global(getContext());
                 if(response.isSuccessful())
                 {
 
-                    Log.d("Resp",response.body().toString()+"");
+                    if(response.body().getResultCode().equals("108")){
+                        otp.setText("");
+                        Bundle bundle = new Bundle();
+                        MainActivity.login.setArguments(bundle);
+                        MainActivity.changelayout(4);
+                        global.ShowMessage(response.body().getResultMessage());
 
-                    if(response.body().getResultMessage().equals("done")){
+                    } else if(response.body().getResultCode().equals("102")){
 
 
                         global.SavePData("PersonalResult",response.body());
@@ -210,9 +243,7 @@ global=new Global(getContext());
 //                        ((HomeInfo)MainActivity.homeInfo).update();
 //                        MainActivity.changelayout(2);
 
-                        Intent intent = new Intent(getActivity(), MainLGActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                       GetToken();
 //                        HomeInfo nextFrag= new HomeInfo();
 //                        Bundle bundle = new Bundle();
 //                        nextFrag.setArguments(bundle);
@@ -233,8 +264,7 @@ global=new Global(getContext());
 
                         // ShowMessage("تم تسجيل الدخول");
                     }else {
-                        global.ShowMessage("عفوا رمز التحقق غير صحيح");
-
+                        global.ShowMessage(response.body().getResultMessage());
                     }
 
                 }
@@ -248,5 +278,132 @@ global=new Global(getContext());
             }
 
         });
+
+
+
     }
+
+
+
+    private void GetToken() {
+//ToDo
+        Intent intent = new Intent(getActivity(), MainLGActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+//        String user=global.GetValue("Username").replace("u","").replace("U","");
+//        //String user="290550";
+//        //String user="290404";
+//
+//        Call<GetToken> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetToken(user,"NDlEOTBGQzI4NDc5NDE3MjgwNTUyNEVBNkYwRUE0MzE=",global.GetValue("NotfToken"));
+//        PorgressDilog dialog =  new PorgressDilog(getActivity());
+//        dialog.show();
+//        call.enqueue(new Callback<GetToken>() {
+//            @Override
+//            public void onResponse(Call<GetToken> call, Response<GetToken> response) {
+//                Log.d("Resp",response.message()+"");
+//                if(response.isSuccessful())
+//                {
+//                    dialog.dismiss();
+//                    global.SaveValue("TaskToken","Bearer "+response.body().getData());
+//                    global.SaveValue("IsSuper",response.body().getIsSupervisorUser());
+//                    global.SaveValue("MID",user);
+//
+//                    Log.d("Reeeeeeeeeee","TaskToken");
+//                    if(response.body().getIsSupervisorUser().contains("rue")) {
+//                        GetTaskCount();
+//                    }else{
+//
+//                        Intent intent = new Intent(getActivity(), MainLGActivity.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(intent);
+//
+//                    }
+////                    if(response.body()==1){
+////                        dialog.dismiss();
+////                        global.ShowMessageNF(response.body().getMessage(),TaskAddTimeActivity.this);
+////
+////
+////                    }else {
+////                        dialog.dismiss();
+////                        global.ShowMessage("");
+////                    }
+//
+//                }else {
+//
+//                    dialog.dismiss();
+//                    GetToken();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GetToken>call, Throwable t) {
+//                dialog.dismiss();
+//                GetToken();
+//
+//                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+//
+//            }
+//
+//
+//        });
+    }
+
+    private void GetTaskCount() {
+//ToDo
+        String user=global.GetValue("Username").replace("u","").replace("U","");
+        //String user="290550";
+        //String user="290404";
+
+        Call<MangerCount> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetManagerTasksCount(global.GetValue("TaskToken"));
+        PorgressDilog dialog =  new PorgressDilog(getActivity());
+        dialog.show();
+        call.enqueue(new Callback<MangerCount>() {
+            @Override
+            public void onResponse(Call<MangerCount> call, Response<MangerCount> response) {
+                Log.d("Resp",response.message()+"");
+                if(response.isSuccessful())
+                {
+                    dialog.dismiss();
+                    global.SaveValue("EmpTaskCount",response.body().getModel().getActiveTasksCount()+"");
+                    global.SaveValue("ApprovalWaiting",(response.body().getModel().getIncreaseTaskTimeRequestsCount()+response.body().getModel().getApproveRequestTaskCount()+response.body().getModel().getReturnedTasksCount())+"");
+
+
+                    Intent intent = new Intent(getActivity(), MainLGActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+
+                    Log.d("Reeeeeeeeeee","TaskToken");
+
+
+//                    if(response.body()==1){
+//                        dialog.dismiss();
+//                        global.ShowMessageNF(response.body().getMessage(),TaskAddTimeActivity.this);
+//
+//
+//                    }else {
+//                        dialog.dismiss();
+//                        global.ShowMessage("");
+//                    }
+
+                }else {
+
+                    dialog.dismiss();
+                    GetTaskCount();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MangerCount>call, Throwable t) {
+                dialog.dismiss();
+                GetTaskCount();
+                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+
+            }
+
+
+        });
+    }
+
 }

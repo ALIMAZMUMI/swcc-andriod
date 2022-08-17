@@ -4,6 +4,7 @@ package com.gov.sa.swcc;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -19,6 +20,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.gov.sa.swcc.Adapter.GridAdapter;
 import com.gov.sa.swcc.Adapter.GridBAdapter;
 import com.gov.sa.swcc.Adapter.GridSAdapter;
@@ -57,46 +62,131 @@ public class Services extends Fragment {
 
 
 
-      sliderDataArrayList = new ArrayList<>();
 
-        // initializing the slider view.
-        sliderView = view.findViewById(R.id.slider);
-
-        // adding the urls inside array list
-        sliderDataArrayList.add(new SliderData(R.drawable.slide11));
-        sliderDataArrayList.add(new SliderData(R.drawable.slide22));
-        sliderDataArrayList.add(new SliderData(R.drawable.slide33));
-
-        // passing this array list inside our adapter class.
-
-
-
-
-
-
-        // below method is used to set auto cycle direction in left to
-        // right direction you can change according to requirement.
-       // sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
-
-
-        // below method is use to set
-        // scroll time in seconds.
-        sliderView.setScrollTimeInSec(3);
-
-        // to set it scrollable automatically
-        // we use below method.
-        sliderView.setAutoCycle(true);
-
-        // to start autocycle below method is used.
-        sliderView.startAutoCycle();
-
+         sliderView = view.findViewById(R.id.slider);
 
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
          height = displayMetrics.heightPixels;
          width = displayMetrics.widthPixels;
-Log.d("wksdjhbfsilkf",width+"");
+
+
+
+
+
+        FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+
+        mFirebaseRemoteConfig.fetchAndActivate()
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Boolean> task) {
+                        if (task.isSuccessful()) {
+                            boolean updated = task.getResult();
+                            boolean onlineVersion = FirebaseRemoteConfig.getInstance().getBoolean("headerads_stop");// empty string
+
+
+                            String ImgURL = FirebaseRemoteConfig.getInstance().getString("headerads_image");// empty string
+                            String ClicURL = FirebaseRemoteConfig.getInstance().getString("headerads_link");// empty string
+                            if(onlineVersion){
+
+
+
+
+                                sliderDataArrayList = new ArrayList<>();
+                                // initializing the slider view.
+                                // adding the urls inside array list
+                                sliderDataArrayList.add(new SliderData(ImgURL,ClicURL));
+
+                                // passing this array list inside our adapter class.
+                                // below method is use to set
+                                // scroll time in seconds.
+                                sliderView.setScrollTimeInSec(3);
+
+                                // to set it scrollable automatically
+                                // we use below method.
+                                sliderView.setAutoCycle(false);
+
+                                // to start autocycle below method is used.
+                                sliderView.startAutoCycle();
+//                                sliderView.setOnIndicatorClickListener(new DrawController.ClickListener() {
+//                                    @Override
+//                                    public void onIndicatorClicked(int position) {
+//
+//                                    }
+//                                });
+
+
+                            }else{
+                                sliderDataArrayList = new ArrayList<>();
+                                // initializing the slider view.
+                                // adding the urls inside array list
+                                sliderDataArrayList.add(new SliderData(R.drawable.slide11));
+                                sliderDataArrayList.add(new SliderData(R.drawable.slide22));
+                                sliderDataArrayList.add(new SliderData(R.drawable.slide33));
+
+                                // passing this array list inside our adapter class.
+                                // below method is use to set
+                                // scroll time in seconds.
+                                sliderView.setScrollTimeInSec(3);
+
+                                // to set it scrollable automatically
+                                // we use below method.
+                                sliderView.setAutoCycle(true);
+
+                                // to start autocycle below method is used.
+                                sliderView.startAutoCycle();
+                            }
+
+
+                        } else {
+
+                            sliderDataArrayList = new ArrayList<>();
+
+                            // initializing the slider view.
+
+                            // adding the urls inside array list
+                            sliderDataArrayList.add(new SliderData(R.drawable.slide11));
+                            sliderDataArrayList.add(new SliderData(R.drawable.slide22));
+                            sliderDataArrayList.add(new SliderData(R.drawable.slide33));
+
+                            // passing this array list inside our adapter class.
+
+
+                            // below method is use to set
+                            // scroll time in seconds.
+                            sliderView.setScrollTimeInSec(3);
+
+                            // to set it scrollable automatically
+                            // we use below method.
+                            sliderView.setAutoCycle(true);
+
+                            // to start autocycle below method is used.
+                            sliderView.startAutoCycle();
+
+                        }
+
+
+
+
+
+
+                        SliderAdapter adapter1 = new SliderAdapter(getContext(), sliderDataArrayList,width,width);
+
+                        // below method is used to set auto cycle direction in left to
+                        // right direction you can change according to requirement.
+                        // sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
+
+                        sliderView.setSliderAdapter(adapter1);
+                    }
+                });
+
+
+        Log.d("wksdjhbfsilkf",width+"");
 //        proplan=(CardView)view.findViewById(R.id.proplan);
 //        Eskan=(CardView)view.findViewById(R.id.Eskan);
 //        Trinning=(CardView)view.findViewById(R.id.Trinning);
@@ -123,6 +213,8 @@ Log.d("wksdjhbfsilkf",width+"");
         birdList.add(new GridItem("بيانات الانتاج",R.drawable.proplan));
 
         birdList.add(new GridItem("تسليم الوثائق الامنية",R.drawable.hrimage));
+
+        birdList.add(new GridItem("الاستعلام عن الضمانات البنكية",R.drawable.hrimage));
 
 
         GridBAdapter adapter=new GridBAdapter(getContext(),R.layout.griditem,birdList,width,height);
@@ -156,6 +248,9 @@ Log.d("wksdjhbfsilkf",width+"");
                         }
                         else if(i==3){
                             startActivity(new Intent(getActivity(),ReturnDocmentsActivity.class));
+                        }
+                        else if(i==4){
+                            startActivity(new Intent(getActivity(),BankActivity.class));
                         }
                     }}, 150);
             }

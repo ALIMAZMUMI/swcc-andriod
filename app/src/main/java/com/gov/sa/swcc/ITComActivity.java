@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.StrictMode;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -73,6 +76,58 @@ EditText title,detials;
             }
         });
         Button submit=(Button) findViewById(R.id.submit);
+
+        submit.setEnabled(false);
+        title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(title.getText().length()>=4&&detials.getText().length()>3){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
+            }
+        });
+
+        detials.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//
+                if(title.getText().length()>=4&&detials.getText().length()>3){
+                    submit.setBackgroundResource(R.drawable.blueroundfull);
+                    submit.setEnabled(true);
+                }else{
+                    submit.setBackgroundResource(R.drawable.grayroundbtn);
+                    submit.setEnabled(false);
+                }
+            }
+        });
+
+
+
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,7 +178,7 @@ EditText title,detials;
         itRequest.setFirstName(per.getResultObject().getFirstNameEn());
         itRequest.setLastName(per.getResultObject().getLastNameEn());
         itRequest.setPhone(per.getResultObject().getMobile());
-        itRequest.setEmail("SAlHarbi780e@swcc.gov.sa");
+        itRequest.setEmail(global.GetEmail(user));
 itRequest.setTitle(Title);
         itRequest.setDescription(Detiles);
 
@@ -136,7 +191,7 @@ itRequest.setTitle(Title);
         obj.addProperty("LastName", per.getResultObject().getLastNameEn());
         obj.addProperty("Title", Title);
         obj.addProperty("Department", per.getResultObject().getDepartment());
-        obj.addProperty("Email", "SAlHarbi780e@swcc.gov.sa");
+        obj.addProperty("Email", global.GetEmail(user));
         obj.addProperty("City", per.getResultObject().getLocationAr());
 
         String post="[{'UserId' : 'u106346'," +
@@ -152,9 +207,9 @@ itRequest.setTitle(Title);
         //obj1.add("[]",);
 
 
-        Call<String> call = RetrofitClient.getInstance(Api.Ticket).getMyApi().ITRequest(post);
-        ProgressDialog dialog = ProgressDialog.show(ITComActivity.this, "",
-                "يرجى الإنتظار", true);
+        Call<String> call = RetrofitClient.getInstance(Api.Global).getMyApi().ITRequest(post);
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -192,15 +247,15 @@ itRequest.setTitle(Title);
 
         String user=global.GetValue("Username");
         PersonalResult per=global.GetPData("PersonalResult");
-
-        ProgressDialog dialog = ProgressDialog.show(ITComActivity.this, "", "يرجى الإنتظار", true);
-
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
 
                 try {
-
+                    Looper.prepare();
+                    String Email=global.GetEmail(user);
 
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
@@ -211,11 +266,11 @@ itRequest.setTitle(Title);
                             "'LastName' : '"+per.getResultObject().getLastNameEn()+"'," +
                             "'Title' : '"+Title+"'," +
                             "'Department' : '"+per.getResultObject().getDepartment()+"'," +
-                            "'Email' : '"+global.GetEmail(user)+"'," +
+                            "'Email' : '"+Email+"'," +
                             "'City' : '"+per.getResultObject().getLocationAr()+"'}]";
                     post=post.replaceAll("'","\"");
 
-                    URL url = new URL("https://apitest.swcc.gov.sa/swccmobile/api/FootPrint/CreateITRequest");
+                    URL url = new URL("https://"+Api.Domain+"/GatewayControlPanel/FootPrint/CreateITRequest");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                     // Set timeout as per needs

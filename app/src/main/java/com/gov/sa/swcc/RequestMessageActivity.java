@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 public class RequestMessageActivity extends AppCompatActivity {
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +20,13 @@ public class RequestMessageActivity extends AppCompatActivity {
         Button ok =(Button) findViewById(R.id.ok);
         TextView message=(TextView) findViewById(R.id.message);
 
+
+        if(getIntent().getExtras().getString("Lan","").equals("en")){
+
+            ( (TextView) findViewById(R.id.hedar)).setText("report has been sent successfully");
+            ok.setText("close");
+
+        }
 
         message.setText(getIntent().getExtras().getString("Message",""));
 

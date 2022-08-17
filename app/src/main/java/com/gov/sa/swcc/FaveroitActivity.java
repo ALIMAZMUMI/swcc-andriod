@@ -30,6 +30,7 @@ int height,width;
         setContentView(R.layout.activity_faveroit);
 
         Button submit=(Button)findViewById(R.id.submit);
+        Button unselect=(Button)findViewById(R.id.unselect);
 
         global=new Global(FaveroitActivity.this);
 
@@ -57,8 +58,11 @@ int height,width;
 
 
         birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6",global.GetValue("HRFav").contains("HR6")));
-        birdList.add(new GridItem("البحث عن العاملين",R.drawable.searchicon,"HR5",global.GetValue("HRFav").contains("HR5")));
+        birdList.add(new GridItem("دليل العاملين",R.drawable.searchicon,"HR5",global.GetValue("HRFav").contains("HR5")));
         birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4",global.GetValue("HRFav").contains("HR4")));
+
+
+        birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7"));
 
         adapter=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList,width,height,0);
         GridView gridView=(GridView)findViewById(R.id.servicegrid1);
@@ -77,14 +81,68 @@ int height,width;
                 adapter=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList,width,height,0);
                 gridView.setAdapter(adapter);
                 getHeight(adapter,gridView);
+                submit.setBackgroundResource(R.drawable.blueroundfull);
+                submit.setEnabled(true);
             }
         });
 
 
 
+        unselect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                global.SaveValue("HRFav","");
+                global.SaveValue("TEFav","");
+                submit.setBackgroundResource(R.drawable.grayroundbtn);
+                submit.setEnabled(false);
+                unselect.setVisibility(View.GONE);
+
+
+                birdList = new ArrayList<GridItem>();
+                birdList.add(new GridItem("الحضور و الإنصراف",R.drawable.checkin,"HR3",global.GetValue("HRFav").contains("HR3")));
+
+                birdList.add(new GridItem("مسيّر الراتب",R.drawable.profile,"HR2",global.GetValue("HRFav").contains("HR2")));
+                birdList.add(new GridItem("الاجازات",R.drawable.leave,"HR1",global.GetValue("HRFav").contains("HR1")));
+
+
+                birdList.add(new GridItem("التعريف بالراتب",R.drawable.salary,"HR6",global.GetValue("HRFav").contains("HR6")));
+                birdList.add(new GridItem("دليل العاملين",R.drawable.searchicon,"HR5",global.GetValue("HRFav").contains("HR5")));
+                birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4",global.GetValue("HRFav").contains("HR4")));
+                birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7",global.GetValue("HRFav").contains("HR7")));
+
+                adapter=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList,width,height,0);
+                GridView gridView=(GridView)findViewById(R.id.servicegrid1);
+                gridView.setAdapter(adapter);
+                getHeight(adapter,gridView);
+
+                birdList1 = new ArrayList<GridItem>();
+                //birdList1.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1",global.GetValue("TEFav").contains("TE1")));
+                birdList1.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2",global.GetValue("TEFav").contains("TE2")));
+                birdList1.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3",global.GetValue("TEFav").contains("TE3")));
+
+                adapter1=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList1,width,height,0);
+                GridView gridView1=(GridView)findViewById(R.id.servicegrid2);
+                gridView1.setAdapter(adapter1);
+                getHeight(adapter1,gridView1);
+
+            }
+        });
+
+for(int i=0;i<birdList.size();i++){
+if(birdList.get(i).isChecked()){
+    submit.setBackgroundResource(R.drawable.blueroundfull);
+    submit.setEnabled(true);
+    unselect.setVisibility(View.VISIBLE);
+    break;
+}
+}
+
+
+
+
 
         birdList1 = new ArrayList<GridItem>();
-        birdList1.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1",global.GetValue("TEFav").contains("TE1")));
+        //birdList1.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1",global.GetValue("TEFav").contains("TE1")));
         birdList1.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2",global.GetValue("TEFav").contains("TE2")));
         birdList1.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3",global.GetValue("TEFav").contains("TE3")));
 
@@ -98,6 +156,15 @@ int height,width;
         Log.d("fav----",global.GetValue("TEFav"));
 
 
+        for(int i=0;i<birdList1.size();i++){
+            if(birdList1.get(i).isChecked()){
+                submit.setBackgroundResource(R.drawable.blueroundfull);
+                submit.setEnabled(true);
+                unselect.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
+
         gridView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -107,6 +174,19 @@ int height,width;
                 adapter1=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList1,width,height,0);
                 gridView1.setAdapter(adapter1);
                 getHeight(adapter1,gridView1);
+                for(int x=0;x<birdList1.size();x++){
+                    if(birdList1.get(x).isChecked()){
+                        submit.setBackgroundResource(R.drawable.blueroundfull);
+                        submit.setEnabled(true);
+                        unselect.setVisibility(View.VISIBLE);
+                        break;
+                    }
+                    else {
+                        submit.setBackgroundResource(R.drawable.grayroundbtn);
+                        submit.setEnabled(false);
+                        unselect.setVisibility(View.GONE);
+                    }
+                }
             }
         });
 
@@ -120,6 +200,22 @@ int height,width;
                 adapter=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList,width,height,0);
                 gridView.setAdapter(adapter);
                 getHeight(adapter,gridView);
+
+                for(int x=0;x<birdList.size();x++){
+                    if(birdList.get(x).isChecked()){
+                        submit.setBackgroundResource(R.drawable.blueroundfull);
+                        submit.setEnabled(true);
+                        unselect.setVisibility(View.VISIBLE);
+                        break;
+                    }
+                    else {
+                        submit.setBackgroundResource(R.drawable.grayroundbtn);
+                        submit.setEnabled(false);
+                        unselect.setVisibility(View.GONE);
+                    }
+                }
+
+
             }
         });
 

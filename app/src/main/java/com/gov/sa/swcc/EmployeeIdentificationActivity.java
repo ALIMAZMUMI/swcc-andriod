@@ -162,8 +162,8 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
     private void CallGetSalary() throws IOException, XmlPullParserException {
         Date cDate = new Date();
 
-        ProgressDialog dialog = ProgressDialog.show(EmployeeIdentificationActivity.this, "", "يرجى الإنتظار", true);
-
+        PorgressDilog dialog =  new PorgressDilog(this);
+        dialog.show();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -182,7 +182,7 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
                             "      </urn:ZhrEmpIdentity>\n" +
                             "   </soap:Body>\n" +
                             "</soap:Envelope>";
-                    URL url = new URL("https://l650075-iflmap.hcisbp.sa1.hana.ondemand.com/cxf/employeeIdentificationLetter2MobileApp");
+                    URL url = new URL("https://"+Api.Domain+"/GatewayControlPanel/EmployeePayroll/EmployeeIdentificationLetterService");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                     // Set timeout as per needs
@@ -403,6 +403,11 @@ if(v>0)
             canvas.drawBitmap(writeTextOnRow(BArabic.get(i),BEnglish.get(i),BValue.get(i)),y,x+((i)*(38*h)),null);
         }
         canvas.drawBitmap(writeTextOnEnd(),y,x+((BArabic.size())*(38*h))-3,null);
+
+
+        Bitmap stamp = BitmapFactory.decodeResource(getResources(), R.drawable.stamp)
+                .copy(Bitmap.Config.ARGB_8888, true);
+        canvas.drawBitmap(stamp.createScaledBitmap(stamp, (int)(250*h), (int)(200*h), false),canvas.getWidth()/2-(125*w),(250*h)+x+((BArabic.size())*(38*h))-3,null);
 
 
 

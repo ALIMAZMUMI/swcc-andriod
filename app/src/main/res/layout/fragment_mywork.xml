@@ -48,21 +48,69 @@
 
 
                         <TextView
+                            android:id="@+id/sharektitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="نظام شريك"
+
                             android:textSize="17dp"
                             android:paddingVertical="5dp"
                             android:textColor="#004C86"/>
-
+<LinearLayout
+    android:id="@+id/sline"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="right">
                         <TextView
+
                             android:layout_width="150dp"
                             android:layout_height="3dp"
                             android:background="@drawable/lgreenroundfull"
                             android:textSize="17dp"
 
-                            />
 
+                            />
+</LinearLayout>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/sharek"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="15dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:gravity="right|center"
+                            android:paddingHorizontal="10dp"
+                            android:weightSum="10"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="7dp"
+                                android:layout_height="13dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/previcon"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="نظام شريك"
+                                android:textSize="15dp"
+                                android:paddingHorizontal="5dp"
+                                android:paddingVertical="5dp"
+                                android:layout_weight="9.5"
+                                android:textColor="#0066CC"/>
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/sharekicons"
+                                />
+
+
+                        </LinearLayout>
+                        </androidx.cardview.widget.CardView>
                         <GridView
                             android:id="@+id/servicegrid1"
                             android:layout_width="match_parent"
@@ -76,6 +124,158 @@
                             android:rotationY="180"
 
                             android:textDirection="rtl"/>
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="ادارة المهام"
+                            android:textSize="17dp"
+                            android:paddingVertical="5dp"
+                            android:visibility="gone"
+                            android:textColor="#004C86"/>
+
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="3dp"
+                            android:background="@drawable/lgreenroundfull"
+                            android:textSize="17dp"
+                            android:visibility="gone"
+
+
+                            />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/mytask"
+                            android:visibility="gone"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="15dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:gravity="right|center"
+    android:paddingHorizontal="10dp"
+    android:weightSum="10"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="7dp"
+        android:layout_height="13dp"
+        android:layout_gravity="center"
+        android:src="@drawable/previcon"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="المهام المسندة لي"
+        android:textSize="15dp"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="5dp"
+        android:layout_weight="9.5"
+        android:textColor="#0066CC"/>
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:src="@drawable/taskicon"
+        />
+
+
+</LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:gravity="right|center"
+                            android:weightSum="10"
+                            android:visibility="gone"
+
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+
+
+                            <LinearLayout
+                                android:id="@+id/taskaproval"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_weight="5"
+                                android:layout_height="90dp"
+                                android:background="@drawable/gradientbg"
+                                android:layout_marginRight="2.5dp"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="في انتظار الموافقة"
+                                    android:textColor="@color/white"
+                                    android:id="@+id/approvaltask"
+                                    android:textSize="18dp"
+                                    android:gravity="center"/>
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/emptask"
+                                android:layout_weight="5"
+                                android:layout_marginLeft="2.5dp"
+                                android:background="@drawable/gradientbg"
+                                android:layout_width="0dp"
+                                android:layout_height="90dp"
+                                android:visibility="gone"
+
+                                android:gravity="center"
+                                android:weightSum="10"
+
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="مهام العاملين"
+                                android:textColor="@color/white"
+                                    android:textSize="18dp"
+                                    android:id="@+id/emptasks"
+                                    android:gravity="center"/>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="40"
+    android:gravity="right"
+    >
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/fab"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            app:cardCornerRadius="70dp"
+                            android:visibility="gone"
+
+                            android:layout_gravity="start|bottom"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="60dp"
+                            ><LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/add"
+                            >
+
+                        </LinearLayout>
+
+
+
+                        </androidx.cardview.widget.CardView>
+</LinearLayout>
 
 
                     </LinearLayout>

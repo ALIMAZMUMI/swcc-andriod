@@ -20,19 +20,34 @@ public class Auth2Activity extends AppCompatActivity {
 
 
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P){
-            // Do something for lollipop and above versions
-            startActivity(new Intent(getApplicationContext(), AuthActivity.class));
-            Auth2Activity.this.finish();
-        } else{
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    Auth2Activity.this.finish();
+
+
+                if(new DeviceUtils().isDeviceRooted()){
+                    Global global=new Global(Auth2Activity.this);
+                    global.ShowMessage("عفوا التطبيق غير مدعوم للعمل على الجهاز الخاص بك.");
+                }else {
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                        // Do something for lollipop and above versions
+
+                         //startActivity(new Intent(getApplicationContext(), MyTaskActivity.class));
+                        //startActivity(new Intent(getApplicationContext(), ApprovalActivity.class));
+
+                         startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+                        Auth2Activity.this.finish();
+                    } else {
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                Auth2Activity.this.finish();
+                            }
+                        }, 5000);
+                    }
+
                 }
-            }, 2000);
-        }
+
+
 
 
     }

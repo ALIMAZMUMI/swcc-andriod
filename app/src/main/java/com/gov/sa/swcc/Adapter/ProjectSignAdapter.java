@@ -2,12 +2,15 @@ package com.gov.sa.swcc.Adapter;
 
 import android.app.Activity;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.gov.sa.swcc.Global;
 import com.gov.sa.swcc.R;
 import com.gov.sa.swcc.model.Sharekproject;
 import com.gov.sa.swcc.model.Signproject;
@@ -39,22 +42,30 @@ public class ProjectSignAdapter extends ArrayAdapter<Signproject> {
         TextView date=(TextView) rowView.findViewById(R.id.date);
         TextView rowtext1=(TextView) rowView.findViewById(R.id.rowtext1);
 
-        name.setText(Html.fromHtml("<font color='#004C86'>اسم العامل: </font>"+"<font color='#0066CC'>"+Titem.get(position).getEmployeeName()+"</font>"));
+        Global global=new Global(context);
+        if (global.GetValue("Lan").equals("en")) {
 
+            name.setText(Html.fromHtml("<font color='#004C86'>employee name: </font>" + "<font color='#0066CC'>" + Titem.get(position).getEmployeeName() + "</font>"));
+            rowtext.setText(Html.fromHtml("<font color='#EA5D11'>       exit:</font>" + "<font color='#0066CC'>" + Titem.get(position).getLastOut() + "</font>"));
+            rowtext1.setText(Html.fromHtml("<font color='#2BBC00'>entry:</font>" + "<font color='#0066CC'>" + Titem.get(position).getFirstIn() + "</font>"));
 
+            rowempid.setText(Titem.get(position).getEmployeeID());
+            name.setGravity(Gravity.LEFT|Gravity.CENTER);
+            date.setText(Titem.get(position).getDate().substring(0, 10));
+            ((LinearLayout)rowView.findViewById(R.id.l1)).setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            ((LinearLayout)rowView.findViewById(R.id.l2)).setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
+//            rowtext1.setGravity(Gravity.LEFT);
 
-rowtext.setText(
-        Html.fromHtml("<font color='#EA5D11'>       الخروج:</font>"+"<font color='#0066CC'>"+Titem.get(position).getLastOut()+"</font>"));
-
-
-        rowtext1.setText(
-                Html.fromHtml("<font color='#2BBC00'>الدخول:</font>"+"<font color='#0066CC'>"+Titem.get(position).getFirstIn()+"</font>"));
+        }else {
+            name.setText(Html.fromHtml("<font color='#004C86'>اسم العامل: </font>" + "<font color='#0066CC'>" + Titem.get(position).getEmployeeName() + "</font>"));
+            rowtext.setText(Html.fromHtml("<font color='#EA5D11'>       الخروج:</font>" + "<font color='#0066CC'>" + Titem.get(position).getLastOut() + "</font>"));
+            rowtext1.setText(Html.fromHtml("<font color='#2BBC00'>الدخول:</font>" + "<font color='#0066CC'>" + Titem.get(position).getFirstIn() + "</font>"));
 
             rowempid.setText(Titem.get(position).getEmployeeID());
 
-        date.setText(Titem.get(position).getDate().substring(0,10));
-
+            date.setText(Titem.get(position).getDate().substring(0, 10));
+        }
 //        rowtext.setText(Html.fromHtml(Titem.get(position).getProjectName()+
 //                " مدينة "+"<font color='#e9893c'>("+Titem.get(position).getLocationNameLK()+")</font>"
 //        +" تصنيف المشروع "+"<font color='#23415b'>("+Titem.get(position).getClassfcationLKName()+")</font>"
