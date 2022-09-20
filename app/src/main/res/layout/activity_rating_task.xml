@@ -58,7 +58,7 @@
                             android:id="@+id/header"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="تقييم المهمة"
+                            android:text="اكمال عملية الاعتماد"
                             android:textColor="#004C86"
                             android:textSize="14dp"
                             android:gravity="center"/>
@@ -69,9 +69,10 @@
 
 
                     <TextView
+
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:text="تقيم المهمة المنجزة"
+                        android:text="يرجى تقييم المهمة ليتم الاعتماد"
                         android:id="@+id/message"
                         android:textColor="#004C86"
                         android:layout_marginTop="10dp"
@@ -113,6 +114,7 @@
                             android:text="الغاء"
                             android:paddingHorizontal="40dp"
                             android:textColor="#0066CC"
+                            android:visibility="gone"
                             android:layout_marginRight="50dp"
                             android:background="@drawable/blueborder"
                             />
@@ -122,9 +124,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:text="ارسال"
-                            android:paddingHorizontal="40dp"
+                            android:paddingHorizontal="50dp"
                             android:textColor="#ffffff"
-                            android:background="@drawable/blueroundfull"
+                            android:enabled="false"
+                            android:background="@drawable/grayroundbtn"
                             />
                     </LinearLayout>
 

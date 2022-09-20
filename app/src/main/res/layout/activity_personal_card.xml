@@ -51,8 +51,8 @@ android:layout_marginHorizontal="20dp"
                         android:orientation="horizontal">
                         <ImageView
                             android:id="@+id/close"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/close"
                             android:elevation="12dp"
                             android:layout_gravity="right"

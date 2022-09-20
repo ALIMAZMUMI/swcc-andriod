@@ -19,14 +19,18 @@ public class RequestMessageActivity extends AppCompatActivity {
         Global global=new Global(RequestMessageActivity.this);
         Button ok =(Button) findViewById(R.id.ok);
         TextView message=(TextView) findViewById(R.id.message);
+        TextView hedar=(TextView) findViewById(R.id.hedar);
 
 
         if(getIntent().getExtras().getString("Lan","").equals("en")){
 
-            ( (TextView) findViewById(R.id.hedar)).setText("report has been sent successfully");
             ok.setText("close");
 
         }
+
+        hedar.setText(getIntent().getExtras().getString("Header",""));
+
+
 
         message.setText(getIntent().getExtras().getString("Message",""));
 

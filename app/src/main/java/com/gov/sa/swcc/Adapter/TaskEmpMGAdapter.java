@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.borjabravo.simpleratingbar.SimpleRatingBar;
+import com.gov.sa.swcc.Global;
 import com.gov.sa.swcc.R;
 import com.gov.sa.swcc.model.TaskEmpManager.GetAllTask;
 import com.gov.sa.swcc.model.emptask.GetAllMyTask;
@@ -44,7 +45,7 @@ public class TaskEmpMGAdapter extends ArrayAdapter<GetAllTask> {
 
         View rowView=null;
 
-
+Global global=new Global(context);
             GetAllTask getAllMyTask;
             getAllMyTask= (GetAllTask) Titem.get(position);
         if (getAllMyTask.getTaskStatusId() != 7&&getAllMyTask.getTaskStatusId() != 8&&getAllMyTask.getTaskStatusId() != 10&&getAllMyTask.getTaskStatusId() != 11) {
@@ -60,11 +61,11 @@ public class TaskEmpMGAdapter extends ArrayAdapter<GetAllTask> {
 
                 personname.setText(getAllMyTask.getEmployeeName());
                 taskname.setText(getAllMyTask.getTaskName() + "");
-                taskdate.setText(getAllMyTask.getFrom());
+                taskdate.setText(global.GetDateFormat(getAllMyTask.getTo()));
                 String Days = "";
-                if (getAllMyTask.getGetRemainingTime().getDays() > 0) {
+                if (getAllMyTask.getGetRemainingTime().getDays() >= 0 && getAllMyTask.getGetRemainingTime().getHours()>=0&&!getAllMyTask.getIsDelayedTask()) {
 
-                    Days = "متبقي" + getAllMyTask.getGetRemainingTime().getDays() + "أيام";
+                    Days = " متبقي " + global.DTxt(getAllMyTask.getGetRemainingTime().getDays());
                     if(getAllMyTask.getGetRemainingTime().getDays()<=4)
                     {
                         remintime.setTextColor(Color.parseColor("#EAB011"));
@@ -80,16 +81,29 @@ public class TaskEmpMGAdapter extends ArrayAdapter<GetAllTask> {
 
                 }
                 else {
-                    Days = "متأخرة" + getAllMyTask.getGetRemainingTime().getDays() + "أيام".replaceAll("-","");
+                    Days = " متأخرة " + global.DTxt(getAllMyTask.getGetRemainingTime().getDays() );
                     remintime.setTextColor(Color.parseColor("#CC0000"));
                     remincard.setBackgroundColor(Color.parseColor("#26EA5D11"));
 
                     //col.setBackgroundColor(Color.parseColor("#CC0000"));
 
                 }
+            int count=0;
+            if(getAllMyTask.getManagerAttachmentsDTO()!=null&&getAllMyTask.getManagerAttachmentsDTO().size()>0){
+                count=1;
+            }
+            if(getAllMyTask.getEmployeeAttachmentsDTO()!=null&&getAllMyTask.getEmployeeAttachmentsDTO().size()>0){
+                count++;
+            }
 
+
+            if(count==0){
+                taskattc.setText("لا توجد مرفقات");
+
+            }else {
+                taskattc.setText("مع مرفقات");
+            }
                 remintime.setText(Days);
-                taskattc.setText("١ مرفق");
             }
             else {
                 rowView = inflater.inflate(R.layout.task_cell_done, null, true);
@@ -103,7 +117,7 @@ public class TaskEmpMGAdapter extends ArrayAdapter<GetAllTask> {
 
 
                 taskname.setText(getAllMyTask.getTaskName() + "");
-                taskdate.setText(getAllMyTask.getFrom());
+                taskdate.setText( global.GetDateFormat(getAllMyTask.getTo()));
 
                 if (getAllMyTask.getIsDelayedTask()) {
                     txtdone.setText("تمت بتأخير");
@@ -148,7 +162,22 @@ if(getAllMyTask.getEvaluationId()==null){
 //            }
 
                 // tasktime.setText(Days);
-                taskattc.setText("١ مرفق");
+            int count=0;
+            if(getAllMyTask.getManagerAttachmentsDTO()!=null&&getAllMyTask.getManagerAttachmentsDTO().size()>0){
+                count=1;
+            }
+            if(getAllMyTask.getEmployeeAttachmentsDTO()!=null&&getAllMyTask.getEmployeeAttachmentsDTO().size()>0){
+                count++;
+            }
+
+
+            if(count==0){
+                taskattc.setText("لا توجد مرفقات");
+
+            }else {
+                taskattc.setText("مع مرفقات");
+            }
+
             }
 
 

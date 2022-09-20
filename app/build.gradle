@@ -14,8 +14,8 @@ android {
         applicationId "com.gov.sa.swcc"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 9
-        versionName "1.4"
+        versionCode 13
+        versionName "2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -76,6 +76,15 @@ dependencies {
     implementation 'com.github.blackfizz:eazegraph:1.2.5l@aar'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.google.android.material:material:1.2.0-alpha01'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+
+
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.firebase:firebase-core:15.0.1'
+    implementation 'com.google.firebase:firebase-analytics:15.0.1'
+    implementation 'com.google.android.gms:play-services-measurement-base:15.0.4'
 
 
 

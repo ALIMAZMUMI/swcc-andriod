@@ -2,6 +2,7 @@ package com.gov.sa.swcc;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,8 +12,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,8 +46,9 @@ public class EmpTaskActivity extends AppCompatActivity {
     ListView list;
     TaskEmpManager data;
     TaskEmpManager dataOrg;
+    TextView nodata;
 
-    int index=0;
+    int index=1;
 
     TextView donetask,litetask,curtask,alltask;
     @Override
@@ -58,6 +62,18 @@ public class EmpTaskActivity extends AppCompatActivity {
         litetask = (TextView) findViewById(R.id.litetask);
         curtask = (TextView) findViewById(R.id.curtask);
         alltask = (TextView) findViewById(R.id.alltask);
+
+        nodata = (TextView) findViewById(R.id.nodata);
+
+
+        ((ImageView)findViewById(R.id.backarrow)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
         CardView fab=(CardView)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +82,8 @@ public class EmpTaskActivity extends AppCompatActivity {
                 startActivityForResult(intent,1002);
             }
         });
+
+
 
         EditText searchvalue=(EditText)findViewById(R.id.searchvalue);
 
@@ -155,41 +173,51 @@ data=dataOrg;
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-//                String ID = "";
-//                Object Obj = ((MyTasksAdapter) list.getAdapter()).getItem(i);
-//                if (index == 0) {
-//                    ID = "" + ((GetAllMyTask) Obj).getId();
-//                    TaskDetailsActivity.getAllMyTask = ((GetAllMyTask) Obj);
-//                } else if (index == 1) {
-//                    ID = "" + ((GetMyActiveTasks) Obj).getId();
-//                    TaskDetailsActivity.getMyActiveTasks = ((GetMyActiveTasks) Obj);
-//
-//                } else if (index == 2) {
-//                    ID = "" + ((GetMyDelayedTasks) Obj).getId();
-//                    TaskDetailsActivity.getMyDelayedTasks = ((GetMyDelayedTasks) Obj);
-//
-//                } else if (index == 3) {
-//                    ID = "" + ((GetMyCompletedTask) Obj).getId();
-//                    TaskDetailsActivity.getMyCompletedTask = ((GetMyCompletedTask) Obj);
-//                }
-//
-//                Intent intent = new Intent(MyTaskActivity.this, TaskDetailsActivity.class);
-//                intent.putExtra("ID", ID);
-//                intent.putExtra("Index", index);
-//
-//                startActivity(intent);
+                String ID = "";
+                Object Obj = ((TaskEmpMGAdapter) list.getAdapter()).getItem(i);
+                if (index == 0) {
+                    ID = "" + ((GetAllTask) Obj).getId();
+                    TaskMangeDetailsActivity.getAllMyTask = ((GetAllTask) Obj);
+                } else if (index == 1) {
+                    ID = "" + ((GetAllTask) Obj).getId();
+                    TaskMangeDetailsActivity.getMyActiveTasks = ((GetAllTask) Obj);
+
+                } else if (index == 2) {
+                    ID = "" + ((GetAllTask) Obj).getId();
+                    TaskMangeDetailsActivity.getMyDelayedTasks = ((GetAllTask) Obj);
+
+                } else if (index == 3) {
+                    ID = "" + ((GetAllTask) Obj).getId();
+                    TaskMangeDetailsActivity.getMyCompletedTask = ((GetAllTask) Obj);
+                }
+
+                Intent intent = new Intent(EmpTaskActivity.this, TaskMangeDetailsActivity.class);
+                intent.putExtra("ID", ID);
+                intent.putExtra("Index", index);
+
+                startActivity(intent);
 
             }
         });
-
+        alltask.setVisibility(View.GONE);
         alltask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alltask.setBackgroundResource(R.drawable.bluesmalround);
                 alltask.setTextColor(Color.WHITE);
                 if (data != null) {
-                    TaskEmpMGAdapter adp=new TaskEmpMGAdapter(EmpTaskActivity.this,((List)data.getModel().getGetAllTasks()),0);
-                    list.setAdapter(adp);
+
+                    if(data.getModel().getGetAllTasks().size()>0){
+                        Log.d("Compleat",((List)data.getModel().getGetAllTasks()).size()+"");
+                        TaskEmpMGAdapter adp=new TaskEmpMGAdapter(EmpTaskActivity.this,((List)data.getModel().getGetAllTasks()),0);
+                        list.setAdapter(adp);
+                        nodata.setVisibility(View.GONE);
+                        list.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        nodata.setVisibility(View.VISIBLE);
+                        list.setVisibility(View.GONE);
+                    }
                 }
                 index = 0;
 
@@ -211,9 +239,18 @@ data=dataOrg;
                 donetask.setTextColor(Color.WHITE);
 
                 if (data != null) {
-                    Log.d("Compleat",((List)data.getModel().getGetCompletedTasks()).size()+"");
-                    TaskEmpMGAdapter adp=new TaskEmpMGAdapter(EmpTaskActivity.this,((List)data.getModel().getGetCompletedTasks()),0);
-                    list.setAdapter(adp);
+
+                    if(data.getModel().getGetCompletedTasks().size()>0){
+                        Log.d("Compleat",((List)data.getModel().getGetCompletedTasks()).size()+"");
+                        TaskEmpMGAdapter adp=new TaskEmpMGAdapter(EmpTaskActivity.this,((List)data.getModel().getGetCompletedTasks()),0);
+                        list.setAdapter(adp);
+                        nodata.setVisibility(View.GONE);
+                        list.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        nodata.setVisibility(View.VISIBLE);
+                        list.setVisibility(View.GONE);
+                    }
                 }
                 index = 3;
                 alltask.setBackgroundResource(R.drawable.whitesmalround);
@@ -234,8 +271,16 @@ data=dataOrg;
                 litetask.setTextColor(Color.WHITE);
 
                 if (data != null) {
+                    if(data.getModel().getGetDelayedTasks().size()>0){
                     TaskEmpMGAdapter adp=new TaskEmpMGAdapter(EmpTaskActivity.this,((List)data.getModel().getGetDelayedTasks()),0);
                     list.setAdapter(adp);
+                        nodata.setVisibility(View.GONE);
+                        list.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        nodata.setVisibility(View.VISIBLE);
+                        list.setVisibility(View.GONE);
+                    }
                 }
                 index = 2;
                 donetask.setBackgroundResource(R.drawable.whitesmalround);
@@ -255,9 +300,21 @@ data=dataOrg;
                 curtask.setBackgroundResource(R.drawable.bluesmalround);
                 curtask.setTextColor(Color.WHITE);
 
+
                 if (data != null) {
-                    TaskEmpMGAdapter adp=new TaskEmpMGAdapter(EmpTaskActivity.this,((List)data.getModel().getGetAllActiveTasks()),0);
-                    list.setAdapter(adp);
+                    if(data.getModel().getGetAllActiveTasks().size()>0){
+                        TaskEmpMGAdapter adp=new TaskEmpMGAdapter(EmpTaskActivity.this,((List)data.getModel().getGetAllActiveTasks()),0);
+                        list.setAdapter(adp);
+                        nodata.setVisibility(View.GONE);
+                        list.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        nodata.setVisibility(View.VISIBLE);
+                        list.setVisibility(View.GONE);
+                    }
+                }else {
+                    nodata.setVisibility(View.VISIBLE);
+                    list.setVisibility(View.GONE);
                 }
                 index = 1;
 
@@ -273,6 +330,31 @@ data=dataOrg;
 
 
         CallGetTask();
+
+
+        SwipeRefreshLayout pullToRefresh = (SwipeRefreshLayout) findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                CallGetTask();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
+
+        list.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (list.getChildAt(0) != null) {
+                    pullToRefresh.setEnabled(list.getFirstVisiblePosition() == 0 && list.getChildAt(0).getTop() == 0);
+                }
+            }
+        });
 
     }
 
@@ -293,10 +375,8 @@ data=dataOrg;
 
     public void Edittask(View view){
         int pos=list.getPositionForView(view);
-
         Intent intent = new Intent(EmpTaskActivity.this, Emp_Edit_TaskActivity.class);
         Log.d("--ID--",((GetAllTask)list.getAdapter().getItem(pos)).getId()+"");
-
         intent.putExtra("ID", ((GetAllTask)list.getAdapter().getItem(pos)).getId()+"");
         intent.putExtra("EmpName", ((GetAllTask)list.getAdapter().getItem(pos)).getEmployeeName()+"");
         intent.putExtra("TaskName", ((GetAllTask)list.getAdapter().getItem(pos)).getTaskName()+"");
@@ -348,16 +428,19 @@ data=dataOrg;
        // global.SaveValue("TaskToken",Token);   //
         String Token= global.GetValue("TaskToken");
 
-        alltask.setBackgroundResource(R.drawable.bluesmalround);
-        alltask.setTextColor(Color.WHITE);
+        curtask.setBackgroundResource(R.drawable.bluesmalround);
+        curtask.setTextColor(Color.WHITE);
 
         donetask.setBackgroundResource(R.drawable.whitesmalround);
         donetask.setTextColor(Color.parseColor("#0066CC"));
         litetask.setBackgroundResource(R.drawable.whitesmalround);
         litetask.setTextColor(Color.parseColor("#0066CC"));
-        curtask.setBackgroundResource(R.drawable.whitesmalround);
-        curtask.setTextColor(Color.parseColor("#0066CC"));
+//        curtask.setBackgroundResource(R.drawable.whitesmalround);
+//        curtask.setTextColor(Color.parseColor("#0066CC"));
+//
 
+            nodata.setVisibility(View.GONE);
+            list.setVisibility(View.VISIBLE);
 
 
         Call<TaskEmpManager> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetAllTasksMG(Token);
@@ -375,12 +458,22 @@ data=dataOrg;
                         data=response.body();
                         dataOrg=response.body();
                         if(response.body().getTasksCount()>0) {
-                            TaskEmpMGAdapter adp = new TaskEmpMGAdapter(EmpTaskActivity.this, ((List) response.body().getModel().getGetAllTasks()), 0);
+                            if(response.body().getModel().getGetAllActiveTasks().size()>0)
+                            {  TaskEmpMGAdapter adp = new TaskEmpMGAdapter(EmpTaskActivity.this, ((List) response.body().getModel().getGetAllActiveTasks()), 1);
                             list.setAdapter(adp);
+                            }else
+                            {
+                                nodata.setVisibility(View.VISIBLE);
+                                list.setVisibility(View.GONE);
+
+
+                            }
                         }
                         else
                         {
-                            global.ShowMessageNF("لا توجد مهام مسجلة",EmpTaskActivity.this);
+                            nodata.setVisibility(View.VISIBLE);
+                            list.setVisibility(View.GONE);
+
 
                         }
                     }else {

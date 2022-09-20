@@ -34,8 +34,7 @@ Global global;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_side_menu);
 
-
-global=new Global(SideMenuActivity.this);
+        global=new Global(SideMenuActivity.this);
 
 
 

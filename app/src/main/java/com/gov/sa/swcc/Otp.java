@@ -287,66 +287,66 @@ global=new Global(getContext());
 
     private void GetToken() {
 //ToDo
-        Intent intent = new Intent(getActivity(), MainLGActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), MainLGActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
 
-//        String user=global.GetValue("Username").replace("u","").replace("U","");
-//        //String user="290550";
-//        //String user="290404";
+        String user=global.GetValue("Username").replace("u","").replace("U","");
+        //String user="290550";
+        //String user="290404";
+
+        Call<GetToken> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetToken(user,"NDlEOTBGQzI4NDc5NDE3MjgwNTUyNEVBNkYwRUE0MzE=",global.GetValue("NotfToken"));
+        PorgressDilog dialog =  new PorgressDilog(getActivity());
+        dialog.show();
+        call.enqueue(new Callback<GetToken>() {
+            @Override
+            public void onResponse(Call<GetToken> call, Response<GetToken> response) {
+                Log.d("Resp",response.message()+"");
+                if(response.isSuccessful())
+                {
+                    dialog.dismiss();
+                    global.SaveValue("TaskToken","Bearer "+response.body().getData());
+                    global.SaveValue("IsSuper",response.body().getIsSupervisorUser());
+                    global.SaveValue("MID",user);
+
+                    Log.d("Reeeeeeeeeee","TaskToken");
+                    if(response.body().getIsSupervisorUser().contains("rue")) {
+                        GetTaskCount();
+                    }else{
+
+                        Intent intent = new Intent(getActivity(), MainLGActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+
+                    }
+//                    if(response.body()==1){
+//                        dialog.dismiss();
+//                        global.ShowMessageNF(response.body().getMessage(),TaskAddTimeActivity.this);
 //
-//        Call<GetToken> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetToken(user,"NDlEOTBGQzI4NDc5NDE3MjgwNTUyNEVBNkYwRUE0MzE=",global.GetValue("NotfToken"));
-//        PorgressDilog dialog =  new PorgressDilog(getActivity());
-//        dialog.show();
-//        call.enqueue(new Callback<GetToken>() {
-//            @Override
-//            public void onResponse(Call<GetToken> call, Response<GetToken> response) {
-//                Log.d("Resp",response.message()+"");
-//                if(response.isSuccessful())
-//                {
-//                    dialog.dismiss();
-//                    global.SaveValue("TaskToken","Bearer "+response.body().getData());
-//                    global.SaveValue("IsSuper",response.body().getIsSupervisorUser());
-//                    global.SaveValue("MID",user);
 //
-//                    Log.d("Reeeeeeeeeee","TaskToken");
-//                    if(response.body().getIsSupervisorUser().contains("rue")) {
-//                        GetTaskCount();
-//                    }else{
-//
-//                        Intent intent = new Intent(getActivity(), MainLGActivity.class);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(intent);
-//
+//                    }else {
+//                        dialog.dismiss();
+//                        global.ShowMessage("");
 //                    }
-////                    if(response.body()==1){
-////                        dialog.dismiss();
-////                        global.ShowMessageNF(response.body().getMessage(),TaskAddTimeActivity.this);
-////
-////
-////                    }else {
-////                        dialog.dismiss();
-////                        global.ShowMessage("");
-////                    }
-//
-//                }else {
-//
-//                    dialog.dismiss();
-//                    GetToken();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<GetToken>call, Throwable t) {
-//                dialog.dismiss();
-//                GetToken();
-//
-//                Log.d("Reeeeeeeeeee",t.getMessage()+"");
-//
-//            }
-//
-//
-//        });
+
+                }else {
+
+                    dialog.dismiss();
+                    GetToken();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetToken>call, Throwable t) {
+                dialog.dismiss();
+                GetToken();
+
+                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+
+            }
+
+
+        });
     }
 
     private void GetTaskCount() {

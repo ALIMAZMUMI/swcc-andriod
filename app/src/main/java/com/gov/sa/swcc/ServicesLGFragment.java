@@ -1,6 +1,11 @@
 package com.gov.sa.swcc;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,9 +20,25 @@ import android.widget.GridView;
 
 import com.gov.sa.swcc.Adapter.GridAdapter;
 import com.gov.sa.swcc.Adapter.GridFavAdapter;
+import com.gov.sa.swcc.model.Chatbot.Chatbotrequest;
+import com.gov.sa.swcc.model.Chatbot.Chatbotres;
 import com.gov.sa.swcc.model.GridItem;
+import com.gov.sa.swcc.model.MangerCount.MangerCount;
+import com.gov.sa.swcc.model.PersonalResult;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,6 +113,12 @@ public class ServicesLGFragment extends Fragment {
 
         birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7"));
 
+        birdList.add(new GridItem("تحضير بالموقع",R.drawable.workinghours,"HR8"));
+        birdList.add(new GridItem("الحاسبة المالية",R.drawable.calculate1,"HR9"));
+
+
+
+
         adapter=new GridAdapter(getContext(),R.layout.griditem,birdList,width,height,0);
         GridView gridView=(GridView)view.findViewById(R.id.servicegrid1);
         gridView.setAdapter(adapter);
@@ -127,6 +154,14 @@ public class ServicesLGFragment extends Fragment {
                 if(birdList.get(i).getType().contains("HR7")) {
                     startActivity(new Intent(getActivity(),EmpTransactionActivity.class));
                 }
+
+                if(birdList.get(i).getType().contains("HR8")) {
+                    startActivity(new Intent(getActivity(),LocationAttendActivity.class));
+                }
+                if(birdList.get(i).getType().contains("HR9")) {
+                    startActivity(new Intent(getActivity(),FinancialCalculatorActivity.class));
+                }
+
             }
         });
 
@@ -137,6 +172,7 @@ public class ServicesLGFragment extends Fragment {
         //birdList1.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
         birdList1.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2"));
         birdList1.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3"));
+        birdList1.add(new GridItem("Chatbot",R.drawable.chatbot,"TE4"));
 
         adapter1=new GridAdapter(getContext(),R.layout.griditem,birdList1,width,height,0);
         GridView gridView1=(GridView)view.findViewById(R.id.servicegrid2);
@@ -165,6 +201,20 @@ public class ServicesLGFragment extends Fragment {
                 if(birdList1.get(i).getType().contains("TE1")) {
                     startActivity(new Intent(getActivity(),ITComActivity.class));
                 }
+
+
+                if(birdList1.get(i).getType().contains("TE4")) {
+
+                    PersonalResult per=global.GetPData("PersonalResult");
+                    Log.d("PersonalResult",global.GetPData("PersonalResult").getResultObject().getDepartment());
+                    if(per.getResultObject().getJwtToken().length()>9){
+                        browserPOST();
+                    }else{
+                        global.ShowMessageLogout("انتهت صلاحية تسجيل دخولك فضلا قم بتسجيل دخولك لتطبيق مرة اخر");
+
+                    }
+
+                }
             }
         });
 
@@ -175,6 +225,45 @@ public class ServicesLGFragment extends Fragment {
 
     }
 
+
+    private void browserPOST() {
+        PersonalResult per=global.GetPData("PersonalResult");
+
+        Chatbotrequest chatbotrequest=new Chatbotrequest();
+        chatbotrequest.setEId(global.GetValue("Username"));
+        chatbotrequest.setToken(per.getResultObject().getJwtToken());
+        Call<Chatbotres> call = RetrofitClient.getInstance("https://chatbotapi.swcc.gov.sa/api/").getMyApi().Chatbot(chatbotrequest);
+        PorgressDilog dialog =  new PorgressDilog(getActivity());
+        dialog.show();
+        call.enqueue(new Callback<Chatbotres>() {
+            @Override
+            public void onResponse(Call<Chatbotres> call, Response<Chatbotres> response) {
+                Log.d("Resp",response.message()+"");
+                if(response.isSuccessful())
+                {
+                    dialog.dismiss();
+
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(response.body().TOpenUrl));
+                    startActivity(i);
+
+                }else {
+
+                    dialog.dismiss();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Chatbotres>call, Throwable t) {
+                dialog.dismiss();
+                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+
+            }
+
+
+        });
+    }
 
 
     public void getHeight(GridAdapter listadp, GridView listview)

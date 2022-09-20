@@ -60,8 +60,8 @@
                         android:orientation="horizontal">
                         <ImageView
                             android:id="@+id/close"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/close"
                             android:elevation="12dp"
                             android:layout_gravity="right"
@@ -100,22 +100,42 @@
                             android:textSize="12dp"
                             android:gravity="right|center"
                             android:padding="10dp"
+                            android:maxLength="60"
+
                             />
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center|right">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#80000000"
+                                android:gravity="center|right"
+                                android:textSize="12dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="  (100 كلمة)"  />
+                            <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#004C86"
                             android:gravity="center|right"
                             android:textSize="15dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:layout_marginBottom="10dp"
                             android:text="وصف المهمة"  />
 
+                        </LinearLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
                         <EditText
                             android:id="@+id/detials"
                             android:layout_width="match_parent"
                             android:layout_height="70dp"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:ems="10"
                             android:inputType="textMultiLine"
                             android:textColor="#0066CC"
@@ -124,17 +144,30 @@
                             android:textSize="12dp"
                             android:gravity="top|right"
                             android:padding="10dp"
+                            android:maxLength="100"
                             android:hint="كتابة الوصف تسمح 100 حرف"/>
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+android:layout_marginLeft="5dp"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true"
+        android:text="صوتي"
+        android:textSize="10dp"
+        android:visibility="gone"
+        android:gravity="center"/>
 
+</RelativeLayout>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="#004C86"
                             android:gravity="center|right"
                             android:textSize="15dp"
-                            android:layout_marginTop="25dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
                             android:text="اسناد المهمة الى" />
 
                         <LinearLayout
@@ -142,7 +175,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:padding="5dp"
                             android:background="@drawable/blueborder"
                             android:orientation="vertical"
@@ -228,8 +261,8 @@
                             android:textColor="#004C86"
                             android:gravity="center|right"
                             android:textSize="15dp"
-                            android:layout_marginTop="25dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
                             android:text="تاريخ التسليم" />
 
                         <RelativeLayout
@@ -285,7 +318,7 @@
                             android:textColor="#004C86"
                             android:gravity="center|right"
                             android:textSize="15dp"
-                            android:layout_marginTop="25dp"
+                            android:layout_marginTop="5dp"
                             android:text="المرفقات" />
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -338,13 +371,13 @@
                                 android:gravity="right|center"
                                 android:textSize="10dp"
 
-                                android:text="التقاط وتحميل صورة" />
+                                android:text="تحميل مرفق" />
 
                             <ImageView
                                 android:id="@+id/addimage"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                app:srcCompat="@drawable/camera"
+                                app:srcCompat="@drawable/attach"
                                 android:padding="5dp"/>
                             </LinearLayout>
 

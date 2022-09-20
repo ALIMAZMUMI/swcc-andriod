@@ -3,4 +3,38 @@
     <external-path name="my_images"
         path="." />
     <external-files-path name="my_images" path="." />
+
+    <external-files-path name="swccpdf" path="./" />
+
+    <external-path name="Download"
+        path="Download/" />
+
+
+    <external-path
+        name="external_files"
+        path="." />
+    <external-path
+        name="external_files"
+        path="./swccpdf/MYTask/" />
+    <external-files-path
+        name="external_files"
+        path="./swccpdf/" />
+    <external-path
+        name="external_files"
+        path="./swccpdf/" />
+
+    <external-files-path
+        name="external_files"
+        path="." />
+    <cache-path
+        name="cache"
+        path="." />
+    <external-cache-path
+        name="external_cache"
+        path="." />
+    <files-path
+        name="files"
+        path="." />
+
+
 </paths>

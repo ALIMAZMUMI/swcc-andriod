@@ -1,7 +1,8 @@
 package com.gov.sa.swcc;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+
+import com.gov.sa.swcc.model.Chatbot.Chatbotrequest;
+import com.gov.sa.swcc.model.Chatbot.Chatbotres;
 import com.gov.sa.swcc.model.CompleteTask.CompleteTask;
 import com.gov.sa.swcc.model.CreateTask.CreateTask;
 import com.gov.sa.swcc.model.CreateTask.CreateTaskResponce;
@@ -32,6 +33,8 @@ import com.gov.sa.swcc.model.TaskEmpManager.TaskEmpManager;
 import com.gov.sa.swcc.model.TaskHistory.TaskHistory;
 import com.gov.sa.swcc.model.TransactionsApiResult;
 import com.gov.sa.swcc.model.emptask.EmpTasks;
+import com.gov.sa.swcc.model.locationAttend.SWCCLocations;
+import com.gov.sa.swcc.model.locationAttend.TransactionLocationData;
 
 import org.json.JSONArray;
 
@@ -58,7 +61,10 @@ public interface Api {
     String TaskURL="https://"+Domain+"/TaskTest/api/";
     String BASE_URL = "https://"+Domain+"/APIOTP/API/";
     String Sharektest="https://"+Domain+"/testapp/";
-//    String SingINOutBASE_URL = "https://ext.swcc.gov.sa/TransactionsApi/api/";
+    String LOCATION_ATT_URL = "https://"+Domain+"/";
+    String FURL = "https://"+Domain+"/";
+
+    //    String SingINOutBASE_URL = "https://ext.swcc.gov.sa/TransactionsApi/api/";
 //    String Ticket = "https://apiext.swcc.gov.sa/swccmobile/api/FootPrint/";
 //    String Insur="https://ext.swcc.gov.sa/insinfo/api/";
 //    //String Sharek="https://apitest.swcc.gov.sa/FupsApi/api/EmployeeEvaluation/";
@@ -181,7 +187,7 @@ Call<List<ReportRe>> GetAllProject(@Query("UID") String UID);
 
     @Headers({"Accept: application/json","Content-Type: application/json"})
     @GET("Account/GetToken")
-    Call<GetToken> GetToken(@Header("uid") String uid, @Header("apptoken") String apptoken,@Header("DeviceID") String DeviceID );
+    Call<GetToken> GetToken(@Header("uid") String uid, @Header("apptoken") String apptoken,@Header("DeviceId") String DeviceID );
 
 
 
@@ -218,6 +224,9 @@ Call<List<ReportRe>> GetAllProject(@Query("UID") String UID);
     Call<ExtendTask> ApproveTask(@Header("Authorization") String Authorization, @Query("EmpTaskId") String TID);
 
 
+    @Headers({"Accept: application/json","Content-Type: application/json"})
+    @GET("ManagerTaskManagment/GetTaskHistory?")
+    Call<TaskHistory> GetMTaskHistory(@Header("Authorization") String Authorization, @Query("EmpTaskId") String TID);
 
 
 
@@ -242,6 +251,10 @@ Call<List<ReportRe>> GetAllProject(@Query("UID") String UID);
     @Headers({"Accept: application/json","Content-Type: application/json"})
     @GET("ManagerTaskWatcher/GetPendingRatingRequests")
     Call<PendingRatingRequests> GetPendingRatingRequests(@Header("Authorization") String Authorization);
+
+    @Headers({"Accept: application/json","Content-Type: application/json"})
+    @GET("ManagerTaskWatcher/GetPendingRequests")
+    Call<PendingRatingRequests> GetPendingRequests(@Header("Authorization") String Authorization);
 
 
 
@@ -299,6 +312,38 @@ Call<List<ReportRe>> GetAllProject(@Query("UID") String UID);
     @Headers({"Accept: application/json","Content-Type: application/json"})
     @GET("ManagerTaskWatcher/GetManagerTasksCount")
     Call<MangerCount> GetManagerTasksCount(@Header("Authorization") String Authorization);
+
+
+
+
+    @Headers({"Accept: application/json","Content-Type: application/json"})
+    @GET("AttendanceLocation/AttendanceLocation/SwccLocations")
+    Call<SWCCLocations> GetSWCCLocations(@Header("Authorization") String Authorization,@Query("UID") String UID);
+
+//    @Headers({"Accept: application/json","Content-Type: application/json"})
+//    @GET("AttendanceLocation/AttendanceLocation/LastTransactionLocation")
+//    Call<TransactionLocationData> GetLastTransactionLocation(@Header("Authorization") String Authorization, @Query("uid") String ID);
+
+    //https://apiTEST.swcc.gov.sa/AttendanceLocation/AttendanceLocation/InsertAttendance?Userlatitude=26.701928977470384&Userlongitude=46.68057949985196&uid=u190250&typeTransaction=out
+    @Headers({"Accept: application/json","Content-Type: application/json","Platform: android"})
+    @POST("AttendanceLocation/AttendanceLocation/InsertAttendance")
+    Call<TransactionLocationData> InsertAttendance(@Header("Authorization") String Authorization, @Query("Userlatitude") String lat,@Query("Userlongitude") String lng,@Query("uid") String uid,@Query("typeTransaction") String type);
+
+
+    @Headers({"Accept: application/json","Content-Type: application/json","Platform: android"})
+    @POST("FinancialCalculator/api/CalculateEndOfService")
+    Call<Double> CalculateEndOfService(@Header("Authorization") String Authorization, @Query("userSalary") String userSalary,@Query("userTotalAllowances") String userTotalAllowances,@Query("startWorkingDate") String startWorkingDate,@Query("endWorkingDate") String endWorkingDate);
+
+
+    @Headers({"Accept: application/json","Content-Type: application/json","Platform: android"})
+    @POST("FinancialCalculator/api/CalculateVacation")
+    Call<Double> CalculateVacation(@Header("Authorization") String Authorization, @Query("userSalary") String userSalary,@Query("userTotalAllowances") String userTotalAllowances,@Query("userTotalDays") String userTotalDays);
+
+
+    @Headers({"Accept: application/json","Content-Type: application/json","Platform: android"})
+    @POST("Token/Insert")
+    Call<Chatbotres> Chatbot(@Body Chatbotrequest chatbotrequest);
+
 
 
 }

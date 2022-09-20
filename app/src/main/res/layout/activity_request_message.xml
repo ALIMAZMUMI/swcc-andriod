@@ -61,9 +61,10 @@
                             android:id="@+id/hedar"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:text="تم ارسال الملاحظة بنجاح"
+                            android:text=""
                             android:textColor="#004C86"
                             android:textSize="15dp"
+                            android:visibility="visible"
                             android:gravity="center"/>
 
 

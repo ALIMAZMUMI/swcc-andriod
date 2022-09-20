@@ -11,8 +11,35 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="7"
+                                android:orientation="vertical"
                                 android:background="@drawable/roundgray"
                                 >
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="80dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="7"
+                                    android:background="#004C86">
+                                    <TextView
+                                        android:id="@+id/headertxt"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="6"
+                                        android:textColor="#ffffff"
+                                        android:gravity="center"
+                                        android:paddingLeft="20dp"
+                                        android:textSize="17dp"
+                                        android:layout_height="match_parent"
+                                        android:text="التقرير"/>
+                                    <ImageView
+                                        android:id="@+id/backarrow"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:layout_height="match_parent"
+                                        android:src="@drawable/back_arrow"
+                                        android:padding="20dp"
+                                        />
+                                </LinearLayout>
+
                                 <com.github.barteksc.pdfviewer.PDFView
                                     android:id="@+id/pdfView"
                                     android:layout_height="match_parent"

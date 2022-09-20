@@ -114,8 +114,8 @@
                 android:layout_height="25dp"
                 android:orientation="horizontal"
                     android:paddingHorizontal="10dp"
-
-                    android:gravity="center">
+android:layout_gravity="right"
+                    android:gravity="center|right">
 
                     <TextView
                         android:id="@+id/notetxt"
@@ -139,12 +139,14 @@
                         android:layout_height="30dp"
                         android:layout_weight="3"
                         android:textColor="#0066CC"
+                        android:gravity="right|center"
 
                         />
                     <ImageView
-                        android:layout_width="0dp"
+                        android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:layout_weight="1"
+                        android:layout_weight="0"
+                        android:layout_marginLeft="10dp"
                         android:src="@drawable/personicon"
 
                         />

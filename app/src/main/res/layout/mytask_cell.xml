@@ -22,10 +22,23 @@
             android:layout_height="30dp"
             android:orientation="horizontal"
             android:weightSum="6"
-            android:paddingHorizontal="10dp"
+            android:paddingRight="10dp"
             android:gravity="center|right"
             >
-
+            <TextView
+                android:id="@+id/newtask"
+                android:layout_width="0dp"
+                android:layout_height="27dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#0066CC"
+                android:textSize="13dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="-1dp"
+                android:background="@drawable/greennewtask"
+                android:text="جديد"
+                android:visibility="gone"
+                />
             <TextView
                 android:id="@+id/tasktime"
                 android:layout_width="0dp"
@@ -95,6 +108,7 @@
     android:layout_width="0dp"
     android:layout_height="30dp"
 android:gravity="center|right"
+                        android:textColor="#004C87"
                         android:paddingRight="5dp"
                         android:layout_weight="5"
 

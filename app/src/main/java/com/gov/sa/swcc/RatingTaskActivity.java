@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.borjabravo.simpleratingbar.OnRatingChangedListener;
 import com.borjabravo.simpleratingbar.SimpleRatingBar;
 import com.gov.sa.swcc.model.ExtendTask.ExtendTask;
 
@@ -25,10 +27,13 @@ public class RatingTaskActivity extends AppCompatActivity {
 
         global=new Global(RatingTaskActivity.this);
         SimpleRatingBar  ratingBar=(SimpleRatingBar)findViewById(R.id.simple_rating_bar);
-        ratingBar.setRating(3);
+        ratingBar.setRating(0);
         Button submit=(Button)findViewById(R.id.submit);
         Button cancel=(Button)findViewById(R.id.cancel);
         ID=getIntent().getExtras().getString("ID");
+        submit.setBackgroundResource(R.drawable.grayroundbtn);
+        submit.setEnabled(false);
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,7 +77,27 @@ String RID="";
             }
         });
 
+ratingBar.setOnRatingChangedListener(new OnRatingChangedListener() {
+    @Override
+    public void onRatingChange(float v, float v1) {
 
+        if(ratingBar.getRating()>0){
+            submit.setBackgroundResource(R.drawable.blueroundfull);
+            submit.setEnabled(true);
+            ((TextView)findViewById(R.id.message)).setText("تقيم المهمة المنجزة");
+            ((TextView)findViewById(R.id.header)).setText("تم اعتماد المهمة بنجاح");
+
+
+        }else{
+            submit.setBackgroundResource(R.drawable.grayroundbtn);
+            submit.setEnabled(false);
+            ((TextView)findViewById(R.id.message)).setText("يرجى تقييم المهمة ليتم الاعتماد");
+            ((TextView)findViewById(R.id.header)).setText("اكمال عملية الاعتماد");
+
+
+        }
+    }
+});
 
     }
 
@@ -96,7 +121,7 @@ String RID="";
                         Intent intent=new Intent();
                         intent.putExtra("update",true);
                         setResult(1002,intent);
-                        global.ShowMessageNF(response.body().getMessage(),RatingTaskActivity.this);
+                        global.ShowMessageNFH("شكرا لك!",RatingTaskActivity.this,"تم اعتماد المهمة بنجاح");
 
 
                     }else {
@@ -126,4 +151,8 @@ String RID="";
         });
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

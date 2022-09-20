@@ -84,6 +84,12 @@ public class Emp_Edit_TaskActivity extends AppCompatActivity {
         emplist=(LinearLayout)findViewById(R.id.emplist);
         empchips=(ChipGroup)findViewById(R.id.empchips);
         submit=(Button)findViewById(R.id.submit);
+        addimagetxt=(TextView)findViewById(R.id.addimagetxt);
+        removeimagetxt=(TextView) findViewById(R.id.removeimagetxt);
+        addimage=(ImageView) findViewById(R.id.addimage);
+        removeimage=(ImageView) findViewById(R.id.removeimage);
+
+
         submit.setEnabled(false);
         uid=new ArrayList<>();
         Name=new ArrayList<>();
@@ -97,10 +103,12 @@ public class Emp_Edit_TaskActivity extends AppCompatActivity {
         String EmpID=getIntent().getExtras().getString("EmpID", "");
         String TaskDate=getIntent().getExtras().getString("TaskDate", "");
         int Attachedfile=getIntent().getExtras().getInt("Attachedfile", -1);
-uid.add(EmpID);
-Name.add(EmpName);
+        uid.add(EmpID);
+        Name.add(EmpName);
         EmpList();
-        
+
+
+
         Task_Titel.setText(TaskName);
         detials.setText(TaskDetailes);
         String myFormat="yyyy-MM-dd";
@@ -119,6 +127,17 @@ Name.add(EmpName);
                 CreateEmpTask();
             }
         });
+
+
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
+
+
         addemp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,10 +215,7 @@ Name.add(EmpName);
         });
 
 
-        removeimagetxt=(TextView) findViewById(R.id.removeimagetxt);
-        addimagetxt=(TextView)findViewById(R.id.addimagetxt);
-        addimage=(ImageView) findViewById(R.id.addimage);
-        removeimage=(ImageView) findViewById(R.id.removeimage);
+
         removeimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -379,8 +395,7 @@ Name.add(EmpName);
                         Intent intent=new Intent();
                         intent.putExtra("update",true);
                         setResult(1002,intent);
-                        global.ShowMessageNF(response.body().getMessage(),Emp_Edit_TaskActivity.this);
-
+                        global.ShowMessageNFH("شكرا لك!",Emp_Edit_TaskActivity.this,"تم حفظ التعديلات بنجاح");
 
                     }else {
                         dialog.dismiss();

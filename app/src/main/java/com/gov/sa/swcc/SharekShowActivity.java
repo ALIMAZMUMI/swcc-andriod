@@ -5,14 +5,18 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.github.barteksc.pdfviewer.PDFView;
 
@@ -37,6 +41,15 @@ public class SharekShowActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             downloadPdfContent(extras.getString("URL_LINK"));
         }
+
+
+        ((ImageView)findViewById(R.id.backarrow)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
     }
 
     public void downloadPdfContent(String urlToDownload){
@@ -97,22 +110,36 @@ public class SharekShowActivity extends AppCompatActivity {
     }
 
     public  boolean isStoragePermissionGranted() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                return true;
+            } else { //request for the permission
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+                return false;
+
+            }
+        } else {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED) {
+                    == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED ) {
                 Log.v("Swcc","Permission is granted");
                 return true;
             } else {
 
                 Log.v("SWCC","Permission is revoked");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 1);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
         }
         else { //permission is automatically granted on sdk<23 upon installation
             Log.v("SWCC","Permission is granted");
             return true;
+        }
         }
     }
 

@@ -63,8 +63,8 @@
                             android:gravity="center"/>
                         <ImageView
                             android:id="@+id/close"
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/close"
                             android:elevation="12dp"
 

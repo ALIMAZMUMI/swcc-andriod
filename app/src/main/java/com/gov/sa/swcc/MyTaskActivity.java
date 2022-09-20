@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -15,8 +16,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,10 +48,10 @@ public class MyTaskActivity extends AppCompatActivity {
 Global global;
 ListView list;
     EmpTasks data;
-    int index=0;
+    int index=1;
     EmpTasks dataOrg;
 
-    TextView donetask,litetask,curtask,alltask;
+    TextView donetask,litetask,curtask,alltask,nodata;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +63,19 @@ ListView list;
         litetask=(TextView) findViewById(R.id.litetask);
         curtask=(TextView) findViewById(R.id.curtask);
         alltask=(TextView) findViewById(R.id.alltask);
+        nodata = (TextView) findViewById(R.id.nodata);
 
 
+
+
+        alltask.setVisibility(View.GONE);
+        ((ImageView)findViewById(R.id.backarrow)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
 //        EditText searchvalue=(EditText)findViewById(R.id.searchvalue);
 //
 //        searchvalue.addTextChangedListener(new TextWatcher() {
@@ -156,15 +170,26 @@ ListView list;
         String ID="";
         int status=0;
         Object Obj=((MyTasksAdapter)list.getAdapter()).getItem(i);
-        if(index==0) {
-            ID =""+((GetAllMyTask)Obj).getId();
-            TaskDetailsActivity.getAllMyTask=((GetAllMyTask)Obj);
-            status=((GetAllMyTask)Obj).getTaskStatusId();
+//        if(index==0) {
+//            ID =""+((GetAllMyTask)Obj).getId();
+//            TaskDetailsActivity.getAllMyTask=((GetAllMyTask)Obj);
+//            status=((GetAllMyTask)Obj).getTaskStatusId();
+//
+//        }else
+            if(index==1) {
 
-        }else if(index==1) {
-            ID =""+((GetMyActiveTasks)Obj).getId();
-            TaskDetailsActivity.getMyActiveTasks=((GetMyActiveTasks)Obj);
-            status=((GetMyActiveTasks)Obj).getTaskStatusId();
+                ID =""+((GetMyActiveTasks)Obj).getId();
+                TaskDetailsActivity.getMyActiveTasks=((GetMyActiveTasks)Obj);
+                status=((GetMyActiveTasks)Obj).getTaskStatusId();
+
+                if(!global.GetValue("newtask").contains("#"+ID)){
+                    global.SaveValue("newtask",global.GetValue("newtask")+"#"+ID);
+                    MyTasksAdapter adp = new MyTasksAdapter(MyTaskActivity.this, ((List) data.getModel().getGetMyActiveTasks()), 1);
+                    list.setAdapter(adp);
+                }
+
+
+
 
 
         }else if(index==2) {
@@ -226,8 +251,18 @@ alltask.setOnClickListener(new View.OnClickListener() {
                 donetask.setTextColor(Color.WHITE);
 
                 if(data!=null){
-                    MyTasksAdapter adp=new MyTasksAdapter(MyTaskActivity.this,((List)data.getModel().getGetMyCompletedTasks()),3);
-                    list.setAdapter(adp);
+
+                        if(data.getModel().getGetMyCompletedTasks().size()>0){
+                            MyTasksAdapter adp=new MyTasksAdapter(MyTaskActivity.this,((List)data.getModel().getGetMyCompletedTasks()),3);
+                            list.setAdapter(adp);
+                            nodata.setVisibility(View.GONE);
+                            list.setVisibility(View.VISIBLE);
+                        }else {
+                            list.setAdapter(null);
+                            nodata.setVisibility(View.VISIBLE);
+                            list.setVisibility(View.GONE);
+                        }
+
                 }
                 index=3;
                 alltask.setBackgroundResource(R.drawable.whitesmalround);
@@ -248,8 +283,16 @@ alltask.setOnClickListener(new View.OnClickListener() {
                 litetask.setTextColor(Color.WHITE);
 
                 if(data!=null){
+                    if(data.getModel().getGetMyDelayedTasks().size()>0){
                     MyTasksAdapter adp=new MyTasksAdapter(MyTaskActivity.this,((List)data.getModel().getGetMyDelayedTasks()),2);
                     list.setAdapter(adp);
+                        nodata.setVisibility(View.GONE);
+                        list.setVisibility(View.VISIBLE);
+                }else {
+                    list.setAdapter(null);
+                    nodata.setVisibility(View.VISIBLE);
+                    list.setVisibility(View.GONE);
+                }
                 }
                 index=2;
                 donetask.setBackgroundResource(R.drawable.whitesmalround);
@@ -270,8 +313,18 @@ alltask.setOnClickListener(new View.OnClickListener() {
                 curtask.setTextColor(Color.WHITE);
 
                 if(data!=null){
-                    MyTasksAdapter adp=new MyTasksAdapter(MyTaskActivity.this,((List)data.getModel().getGetMyActiveTasks()),1);
-                    list.setAdapter(adp);
+
+
+                    if(data.getModel().getGetMyActiveTasks().size()>0) {
+                        MyTasksAdapter adp = new MyTasksAdapter(MyTaskActivity.this, ((List) data.getModel().getGetMyActiveTasks()), 1);
+                        list.setAdapter(adp);
+                        nodata.setVisibility(View.GONE);
+                        list.setVisibility(View.VISIBLE);
+                    }else {
+                    list.setAdapter(null);
+                    nodata.setVisibility(View.VISIBLE);
+                    list.setVisibility(View.GONE);
+                    }
                 }
                 index=1;
 
@@ -289,6 +342,27 @@ alltask.setOnClickListener(new View.OnClickListener() {
 
         CallGetTask();
 
+        SwipeRefreshLayout pullToRefresh = (SwipeRefreshLayout) findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                CallGetTask();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+        list.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (list.getChildAt(0) != null) {
+                    pullToRefresh.setEnabled(list.getFirstVisiblePosition() == 0 && list.getChildAt(0).getTop() == 0);
+                }
+            }
+        });
 
 
     }
@@ -299,15 +373,18 @@ alltask.setOnClickListener(new View.OnClickListener() {
         //String Token="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhNTYzYmM1Mi1kNGU2LTRjOGEtOGEzMC1lYWRkMTFjNGJlNjYiLCJ2YWxpZCI6IjEiLCJ1aWQiOiIxOTAyNTAiLCJoaXJlcmFjaHkiOiJ7XCJOYW1lXCI6XCJNYWplZFwiLFwiVWlkXCI6XCIyOTA1NTBcIixcIkVtcGxveWVlc1wiOlt7XCJOYW1lXCI6XCJBaG1lZFwiLFwiVWlkXCI6XCIxOTAyMzZcIixcIkVtcGxveWVlc1wiOm51bGx9LHtcIk5hbWVcIjpcIkhhbnlcIixcIlVpZFwiOlwiOTgwNjUxXCIsXCJFbXBsb3llZXNcIjpudWxsfV19IiwiZXhwIjoxNjU1MzA2MTk0LCJpc3MiOiJodHRwczovL2FwaS5zd2NjLmdvdi5zYSIsImF1ZCI6Imh0dHBzOi8vYXBpLnN3Y2MuZ292LnNhIn0.Qoz-j5-2TvUELCxiZoImVeD7AsbYxw7NJCd8m2VMPDk";
         String Token=global.GetValue("TaskToken");
 
-        alltask.setBackgroundResource(R.drawable.bluesmalround);
-        alltask.setTextColor(Color.WHITE);
+        curtask.setBackgroundResource(R.drawable.bluesmalround);
+        curtask.setTextColor(Color.WHITE);
         donetask.setBackgroundResource(R.drawable.whitesmalround);
         donetask.setTextColor(Color.parseColor("#0066CC"));
         litetask.setBackgroundResource(R.drawable.whitesmalround);
         litetask.setTextColor(Color.parseColor("#0066CC"));
-        curtask.setBackgroundResource(R.drawable.whitesmalround);
-        curtask.setTextColor(Color.parseColor("#0066CC"));
+//        curtask.setBackgroundResource(R.drawable.whitesmalround);
+//        curtask.setTextColor(Color.parseColor("#0066CC"));
 
+
+        nodata.setVisibility(View.GONE);
+        list.setVisibility(View.VISIBLE);
 
         Call<EmpTasks> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetAllMyTasks(Token);
         PorgressDilog dialog =  new PorgressDilog(this);
@@ -322,14 +399,22 @@ alltask.setOnClickListener(new View.OnClickListener() {
                     if(response.body().getStatusCode()==1){
                         dialog.dismiss();
                         if(response.body().getTasksCount()>0){
-                        data=response.body();
+                            data=response.body();
                             dataOrg=response.body();
-                        MyTasksAdapter adp=new MyTasksAdapter(MyTaskActivity.this,((List)response.body().getModel().getGetAllMyTasks()),0);
-                        list.setAdapter(adp);
+                            if(response.body().getModel().getGetMyActiveTasks().size()>0)
+                            {MyTasksAdapter adp=new MyTasksAdapter(MyTaskActivity.this,((List)response.body().getModel().getGetMyActiveTasks()),1);
+                        list.setAdapter(adp);}
+                            else
+                            {
+                                list.setAdapter(null);
+                                nodata.setVisibility(View.VISIBLE);
+                                list.setVisibility(View.GONE);
+                            }
                         }else
                         {
-                            global.ShowMessageNF("لا توجد مهام مسجلة",MyTaskActivity.this);
-
+                            list.setAdapter(null);
+                            nodata.setVisibility(View.VISIBLE);
+                            list.setVisibility(View.GONE);
                         }
                     }else {
                         dialog.dismiss();

@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,16 +29,92 @@ import retrofit2.Response;
 public class Task_Add_EmpActivity extends AppCompatActivity {
 Global global;
 List<HirereachyManager> hirereachyManagers;
+    List<HirereachyManager> hirereachysearch;
+
 ListView searchres;
     ShowEmpAdapter showEmpAdapter;
     Button submit;
+    EditText Name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_add_emp);
         global=new Global(Task_Add_EmpActivity.this);
+        Name=(EditText) findViewById(R.id.schvalue);
+
         submit=(Button)findViewById(R.id.submit);
         submit.setEnabled(false);
+
+
+
+
+
+
+        Name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
+                if(Name.getText().toString().length()>=3){
+                    hirereachysearch=new ArrayList<>();
+
+                    for (int i=0;i<hirereachyManagers.size();i++){
+                        if(hirereachyManagers.get(i).getName().contains(Name.getText().toString())||hirereachyManagers.get(i).getUid().contains(Name.getText().toString()))
+                        {
+                            hirereachysearch.add(hirereachyManagers.get(i));
+                        }
+                    }
+
+if (hirereachysearch.size()>0) {
+    if (Emp_Add_TaskActivity.uid != null) {
+        for (int i = 0; i < hirereachysearch.size(); i++) {
+            if (Emp_Add_TaskActivity.uid.contains(hirereachysearch.get(i).getUid())) {
+                hirereachysearch.get(i).setSelected(true);
+                submit.setEnabled(true);
+                submit.setBackgroundResource(R.drawable.blueroundfull);
+
+            }
+        }
+    }
+
+    showEmpAdapter = new ShowEmpAdapter(Task_Add_EmpActivity.this, hirereachysearch);
+    searchres.setAdapter(showEmpAdapter);
+
+}else {
+    showEmpAdapter = new ShowEmpAdapter(Task_Add_EmpActivity.this, new ArrayList<>());
+    searchres.setAdapter(showEmpAdapter);
+
+}
+                }else{
+                    if(Emp_Add_TaskActivity.uid!=null){
+                        for(int i=0;i<hirereachyManagers.size();i++)
+                        {
+                            if(Emp_Add_TaskActivity.uid.contains(hirereachyManagers.get(i).getUid())){
+                                hirereachyManagers.get(i).setSelected(true);
+                                submit.setEnabled(true);
+                                submit.setBackgroundResource(R.drawable.blueroundfull);
+
+                            }
+                        }}
+
+                    showEmpAdapter=new ShowEmpAdapter(Task_Add_EmpActivity.this,hirereachyManagers);
+                    searchres.setAdapter(showEmpAdapter);
+
+                }
+
+            }
+        });
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

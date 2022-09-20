@@ -40,6 +40,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.gov.sa.swcc.Adapter.GridAdapter;
 import com.gov.sa.swcc.Adapter.SliderAdapter;
+import com.gov.sa.swcc.model.Chatbot.Chatbotrequest;
+import com.gov.sa.swcc.model.Chatbot.Chatbotres;
 import com.gov.sa.swcc.model.ExtendTask.ExtendTask;
 import com.gov.sa.swcc.model.GetToken.GetToken;
 import com.gov.sa.swcc.model.GridItem;
@@ -353,8 +355,8 @@ if(global.GetValue("HRFav").contains("HR2")) {
         if(global.GetValue("HRFav").contains("HR4")) {
             birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4"));
         }
-        if(global.GetValue("TEFav").contains("TE1")) {
-            //birdList.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
+        if(global.GetValue("TEFav").contains("TE4")) {
+            birdList.add(new GridItem("Chatbot",R.drawable.chatbot,"TE4"));
         }
 
         if(global.GetValue("TEFav").contains("TE2")) {
@@ -370,8 +372,13 @@ if(global.GetValue("HRFav").contains("HR2")) {
             birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7"));
         }
 
+        if(global.GetValue("HRFav").contains("HR8")) {
+            birdList.add(new GridItem("تحضير بالموقع",R.drawable.workinghours,"HR8"));
+        }
 
-
+        if(global.GetValue("HRFav").contains("HR9")) {
+            birdList.add(new GridItem("الحاسبة المالية",R.drawable.calculate1,"HR9"));
+        }
 
 
 
@@ -433,6 +440,21 @@ if(global.GetValue("HRFav").contains("HR2")) {
                         if(birdList.get(i).getType().contains("HR7")) {
                             startActivity(new Intent(getActivity(),EmpTransactionActivity.class));
                         }
+                        if(birdList.get(i).getType().contains("HR8")) {
+                            startActivity(new Intent(getActivity(),LocationAttendActivity.class));
+                        }
+                        if(birdList.get(i).getType().contains("HR9")) {
+                            startActivity(new Intent(getActivity(),FinancialCalculatorActivity.class));
+                        }
+                        if(birdList.get(i).getType().contains("TE4")) {
+                            PersonalResult per=global.GetPData("PersonalResult");
+                            Log.d("PersonalResult",global.GetPData("PersonalResult").getResultObject().getDepartment());
+                            if(per.getResultObject().getJwtToken().length()>9){
+                                browserPOST();
+                            }else{
+                                global.ShowMessageLogout("انتهت صلاحية تسجيل دخولك فضلا قم بتسجيل دخولك لتطبيق مرة اخر");
+
+                            }                        }
 
 //                        if(i==0){
 //                            startActivity(new Intent(getActivity(),FaveroitActivity.class));
@@ -914,13 +936,21 @@ if(global.GetValue("HRFav").contains("HR2")) {
         if(global.GetValue("TEFav").contains("TE2")) {
             birdList.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2"));
         }
-        if(global.GetValue("TEFav").contains("TE1")) {
-           // birdList.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1"));
+        if(global.GetValue("TEFav").contains("TE4")) {
+            birdList.add(new GridItem("Chatbot",R.drawable.chatbot,"TE4"));
         }
 
 
         if(global.GetValue("HRFav").contains("HR7")) {
             birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7"));
+        }
+
+        if(global.GetValue("HRFav").contains("HR8")) {
+            birdList.add(new GridItem("تحضير بالموقع",R.drawable.workinghours,"HR8"));
+        }
+
+        if(global.GetValue("HRFav").contains("HR9")) {
+            birdList.add(new GridItem("الحاسبة المالية",R.drawable.calculate1,"HR9"));
         }
 
 
@@ -980,5 +1010,49 @@ if(global.GetValue("HRFav").contains("HR2")) {
         }catch (Exception e){
 
         }
+    }
+
+
+    private void browserPOST() {
+
+
+        Intent home=new Intent(getContext(),TestActivity.class);
+
+//
+        PersonalResult per=global.GetPData("PersonalResult");
+        Chatbotrequest chatbotrequest=new Chatbotrequest();
+        chatbotrequest.setEId(global.GetValue("Username"));
+        chatbotrequest.setToken(per.getResultObject().getJwtToken());
+        Call<Chatbotres> call = RetrofitClient.getInstance("https://chatbotapi.swcc.gov.sa/api/").getMyApi().Chatbot(chatbotrequest);
+        PorgressDilog dialog =  new PorgressDilog(getActivity());
+        dialog.show();
+        call.enqueue(new Callback<Chatbotres>() {
+            @Override
+            public void onResponse(Call<Chatbotres> call, Response<Chatbotres> response) {
+                Log.d("Resp",response.message()+"");
+                if(response.isSuccessful())
+                {
+                    dialog.dismiss();
+
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(response.body().TOpenUrl));
+                    startActivity(i);
+
+                }else {
+
+                    dialog.dismiss();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Chatbotres>call, Throwable t) {
+                dialog.dismiss();
+                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+
+            }
+
+
+        });
     }
 }

@@ -2,21 +2,73 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gov.sa.swcc">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-    <uses-feature android:name="android.hardware.bluetooth" android:required="true" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
+
+
+
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService"/>
+        </intent>
+
+    </queries>
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/swcc"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/swcc"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="false"
+        >
+        <activity
+            android:name=".Chatbot"
+            android:exported="false" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAXN5Y9j2jHdBC1gJ-YYo-Bqe8ReHj1rdY" />
+
+
+
+        <activity
+            android:name=".FinancialCalculatorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EndofServiceActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".VBalanceActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".RequestMessageActivity1"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".TaskMangeDetailsActivity"
+            android:exported="false" />
         <activity
             android:name=".SharekActivity"
             android:exported="false" />
@@ -39,7 +91,7 @@
             android:exported="false" />
         <activity
             android:name=".SharekShowActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".MangerTaskActivity"
@@ -281,6 +333,10 @@
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
             android:name=".EmpCardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".LocationAttendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity

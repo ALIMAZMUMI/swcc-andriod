@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    tools:context=".VBalanceActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#00000000"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center|bottom"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="12dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/idCard"
+                app:cardCornerRadius="10dp"
+                android:background="#ffffff"
+                android:layout_marginBottom="-15dp"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp"
+                    android:background="#05388DCA"
+                    android:weightSum="5"
+                    android:gravity="center|bottom">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/close"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/close"
+                            android:elevation="12dp"
+                            android:layout_gravity="right" />
+                        </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="5"
+                        android:weightSum="7"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="الحد الأقصى المسموح بالتعويض المادي عنه لرصيد الإجازات هو 180 يوما إعمالا بالتعليمات الخاصة بذلك."
+                            android:textColor="#CACCCE"
+                            android:textSize="14dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#004C86"
+                            android:gravity="center|right"
+                            android:textSize="15dp"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginBottom="10dp"
+                            android:paddingRight="5dp"
+                            android:text="ادخل الراتب الأساسي"  />
+
+                        <EditText
+                            android:id="@+id/BasicSalary"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/blueborder"
+                            android:hint="مثال: 20000"
+                            android:ems="10"
+                            android:inputType="number"
+                            android:textSize="12dp"
+                            android:gravity="right|center"
+                            android:padding="10dp"
+                            android:textColor="#0066CC"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#004C86"
+                            android:gravity="center|right"
+                            android:textSize="15dp"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginBottom="10dp"
+                            android:paddingRight="5dp"
+                            android:text="ادخل جميع البدلات"  />
+
+                        <EditText
+                            android:id="@+id/TotalAllowances"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/blueborder"
+                            android:inputType="number"
+                            android:hint="مثال: 3500"
+                            android:textSize="12dp"
+                            android:gravity="right|center"
+                            android:padding="10dp"
+                            android:textColor="#0066CC"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#004C86"
+                            android:gravity="center|right"
+                            android:textSize="15dp"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginBottom="10dp"
+                            android:paddingRight="5dp"
+                            android:text="ادخل عدد أيام الإجازات"  />
+
+                        <EditText
+                            android:id="@+id/NumofVacations"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/blueborder"
+                            android:inputType="number"
+                            android:hint="مثال: 70"
+                            android:textSize="12dp"
+                            android:gravity="right|center"
+                            android:padding="10dp"
+                            android:textColor="#0066CC"/>
+
+                        <Button
+                            android:id="@+id/submit"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginHorizontal="30dp"
+                            android:background="@drawable/grayroundbtn"
+                            android:text="احسب"
+                            android:textSize="14dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_gravity="center"
+                            android:textColor="#ffffff"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

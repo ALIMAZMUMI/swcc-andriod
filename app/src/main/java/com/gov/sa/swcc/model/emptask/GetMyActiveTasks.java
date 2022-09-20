@@ -65,10 +65,10 @@ public class GetMyActiveTasks {
     private Object taskComment;
     @SerializedName("managerAttachmentsDTO")
     @Expose
-    private List<Object> managerAttachmentsDTO = null;
+    private List<Attachments> managerAttachmentsDTO = null;
     @SerializedName("employeeAttachmentsDTO")
     @Expose
-    private Object employeeAttachmentsDTO;
+    private List<Attachments>  employeeAttachmentsDTO;
     @SerializedName("oneDayTask")
     @Expose
     private Boolean oneDayTask;
@@ -233,19 +233,19 @@ public class GetMyActiveTasks {
         this.taskComment = taskComment;
     }
 
-    public List<Object> getManagerAttachmentsDTO() {
+    public List<Attachments> getManagerAttachmentsDTO() {
         return managerAttachmentsDTO;
     }
 
-    public void setManagerAttachmentsDTO(List<Object> managerAttachmentsDTO) {
+    public void setManagerAttachmentsDTO(List<Attachments>  managerAttachmentsDTO) {
         this.managerAttachmentsDTO = managerAttachmentsDTO;
     }
 
-    public Object getEmployeeAttachmentsDTO() {
+    public List<Attachments>  getEmployeeAttachmentsDTO() {
         return employeeAttachmentsDTO;
     }
 
-    public void setEmployeeAttachmentsDTO(Object employeeAttachmentsDTO) {
+    public void setEmployeeAttachmentsDTO(List<Attachments>  employeeAttachmentsDTO) {
         this.employeeAttachmentsDTO = employeeAttachmentsDTO;
     }
 

@@ -21,6 +21,7 @@ import com.gov.sa.swcc.model.SearchItem;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -178,6 +179,16 @@ public class Global {
 
 
 
+    public void ShowMessageNF1(String Message, Activity activity){
+
+
+        this.activity=activity;
+        Intent intent=new Intent(context,RequestMessageActivity1.class);
+        intent.putExtra("Message",Message);
+        context.startActivity(intent);
+
+    }
+
 
     public void ShowMessageNF(String Message, Activity activity){
 
@@ -185,6 +196,18 @@ public class Global {
         this.activity=activity;
         Intent intent=new Intent(context,RequestMessageActivity.class);
         intent.putExtra("Message",Message);
+        context.startActivity(intent);
+
+    }
+
+    public void ShowMessageNFH(String Message, Activity activity,String Header){
+
+
+        this.activity=activity;
+        Intent intent=new Intent(context,RequestMessageActivity.class);
+        intent.putExtra("Message",Message);
+        intent.putExtra("Header",Header);
+
         context.startActivity(intent);
 
     }
@@ -362,6 +385,70 @@ return finalDate;
             return Date;
 
         }
+    }
+
+
+    public String GetTimess(String Date){
+        try {
+
+            String strDate = Date;
+
+            //current date format
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+            Date objDate = dateFormat.parse(strDate);
+
+            //Expected date format
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss");
+
+            String finalDate = dateFormat2.format(objDate);
+            return finalDate;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Date;
+
+        }
+    }
+
+    public boolean checktimeattend(String start, String end,String current) {
+
+        String pattern = "HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
+        try {
+            Date date1 = sdf.parse(start);
+            Date date2 = sdf.parse(end);
+            Date date3 = sdf.parse(current);
+
+            if(date3.after(date1) && date3.before(date2)) {
+                return true;
+            } else {
+
+                return false;
+            }
+        } catch (ParseException  e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public String DTxt(int days){
+        if(days<0)
+        days=Math.abs(days);
+
+        if (days==0){
+            return " يوم ";
+        }else if (days<2){
+            return " يومين ";
+
+        }else if (days>2&&days<11){
+            return " "+(days+" أيام ").replaceAll("-","");
+
+        } else {
+            return " "+(days+" يوم ").replaceAll("-","");
+        }
+
     }
 
 }

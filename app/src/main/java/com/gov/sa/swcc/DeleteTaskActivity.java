@@ -75,7 +75,7 @@ public class DeleteTaskActivity extends AppCompatActivity {
                         Intent intent=new Intent();
                         intent.putExtra("update",true);
                         setResult(1002,intent);
-                        global.ShowMessageNF(response.body().getMessage(),DeleteTaskActivity.this);
+                        global.ShowMessageNFH("شكرا لك!",DeleteTaskActivity.this,"تم حذف المهمة بنجاح");
 
 
                     }else {

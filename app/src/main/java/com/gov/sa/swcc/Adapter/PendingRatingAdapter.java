@@ -56,15 +56,17 @@ public class PendingRatingAdapter extends ArrayAdapter<Model> {
                 personname.setText(getAllMyTask.getEmployeeName());
                 //taskname.setText(getAllMyTask.getTaskName());
                 tasktitle.setText(getAllMyTask.getTaskName());
-if(getAllMyTask.getTaskStatusId()!=8){
-    taskname.setText("طلب تمديد مهمة");
-    notetxt.setText("ملاحظة");
-    taskstatusc.setCardBackgroundColor(Color.parseColor("#590066CC"));
-}else{
-    taskname.setText("طلب تقييم المهمة");
+if(getAllMyTask.getTaskStatusId()==7){
+    taskname.setText("طلب اعتماد المهمة");
     notetxt.setVisibility(View.GONE);
     noteicon.setVisibility(View.GONE);
     taskstatusc.setCardBackgroundColor(Color.parseColor("#B3E931"));
+
+}else{
+
+    taskname.setText("طلب تمديد مهمة");
+    notetxt.setText("ملاحظة");
+    taskstatusc.setCardBackgroundColor(Color.parseColor("#590066CC"));
 
 
 }

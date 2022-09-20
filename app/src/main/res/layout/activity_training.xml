@@ -42,8 +42,8 @@
                 <ImageView
                     android:id="@+id/close"
                     android:descendantFocusability="blocksDescendants"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="right"
                     android:background="@drawable/close"
                     android:elevation="12dp" />

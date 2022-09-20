@@ -72,6 +72,10 @@
     </style>
 
 
+    <style name="AlertDialogCustom" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:layoutDirection">rtl</item>
+    </style>
+
 <!--    <style name="CustomTheme" parent="android:Theme">-->
 <!--        <item name="android:radioButtonStyle">@style/RadioButton</item>-->
 <!--    </style>-->

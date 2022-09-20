@@ -67,10 +67,19 @@ public class GetMyCompletedTask {
 
     @SerializedName("managerAttachmentsDTO")
     @Expose
-    private List<Object> managerAttachmentsDTO = null;
+    private List<Attachments>  managerAttachmentsDTO = null;
+
+    public List<Attachments> getEmployeeAttachmentsDTO() {
+        return employeeAttachmentsDTO;
+    }
+
+    public void setEmployeeAttachmentsDTO(List<Attachments> employeeAttachmentsDTO) {
+        this.employeeAttachmentsDTO = employeeAttachmentsDTO;
+    }
+
     @SerializedName("employeeAttachmentsDTO")
     @Expose
-    private List<Object> employeeAttachmentsDTO = null;
+    private List<Attachments> employeeAttachmentsDTO = null;
 
 
     @SerializedName("oneDayTask")
@@ -237,7 +246,7 @@ public class GetMyCompletedTask {
         this.taskComment = taskComment;
     }
 
-    public List<Object> getManagerAttachmentsDTO() {
+    public List<Attachments>  getManagerAttachmentsDTO() {
         return managerAttachmentsDTO;
     }
 

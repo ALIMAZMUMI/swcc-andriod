@@ -62,7 +62,9 @@ int height,width;
         birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4",global.GetValue("HRFav").contains("HR4")));
 
 
-        birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7"));
+        birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7",global.GetValue("HRFav").contains("HR7")));
+        birdList.add(new GridItem("تحضير بالموقع",R.drawable.workinghours,"HR8",global.GetValue("HRFav").contains("HR8")));
+        birdList.add(new GridItem("الحاسبة المالية",R.drawable.calculate1,"HR9",global.GetValue("HRFav").contains("HR9")));
 
         adapter=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList,width,height,0);
         GridView gridView=(GridView)findViewById(R.id.servicegrid1);
@@ -109,6 +111,8 @@ int height,width;
                 birdList.add(new GridItem("دليل العاملين",R.drawable.searchicon,"HR5",global.GetValue("HRFav").contains("HR5")));
                 birdList.add(new GridItem("التأمين الصحي",R.drawable.insur,"HR4",global.GetValue("HRFav").contains("HR4")));
                 birdList.add(new GridItem("المرؤوسين",R.drawable.empstrans,"HR7",global.GetValue("HRFav").contains("HR7")));
+                birdList.add(new GridItem("تحضير بالموقع",R.drawable.workinghours,"HR8",global.GetValue("HRFav").contains("HR8")));
+                birdList.add(new GridItem("الحاسبة المالية",R.drawable.calculate1,"HR9",global.GetValue("HRFav").contains("HR9")));
 
                 adapter=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList,width,height,0);
                 GridView gridView=(GridView)findViewById(R.id.servicegrid1);
@@ -119,6 +123,7 @@ int height,width;
                 //birdList1.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1",global.GetValue("TEFav").contains("TE1")));
                 birdList1.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2",global.GetValue("TEFav").contains("TE2")));
                 birdList1.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3",global.GetValue("TEFav").contains("TE3")));
+                birdList1.add(new GridItem("Chatbot",R.drawable.chatbot,"TE4",global.GetValue("TEFav").contains("TE4")));
 
                 adapter1=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList1,width,height,0);
                 GridView gridView1=(GridView)findViewById(R.id.servicegrid2);
@@ -145,6 +150,7 @@ if(birdList.get(i).isChecked()){
         //birdList1.add(new GridItem("تقنية المعلومات",R.drawable.iticon,"TE1",global.GetValue("TEFav").contains("TE1")));
         birdList1.add(new GridItem("العناية بالعاملين",R.drawable.hricon,"TE2",global.GetValue("TEFav").contains("TE2")));
         birdList1.add(new GridItem("الملاحظات والبلاغات",R.drawable.complintnote,"TE3",global.GetValue("TEFav").contains("TE3")));
+        birdList1.add(new GridItem("Chatbot",R.drawable.chatbot,"TE4",global.GetValue("TEFav").contains("TE4")));
 
         adapter1=new GridFavAdapter(FaveroitActivity.this,R.layout.griditem,birdList1,width,height,0);
         GridView gridView1=(GridView)findViewById(R.id.servicegrid2);

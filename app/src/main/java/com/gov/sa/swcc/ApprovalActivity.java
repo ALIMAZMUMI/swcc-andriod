@@ -2,6 +2,7 @@ package com.gov.sa.swcc;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,12 +11,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gov.sa.swcc.Adapter.MyTasksAdapter;
 import com.gov.sa.swcc.Adapter.PendingRatingAdapter;
 import com.gov.sa.swcc.Adapter.TaskEmpMGAdapter;
 import com.gov.sa.swcc.model.Rating.Model;
@@ -36,7 +40,7 @@ public class ApprovalActivity extends AppCompatActivity {
     PendingRatingRequests data,data1,all;
     int index=0;
     PorgressDilog dialog;
-
+TextView nodata;
     TextView ratingtask,extendtask,alltask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +51,17 @@ public class ApprovalActivity extends AppCompatActivity {
         ratingtask = (TextView) findViewById(R.id.ratingtask);
         extendtask = (TextView) findViewById(R.id.extendtask);
         alltask = (TextView) findViewById(R.id.alltask);
+        nodata = (TextView) findViewById(R.id.nodata);
 
 //
+
+        ((ImageView)findViewById(R.id.backarrow)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
 
 
 
@@ -74,9 +87,9 @@ public class ApprovalActivity extends AppCompatActivity {
 
 
                     if(index==0){
-                        for (int i = 0; i < all.getModel().size(); i++) {
-                            if (all.getModel().get(i).getEmployeeName().toLowerCase().contains(searchvalue.getText().toString().toLowerCase())) {
-                                serch.getModel().add(all.getModel().get(i));
+                        for (int i = 0; i < data.getModel().size(); i++) {
+                            if (data.getModel().get(i).getEmployeeName().toLowerCase().contains(searchvalue.getText().toString().toLowerCase())) {
+                                serch.getModel().add(data.getModel().get(i));
                             }
                         }
                     }else if(index==2){
@@ -86,9 +99,9 @@ public class ApprovalActivity extends AppCompatActivity {
                             }
                         }
                     }else if(index==3) {
-                                for (int i = 0; i < data.getModel().size(); i++) {
-                                    if (data.getModel().get(i).getEmployeeName().toLowerCase().contains(searchvalue.getText().toString().toLowerCase())) {
-                                        serch.getModel().add(data.getModel().get(i));
+                                for (int i = 0; i < all.getModel().size(); i++) {
+                                    if (all.getModel().get(i).getEmployeeName().toLowerCase().contains(searchvalue.getText().toString().toLowerCase())) {
+                                        serch.getModel().add(all.getModel().get(i));
                                     }
                                 }
                     }
@@ -112,13 +125,13 @@ public class ApprovalActivity extends AppCompatActivity {
                 }else
                 {
                     if(index==0){
-                        PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)all.getModel()),0);
+                        PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)data.getModel()),0);
                         list.setAdapter(adp);
                     }else if(index==2){
                         PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)data1.getModel()),0);
                         list.setAdapter(adp);
                     }else if(index==3) {
-                        PendingRatingAdapter adp = new PendingRatingAdapter(ApprovalActivity.this, ((List) data.getModel()), 0);
+                        PendingRatingAdapter adp = new PendingRatingAdapter(ApprovalActivity.this, ((List) all.getModel()), 0);
                         list.setAdapter(adp);
                     }
                 }
@@ -134,7 +147,7 @@ public class ApprovalActivity extends AppCompatActivity {
 
                 String ID = "";
                 Model Obj = ((PendingRatingAdapter) list.getAdapter()).getItem(i);
-                if(Obj.getTaskStatusId()==8) {
+                if(Obj.getTaskStatusId()==8&& false) {
                     Intent intent = new Intent(ApprovalActivity.this, RatingTaskActivity.class);
                     intent.putExtra("ID", Obj.getId() + "");
                     //intent.putExtra("Index", index);
@@ -145,14 +158,15 @@ public class ApprovalActivity extends AppCompatActivity {
                     intent.putExtra("ID", Obj.getId() + "");
                     intent.putExtra("TaskName", Obj.getTaskName() + "");
                     intent.putExtra("EmployeeName", Obj.getEmployeeName() + "");
-                    intent.putExtra("Date", Obj.getTo() + "");
+                    intent.putExtra("Date", global.GetDateFormat(Obj.getTo()) + "");
                     intent.putExtra("Decription", Obj.getTaskDecription() + "");
                     intent.putExtra("Comment", Obj.getTaskComment() + "");
                     intent.putExtra("attach",  "0");
 
-                    if(Obj.getEmployeeAttachmentsDTO()!=null)
-                    intent.putExtra("attach", Obj.getEmployeeAttachmentsDTO().size() + "");
-
+                    if(Obj.getEmployeeAttachmentsDTO()!=null) {
+                        intent.putExtra("attach", Obj.getEmployeeAttachmentsDTO().size() + "");
+                        intent.putExtra("attachURL", Obj.getEmployeeAttachmentsDTO().get(0).getAttachlocation() + "");
+                    }
                     //intent.putExtra("Index", index);
 
                     startActivityForResult(intent,1001);
@@ -179,11 +193,21 @@ public class ApprovalActivity extends AppCompatActivity {
             public void onClick(View view) {
                 alltask.setBackgroundResource(R.drawable.bluesmalround);
                 alltask.setTextColor(Color.WHITE);
-                if (all != null) {
-                    PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)all.getModel()),0);
-                    list.setAdapter(adp);
+                if (data != null) {
+
+                    if(data.getModel().size()>0) {
+                        PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)data.getModel()),0);
+                        list.setAdapter(adp);
+                        nodata.setVisibility(View.GONE);
+                        list.setVisibility(View.VISIBLE);
+                    }else {
+                        list.setAdapter(null);
+                        nodata.setVisibility(View.VISIBLE);
+                        list.setVisibility(View.GONE);
+                    }
+
                 }else {
-                    GetCompletedTasks();
+                    CallGetTask();
                 }
                 index = 0;
 
@@ -202,13 +226,22 @@ public class ApprovalActivity extends AppCompatActivity {
                 ratingtask.setBackgroundResource(R.drawable.bluesmalround);
                 ratingtask.setTextColor(Color.WHITE);
 
-                if (data != null) {
-                    Log.d("Compleat",((List)data.getModel()).size()+"");
-                    PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)data.getModel()),0);
-                    list.setAdapter(adp);
+                if (all != null) {
+                    Log.d("Compleat",((List)all.getModel()).size()+"");
+                    if(all.getModel().size()>0) {
+                        PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)all.getModel()),0);
+                        list.setAdapter(adp);
+                        nodata.setVisibility(View.GONE);
+                        list.setVisibility(View.VISIBLE);
+                    }else {
+                        list.setAdapter(null);
+                        nodata.setVisibility(View.VISIBLE);
+                        list.setVisibility(View.GONE);
+                    }
+
                 }else
                 {
-                    CallGetTask();
+                    GetCompletedTasks();
                 }
                 index = 3;
 
@@ -229,8 +262,17 @@ public class ApprovalActivity extends AppCompatActivity {
                 extendtask.setTextColor(Color.WHITE);
 
                 if (data1 != null) {
-                    PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)data1.getModel()),0);
-                    list.setAdapter(adp);
+                    if(data1.getModel().size()>0) {
+                        PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)data1.getModel()),0);
+                        list.setAdapter(adp);
+                        nodata.setVisibility(View.GONE);
+                        list.setVisibility(View.VISIBLE);
+                    }else {
+                        list.setAdapter(null);
+                        nodata.setVisibility(View.VISIBLE);
+                        list.setVisibility(View.GONE);
+                    }
+
                 }else {
 
                     GetPendingExtendRequests();
@@ -248,7 +290,38 @@ public class ApprovalActivity extends AppCompatActivity {
 
 
 
-        GetCompletedTasks();
+        CallGetTask();
+
+        SwipeRefreshLayout pullToRefresh = (SwipeRefreshLayout) findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (index==0) {
+                    CallGetTask();
+                }
+                else if (index==3) {
+                    GetCompletedTasks();
+                }
+                else if (index==2) {
+                    GetPendingExtendRequests();
+                }
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
+        list.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (list.getChildAt(0) != null) {
+                    pullToRefresh.setEnabled(list.getFirstVisiblePosition() == 0 && list.getChildAt(0).getTop() == 0);
+                }
+            }
+        });
 
     }
 
@@ -269,16 +342,16 @@ private void GetCompletedTasks() {
     //String Token="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjNzU5Nzg4Yy0wZWVjLTQwNDMtYmMzMy04YmZiMDNiNTFjMTkiLCJ2YWxpZCI6IjEiLCJ1aWQiOiIyOTA1NTAiLCJoaXJlcmFjaHkiOiJ7XCJOYW1lXCI6XCJNYWplZFwiLFwiVWlkXCI6XCIyOTA1NTBcIixcIkVtcGxveWVlc1wiOlt7XCJOYW1lXCI6XCJBaG1lZFwiLFwiVWlkXCI6XCIxOTAyMzZcIixcIkVtcGxveWVlc1wiOm51bGx9LHtcIk5hbWVcIjpcIkhhbnlcIixcIlVpZFwiOlwiOTgwNjUxXCIsXCJFbXBsb3llZXNcIjpudWxsfV19IiwiZXhwIjoxNjU1MjIzNzY1LCJpc3MiOiJodHRwczovL2FwaS5zd2NjLmdvdi5zYSIsImF1ZCI6Imh0dHBzOi8vYXBpLnN3Y2MuZ292LnNhIn0.Nrv_e1XDvNcz5TV4gF9lBBaBKl9XsHKrsdBSSi_d2kg";
     //global.SaveValue("TaskToken","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiMzNmNjNkYy0yZmUyLTQ3YjMtOTRlMS0zMGY4YjRlMjM4ODYiLCJ2YWxpZCI6IjEiLCJ1aWQiOiIyOTA1NTAiLCJoaXJlcmFjaHkiOiJ7XCJOYW1lXCI6XCJNYWplZFwiLFwiVWlkXCI6XCIyOTA1NTBcIixcIkVtcGxveWVlc1wiOlt7XCJOYW1lXCI6XCJBaG1lZFwiLFwiVWlkXCI6XCIxOTAyMzZcIixcIkVtcGxveWVlc1wiOm51bGx9LHtcIk5hbWVcIjpcIkhhbnlcIixcIlVpZFwiOlwiOTgwNjUxXCIsXCJFbXBsb3llZXNcIjpudWxsfV19IiwiZXhwIjoxNjU1NDA0NjkxLCJpc3MiOiJodHRwczovL2FwaS5zd2NjLmdvdi5zYSIsImF1ZCI6Imh0dHBzOi8vYXBpLnN3Y2MuZ292LnNhIn0._mSzWwIMLCsLQc8-dulQH5fzWuIy7TLsaR7R7WvLaOg");   //global.GetValue("TaskToken");
     String Token=global.GetValue("TaskToken");
-    alltask.setBackgroundResource(R.drawable.bluesmalround);
-    alltask.setTextColor(Color.WHITE);
+    ratingtask.setBackgroundResource(R.drawable.bluesmalround);
+    ratingtask.setTextColor(Color.WHITE);
 
-
-    ratingtask.setBackgroundResource(R.drawable.whitesmalround);
-    ratingtask.setTextColor(Color.parseColor("#0066CC"));
+    alltask.setBackgroundResource(R.drawable.whitesmalround);
+    alltask.setTextColor(Color.parseColor("#0066CC"));
     extendtask.setBackgroundResource(R.drawable.whitesmalround);
     extendtask.setTextColor(Color.parseColor("#0066CC"));
 
-
+    nodata.setVisibility(View.GONE);
+    list.setVisibility(View.VISIBLE);
 
     Call<PendingRatingRequests> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetCompletedTasks(Token);
      dialog =  new PorgressDilog(this);
@@ -307,11 +380,13 @@ private void GetCompletedTasks() {
                     if(response.body().getTasksCount()>0){
                         PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)response.body().getModel()),0);
                         list.setAdapter(adp);
+                        nodata.setVisibility(View.GONE);
+                        list.setVisibility(View.VISIBLE);
                     }
                     else
                     {                            list.setAdapter(null);
-                        global.ShowMessageT("لا توجد مهام مسجلة");
-
+                        nodata.setVisibility(View.VISIBLE);
+                        list.setVisibility(View.GONE);
                     }
                     Log.d("Reeeeeeeedddddddd","After PendingRatingAdapter");
 
@@ -349,6 +424,8 @@ private void GetCompletedTasks() {
         alltask.setBackgroundResource(R.drawable.whitesmalround);
         alltask.setTextColor(Color.parseColor("#0066CC"));
 
+        nodata.setVisibility(View.GONE);
+        list.setVisibility(View.VISIBLE);
         Call<PendingRatingRequests> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetPendingExtendRequests(Token);
          dialog =  new PorgressDilog(this);
         dialog.show();
@@ -376,12 +453,14 @@ private void GetCompletedTasks() {
                         if(response.body().getTasksCount()>0){
                             PendingRatingAdapter adp=new PendingRatingAdapter(ApprovalActivity.this,((List)data1.getModel()),0);
                             list.setAdapter(adp);
+                            nodata.setVisibility(View.GONE);
+                            list.setVisibility(View.VISIBLE);
                         }
                         else
                         {
                             list.setAdapter(null);
-                            global.ShowMessageT("لا توجد مهام مسجلة");
-
+                            nodata.setVisibility(View.VISIBLE);
+                            list.setVisibility(View.GONE);
                         }
                     }else {
                         dialog.dismiss();
@@ -412,11 +491,28 @@ private void GetCompletedTasks() {
             switch (requestCode) {
                 case 1001:
 
-                    if(data.getExtras().getBoolean("update")){
+
+                    if(data.getExtras().getBoolean("update")&&data.getExtras().getBoolean("rate"))
+                    {
+                        Intent intent = new Intent(ApprovalActivity.this, RatingTaskActivity.class);
+                        intent.putExtra("ID",  data.getExtras().getString("ID")+ "");
+                        //intent.putExtra("Index", index);
+
+                        startActivityForResult(intent,1002);
+
+                    } else if(data.getExtras().getBoolean("update")){
                         all=null;
                         data1=null;
                         this.data=null;
-                        GetCompletedTasks();
+                        if (index==0) {
+                            CallGetTask();
+                        }
+                        else if (index==3) {
+                            GetCompletedTasks();
+                        }
+                        else if (index==2) {
+                            GetPendingExtendRequests();
+                        }
                     }
 
                     break;
@@ -426,7 +522,15 @@ private void GetCompletedTasks() {
                         all=null;
                         data1=null;
                         this.data=null;
-                        CallGetTask();
+                        if (index==0) {
+                            CallGetTask();
+                        }
+                        else if (index==3) {
+                            GetCompletedTasks();
+                        }
+                        else if (index==2) {
+                            GetPendingExtendRequests();
+                        }
                     }
 
                     break;
@@ -437,7 +541,15 @@ private void GetCompletedTasks() {
                         all=null;
                         data1=null;
                         this.data=null;
-                        GetPendingExtendRequests();
+                        if (index==0) {
+                            CallGetTask();
+                        }
+                        else if (index==3) {
+                            GetCompletedTasks();
+                        }
+                        else if (index==2) {
+                            GetPendingExtendRequests();
+                        }
                     }
 
                     break;
@@ -454,14 +566,16 @@ private void GetCompletedTasks() {
         //String Token="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjNzU5Nzg4Yy0wZWVjLTQwNDMtYmMzMy04YmZiMDNiNTFjMTkiLCJ2YWxpZCI6IjEiLCJ1aWQiOiIyOTA1NTAiLCJoaXJlcmFjaHkiOiJ7XCJOYW1lXCI6XCJNYWplZFwiLFwiVWlkXCI6XCIyOTA1NTBcIixcIkVtcGxveWVlc1wiOlt7XCJOYW1lXCI6XCJBaG1lZFwiLFwiVWlkXCI6XCIxOTAyMzZcIixcIkVtcGxveWVlc1wiOm51bGx9LHtcIk5hbWVcIjpcIkhhbnlcIixcIlVpZFwiOlwiOTgwNjUxXCIsXCJFbXBsb3llZXNcIjpudWxsfV19IiwiZXhwIjoxNjU1MjIzNzY1LCJpc3MiOiJodHRwczovL2FwaS5zd2NjLmdvdi5zYSIsImF1ZCI6Imh0dHBzOi8vYXBpLnN3Y2MuZ292LnNhIn0.Nrv_e1XDvNcz5TV4gF9lBBaBKl9XsHKrsdBSSi_d2kg";
         //global.SaveValue("TaskToken","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiMzNmNjNkYy0yZmUyLTQ3YjMtOTRlMS0zMGY4YjRlMjM4ODYiLCJ2YWxpZCI6IjEiLCJ1aWQiOiIyOTA1NTAiLCJoaXJlcmFjaHkiOiJ7XCJOYW1lXCI6XCJNYWplZFwiLFwiVWlkXCI6XCIyOTA1NTBcIixcIkVtcGxveWVlc1wiOlt7XCJOYW1lXCI6XCJBaG1lZFwiLFwiVWlkXCI6XCIxOTAyMzZcIixcIkVtcGxveWVlc1wiOm51bGx9LHtcIk5hbWVcIjpcIkhhbnlcIixcIlVpZFwiOlwiOTgwNjUxXCIsXCJFbXBsb3llZXNcIjpudWxsfV19IiwiZXhwIjoxNjU1NDA0NjkxLCJpc3MiOiJodHRwczovL2FwaS5zd2NjLmdvdi5zYSIsImF1ZCI6Imh0dHBzOi8vYXBpLnN3Y2MuZ292LnNhIn0._mSzWwIMLCsLQc8-dulQH5fzWuIy7TLsaR7R7WvLaOg");   //global.GetValue("TaskToken");
         String Token=global.GetValue("TaskToken");
-        ratingtask.setBackgroundResource(R.drawable.bluesmalround);
-        ratingtask.setTextColor(Color.WHITE);
-        alltask.setBackgroundResource(R.drawable.whitesmalround);
-        alltask.setTextColor(Color.parseColor("#0066CC"));
+
+        alltask.setBackgroundResource(R.drawable.bluesmalround);
+        alltask.setTextColor(Color.WHITE);
+        ratingtask.setBackgroundResource(R.drawable.whitesmalround);
+        ratingtask.setTextColor(Color.parseColor("#0066CC"));
         extendtask.setBackgroundResource(R.drawable.whitesmalround);
         extendtask.setTextColor(Color.parseColor("#0066CC"));
-
-        Call<PendingRatingRequests> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetPendingRatingRequests(Token);
+        nodata.setVisibility(View.GONE);
+        list.setVisibility(View.VISIBLE);
+        Call<PendingRatingRequests> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetPendingRequests(Token);
          dialog =  new PorgressDilog(this);
         dialog.show();
         call.enqueue(new Callback<PendingRatingRequests>() {
@@ -481,8 +595,9 @@ private void GetCompletedTasks() {
                         }
                         else
                         {                            list.setAdapter(null);
-
-                            global.ShowMessageT("لا توجد مهام مسجلة");
+                            nodata.setVisibility(View.VISIBLE);
+                            list.setVisibility(View.GONE);
+                           // global.ShowMessageT("لا توجد طلبات مسجلة");
 
                         }
                     }else {

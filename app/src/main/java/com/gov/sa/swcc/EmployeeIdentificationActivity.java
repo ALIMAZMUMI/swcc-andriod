@@ -109,20 +109,20 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
             public void onClick(View view) {
                 if(isStoragePermissionGranted()) {
 
+                    if(EmployeeId!=null) {
+                        // create a new document
+                        PdfDocument document = new PdfDocument();
 
-                    // create a new document
-                    PdfDocument document = new PdfDocument();
+                        // create a page description
+                        View content = findViewById(R.id.imageView2);
 
-                    // create a page description
-                    View content =  findViewById(R.id.imageView2);
+                        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(content.getWidth(), content.getHeight(), 1).create();
 
-                    PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(content.getWidth(), content.getHeight(), 1).create();
-
-                    // start a page
-                    PdfDocument.Page page = document.startPage(pageInfo);
+                        // start a page
+                        PdfDocument.Page page = document.startPage(pageInfo);
 
 
-                    content.draw(page.getCanvas());
+                        content.draw(page.getCanvas());
 
 
 //                    // Draw the bitmap onto the page
@@ -132,26 +132,28 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
 //                    Paint paint = new Paint();
 //                    canvas.drawBitmap(bm, 10f, 10f, paint);
 
-                    document.finishPage(page);
-                    File dir = new File(Environment.getExternalStoragePublicDirectory
-                            (Environment.DIRECTORY_DOWNLOADS), "pdf");
-                    if(!dir.exists()){
-                        dir.mkdir();
-                    }
-                    try {
-                        document.writeTo(new FileOutputStream(dir.getPath() + "/emp_Identification.pdf"));
-                    } catch (IOException e) {
-                        Log.d("FileLocation",dir.getPath() + "/emp_Identification.pdf");
-                        e.printStackTrace();
-                    }
-                    document.close();
-                    Log.d("FileLocation09",dir.getPath() + "/emp_Identification.pdf");
+                        document.finishPage(page);
+                        File dir = new File(Environment.getExternalStoragePublicDirectory
+                                (Environment.DIRECTORY_DOWNLOADS), "pdf");
+                        if (!dir.exists()) {
+                            dir.mkdir();
+                        }
+                        try {
+                            document.writeTo(new FileOutputStream(dir.getPath() + "/emp_Identification.pdf"));
+                        } catch (IOException e) {
+                            Log.d("FileLocation", dir.getPath() + "/emp_Identification.pdf");
+                            e.printStackTrace();
+                        }
+                        document.close();
+                        Log.d("FileLocation09", dir.getPath() + "/emp_Identification.pdf");
 
-                    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                    Uri screenshotUri = Uri.parse(dir.getPath() + "/emp_Identification.pdf");
-                    sharingIntent.setType("*/*");
-                    sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
-                    startActivity(Intent.createChooser(sharingIntent, "Share using"));
+                        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                        Uri screenshotUri = Uri.parse(dir.getPath() + "/emp_Identification.pdf");
+                        sharingIntent.setType("*/*");
+                        sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+                        startActivity(Intent.createChooser(sharingIntent, "Share using"));
+
+                    }
                 }
             }
         });
@@ -178,12 +180,16 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
                             "   <soap:Header/>\n" +
                             "   <soap:Body>\n" +
                             "      <urn:ZhrEmpIdentity>\n" +
-                            "         <EmployeeId>"+global.GetValue("Username")+"</EmployeeId>\n" +
+                            "         <EmployeeId>" + global.GetValue("Username") + "</EmployeeId>\n" +
                             "      </urn:ZhrEmpIdentity>\n" +
                             "   </soap:Body>\n" +
                             "</soap:Envelope>";
-                    URL url = new URL("https://"+Api.Domain+"/GatewayControlPanel/EmployeePayroll/EmployeeIdentificationLetterService");
+                    URL url = new URL("https://" + Api.Domain + "/GatewayControlPanel/EmployeePayroll/EmployeeIdentificationLetterService");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    Log.d("req---", request);
+                    Log.d("URL---", "https://" + Api.Domain + "/GatewayControlPanel/EmployeePayroll/EmployeeIdentificationLetterService");
+
+
 
                     // Set timeout as per needs
                     connection.setConnectTimeout(20000);
@@ -192,7 +198,6 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
                     // Set DoOutput to true if you want to use URLConnection for output.
                     // Default is false
                     connection.setDoOutput(true);
-
                     connection.setUseCaches(true);
                     connection.setRequestMethod("POST");
 
@@ -209,11 +214,12 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
                     outputStream.close();
 
                     InputStream inputStream = connection.getInputStream();
-                    dialog.dismiss();
 
-                    BArabic=new ArrayList<String> ();
-                    BEnglish=new ArrayList<String> ();
-                    BValue=new ArrayList<String> ();
+
+                    dialog.dismiss();
+                    BArabic = new ArrayList<String>();
+                    BEnglish = new ArrayList<String>();
+                    BValue = new ArrayList<String>();
                     XmlPullParserFactory parserFactory = XmlPullParserFactory.newInstance();
                     XmlPullParser parser = parserFactory.newPullParser();
                     parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -224,12 +230,11 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
                         tag = parser.getName();
 
 
-
                         switch (event) {
                             case XmlPullParser.START_TAG:
                                 if (tag.equals("item"))
 //                                    item = new LeaveItems();
-                                break;
+                                    break;
                             case XmlPullParser.TEXT:
                                 text = parser.getText();
                                 break;
@@ -237,43 +242,41 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
                                 switch (tag) {
 
                                     case "EmployeeId":
-                                        EmployeeId=text;
+                                        EmployeeId = text;
                                         break;
                                     case "EmployeeName":
-                                        EmployeeName=text;
+                                        EmployeeName = text;
                                         break;
                                     case "EmpNameAr":
-                                        EmpNameAr=text;
+                                        EmpNameAr = text;
                                         break;
                                     case "IdentityNo":
-                                        IdentityNo=text;
+                                        IdentityNo = text;
                                         break;
                                     case "Position":
-                                        Position=text;
+                                        Position = text;
                                         break;
                                     case "PositionAr":
-                                        PositionAr=text;
+                                        PositionAr = text;
                                         break;
                                     case "Nationality":
-                                        Nationality=text;
+                                        Nationality = text;
                                         break;
                                     case "NatioAr":
-                                        NatioAr=text;
+                                        NatioAr = text;
                                         break;
                                     case "JoinDate":
-                                        JoinDate=text;
+                                        JoinDate = text;
                                         break;
                                     case "Department":
-                                        Department=text;
+                                        Department = text;
                                         break;
                                     case "DepartmentAr":
-                                        DepartmentAr=text;
+                                        DepartmentAr = text;
                                         break;
                                     case "TotalSal":
-                                        TotalSal=text;
+                                        TotalSal = text;
                                         break;
-
-
 
 
 //                                    case "PositionAr":
@@ -282,22 +285,19 @@ imageView2=(ImageView)findViewById(R.id.imageView2);
 //                                        break;
                                 }
 
-                                if (tag.startsWith("Lgtxt")&&tag.endsWith("Ar"))
-                                {
-                                    if(text!=null&&text.length()>0)
-                                    BArabic.add(text);
-                                }else if (tag.startsWith("Lgtxt")&&tag.endsWith("En"))
-                                {
-                                    if(text!=null&&text.length()>0)
+                                if (tag.startsWith("Lgtxt") && tag.endsWith("Ar")) {
+                                    if (text != null && text.length() > 0)
+                                        BArabic.add(text);
+                                } else if (tag.startsWith("Lgtxt") && tag.endsWith("En")) {
+                                    if (text != null && text.length() > 0)
                                         BEnglish.add(text);
-                                }else if (tag.startsWith("Bet"))
-                                {
-float v=Float.parseFloat(text);
-if(v>0)
-                                    BValue.add(text);
+                                } else if (tag.startsWith("Bet")) {
+                                    float v = Float.parseFloat(text);
+                                    if (v > 0)
+                                        BValue.add(text);
                                 }
 
-                                    break;
+                                break;
                         }
                         event = parser.next();
                     }
@@ -307,11 +307,12 @@ if(v>0)
 //                            LeaveAdapter adp = new LeaveAdapter(LeaveActivity.this, leaveItems);
 //
 //                            LeaveList.setAdapter(adp);
+if(EmployeeId!=null){
 
-
-                            BitmapDrawable b=  writeTextOnDrawable(R.drawable.selfservice1);
+                            BitmapDrawable b = writeTextOnDrawable(R.drawable.selfservice1);
 
                             imageView2.setBackground(b);
+}
                         }
                     });
 

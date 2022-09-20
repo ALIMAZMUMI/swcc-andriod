@@ -1,11 +1,18 @@
 package com.gov.sa.swcc;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,6 +70,13 @@ LinearLayout CM,LM,Sup;
 
 
 
+                ((ImageView)findViewById(R.id.backarrow)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
 
 
         ArrayList<String> rtname=new ArrayList<>();
@@ -70,7 +85,6 @@ LinearLayout CM,LM,Sup;
         rtname.add("تقرير التقييم");
         rtname.add("تقرير ساعات العمل");
         rtname.add("تقرير حساب الحضور و الانصراف");
-
         rtname.add("نوع التقرير");
 
        reporttype1 = new ArrayAdapter<String>(ShareakReportNActivity.this, R.layout.spinnericon,R.id.spinneritem, rtname)
@@ -252,74 +266,72 @@ LinearLayout CM,LM,Sup;
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String URLLink=Api.Sharektest+"/Shareek/Reports/";
-                if(reporttype.getSelectedItemPosition()==0)
-                {
 
-                    if(Sup.getVisibility()==View.VISIBLE&&supType.getSelectedItemPosition()!=(supType.getAdapter().getCount())){
-                        URLLink+="GetEmployeeTransactionsNEW?ContractId="+supTypel.get(supType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+supTypel.get(supType.getSelectedItemPosition()).getId()+"&roletype="+supTypel.get(supType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else if(LM.getVisibility()==View.VISIBLE&&LMType.getSelectedItemPosition()!=(LMType.getAdapter().getCount())){
-                        URLLink+="GetEmployeeTransactionsNEW?ContractId="+LMTypel.get(LMType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+LMTypel.get(LMType.getSelectedItemPosition()).getId()+"&roletype="+LMTypel.get(LMType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else if(CM.getVisibility()==View.VISIBLE&&CMType.getSelectedItemPosition()!=(CMType.getAdapter().getCount())){
-                        Log.d("CMTypegetSelected",CMType.getSelectedItemPosition()+"");
-                        URLLink+="GetEmployeeTransactionsNEW?ContractId="+CMTypel.get(CMType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+CMTypel.get(CMType.getSelectedItemPosition()).getId()+"&roletype="+CMTypel.get(CMType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else {
-                        URLLink+="GetEmployeeTransactionsNEW?ContractId="+projecttypel.get(projecttype.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+projecttypel.get(projecttype.getSelectedItemPosition()).getId()+"&roletype="+projecttypel.get(projecttype.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
+                if(isStoragePermissionGranted()){
+                String URLLink = Api.Sharektest + "/Shareek/Reports/";
+                if (reporttype.getSelectedItemPosition() == 0) {
+
+                    if (Sup.getVisibility() == View.VISIBLE && supType.getSelectedItemPosition() != (supType.getAdapter().getCount())) {
+                        URLLink += "GetEmployeeTransactionsNEW?ContractId=" + supTypel.get(supType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + supTypel.get(supType.getSelectedItemPosition()).getId() + "&roletype=" + supTypel.get(supType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else if (LM.getVisibility() == View.VISIBLE && LMType.getSelectedItemPosition() != (LMType.getAdapter().getCount())) {
+                        URLLink += "GetEmployeeTransactionsNEW?ContractId=" + LMTypel.get(LMType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + LMTypel.get(LMType.getSelectedItemPosition()).getId() + "&roletype=" + LMTypel.get(LMType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else if (CM.getVisibility() == View.VISIBLE && CMType.getSelectedItemPosition() != (CMType.getAdapter().getCount())) {
+                        Log.d("CMTypegetSelected", CMType.getSelectedItemPosition() + "");
+                        URLLink += "GetEmployeeTransactionsNEW?ContractId=" + CMTypel.get(CMType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + CMTypel.get(CMType.getSelectedItemPosition()).getId() + "&roletype=" + CMTypel.get(CMType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else {
+                        URLLink += "GetEmployeeTransactionsNEW?ContractId=" + projecttypel.get(projecttype.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + projecttypel.get(projecttype.getSelectedItemPosition()).getId() + "&roletype=" + projecttypel.get(projecttype.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
                     }
                 }
-                if(reporttype.getSelectedItemPosition()==1)
-                {
+                if (reporttype.getSelectedItemPosition() == 1) {
 
-                    if(Sup.getVisibility()==View.VISIBLE&&supType.getSelectedItemPosition()!=(supType.getAdapter().getCount())){
-                        URLLink+="GetProjectEvalNew?ContractId="+supTypel.get(supType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+supTypel.get(supType.getSelectedItemPosition()).getId()+"&roletype="+supTypel.get(supType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else if(LM.getVisibility()==View.VISIBLE&&LMType.getSelectedItemPosition()!=(LMType.getAdapter().getCount())){
-                        URLLink+="GetProjectEvalNew?ContractId="+LMTypel.get(LMType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+LMTypel.get(LMType.getSelectedItemPosition()).getId()+"&roletype="+LMTypel.get(LMType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else if(CM.getVisibility()==View.VISIBLE&&CMType.getSelectedItemPosition()!=(CMType.getAdapter().getCount())){
-                        Log.d("CMTypegetSelected",CMType.getSelectedItemPosition()+"");
-                        URLLink+="GetProjectEvalNew?ContractId="+CMTypel.get(CMType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+CMTypel.get(CMType.getSelectedItemPosition()).getId()+"&roletype="+CMTypel.get(CMType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else {
-                        URLLink+="GetProjectEvalNew?ContractId="+projecttypel.get(projecttype.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+projecttypel.get(projecttype.getSelectedItemPosition()).getId()+"&roletype="+projecttypel.get(projecttype.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }
-                }
-
-                if(reporttype.getSelectedItemPosition()==2)
-                {
-
-                    if(Sup.getVisibility()==View.VISIBLE&&supType.getSelectedItemPosition()!=(supType.getAdapter().getCount())){
-                        URLLink+="GetTransactionReport?ContractId="+supTypel.get(supType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+supTypel.get(supType.getSelectedItemPosition()).getId()+"&roletype="+supTypel.get(supType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else if(LM.getVisibility()==View.VISIBLE&&LMType.getSelectedItemPosition()!=(LMType.getAdapter().getCount())){
-                        URLLink+="GetTransactionReport?ContractId="+LMTypel.get(LMType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+LMTypel.get(LMType.getSelectedItemPosition()).getId()+"&roletype="+LMTypel.get(LMType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else if(CM.getVisibility()==View.VISIBLE&&CMType.getSelectedItemPosition()!=(CMType.getAdapter().getCount())){
-                        Log.d("CMTypegetSelected",CMType.getSelectedItemPosition()+"");
-                        URLLink+="GetTransactionReport?ContractId="+CMTypel.get(CMType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+CMTypel.get(CMType.getSelectedItemPosition()).getId()+"&roletype="+CMTypel.get(CMType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else {
-                        URLLink+="GetTransactionReport?ContractId="+projecttypel.get(projecttype.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+projecttypel.get(projecttype.getSelectedItemPosition()).getId()+"&roletype="+projecttypel.get(projecttype.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
+                    if (Sup.getVisibility() == View.VISIBLE && supType.getSelectedItemPosition() != (supType.getAdapter().getCount())) {
+                        URLLink += "GetProjectEvalNew?ContractId=" + supTypel.get(supType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + supTypel.get(supType.getSelectedItemPosition()).getId() + "&roletype=" + supTypel.get(supType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else if (LM.getVisibility() == View.VISIBLE && LMType.getSelectedItemPosition() != (LMType.getAdapter().getCount())) {
+                        URLLink += "GetProjectEvalNew?ContractId=" + LMTypel.get(LMType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + LMTypel.get(LMType.getSelectedItemPosition()).getId() + "&roletype=" + LMTypel.get(LMType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else if (CM.getVisibility() == View.VISIBLE && CMType.getSelectedItemPosition() != (CMType.getAdapter().getCount())) {
+                        Log.d("CMTypegetSelected", CMType.getSelectedItemPosition() + "");
+                        URLLink += "GetProjectEvalNew?ContractId=" + CMTypel.get(CMType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + CMTypel.get(CMType.getSelectedItemPosition()).getId() + "&roletype=" + CMTypel.get(CMType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else {
+                        URLLink += "GetProjectEvalNew?ContractId=" + projecttypel.get(projecttype.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + projecttypel.get(projecttype.getSelectedItemPosition()).getId() + "&roletype=" + projecttypel.get(projecttype.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
                     }
                 }
 
-                if(reporttype.getSelectedItemPosition()==3)
-                {
+                if (reporttype.getSelectedItemPosition() == 2) {
 
-                    if(Sup.getVisibility()==View.VISIBLE&&supType.getSelectedItemPosition()!=(supType.getAdapter().getCount())){
-                        URLLink+="GetAttendanceaAccount?ContractId="+supTypel.get(supType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+supTypel.get(supType.getSelectedItemPosition()).getId()+"&roletype="+supTypel.get(supType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else if(LM.getVisibility()==View.VISIBLE&&LMType.getSelectedItemPosition()!=(LMType.getAdapter().getCount())){
-                        URLLink+="GetAttendanceaAccount?ContractId="+LMTypel.get(LMType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+LMTypel.get(LMType.getSelectedItemPosition()).getId()+"&roletype="+LMTypel.get(LMType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else if(CM.getVisibility()==View.VISIBLE&&CMType.getSelectedItemPosition()!=(CMType.getAdapter().getCount())){
-                        Log.d("CMTypegetSelected",CMType.getSelectedItemPosition()+"");
-                        URLLink+="GetAttendanceaAccount?ContractId="+CMTypel.get(CMType.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+CMTypel.get(CMType.getSelectedItemPosition()).getId()+"&roletype="+CMTypel.get(CMType.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
-                    }else {
-                        URLLink+="GetAttendanceaAccount?ContractId="+projecttypel.get(projecttype.getSelectedItemPosition()).getContractsId()+"&FromStrdate="+from.getText().toString()+"&ToStrdate="+to.getText().toString()+"&id="+projecttypel.get(projecttype.getSelectedItemPosition()).getId()+"&roletype="+projecttypel.get(projecttype.getSelectedItemPosition()).getRoleType()+"&secretToken=123456789";
+                    if (Sup.getVisibility() == View.VISIBLE && supType.getSelectedItemPosition() != (supType.getAdapter().getCount())) {
+                        URLLink += "GetTransactionReport?ContractId=" + supTypel.get(supType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + supTypel.get(supType.getSelectedItemPosition()).getId() + "&roletype=" + supTypel.get(supType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else if (LM.getVisibility() == View.VISIBLE && LMType.getSelectedItemPosition() != (LMType.getAdapter().getCount())) {
+                        URLLink += "GetTransactionReport?ContractId=" + LMTypel.get(LMType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + LMTypel.get(LMType.getSelectedItemPosition()).getId() + "&roletype=" + LMTypel.get(LMType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else if (CM.getVisibility() == View.VISIBLE && CMType.getSelectedItemPosition() != (CMType.getAdapter().getCount())) {
+                        Log.d("CMTypegetSelected", CMType.getSelectedItemPosition() + "");
+                        URLLink += "GetTransactionReport?ContractId=" + CMTypel.get(CMType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + CMTypel.get(CMType.getSelectedItemPosition()).getId() + "&roletype=" + CMTypel.get(CMType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else {
+                        URLLink += "GetTransactionReport?ContractId=" + projecttypel.get(projecttype.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + projecttypel.get(projecttype.getSelectedItemPosition()).getId() + "&roletype=" + projecttypel.get(projecttype.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
                     }
                 }
 
-                    Intent Link=  new Intent(ShareakReportNActivity.this,SharekShowActivity.class);
-                    Link.putExtra("URL_LINK",URLLink);
-                    Link.putExtra("Auth","N");
-                    Link.putExtra("Share","0");
-                    startActivity(Link);
+                if (reporttype.getSelectedItemPosition() == 3) {
+
+                    if (Sup.getVisibility() == View.VISIBLE && supType.getSelectedItemPosition() != (supType.getAdapter().getCount())) {
+                        URLLink += "GetAttendanceaAccount?ContractId=" + supTypel.get(supType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + supTypel.get(supType.getSelectedItemPosition()).getId() + "&roletype=" + supTypel.get(supType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else if (LM.getVisibility() == View.VISIBLE && LMType.getSelectedItemPosition() != (LMType.getAdapter().getCount())) {
+                        URLLink += "GetAttendanceaAccount?ContractId=" + LMTypel.get(LMType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + LMTypel.get(LMType.getSelectedItemPosition()).getId() + "&roletype=" + LMTypel.get(LMType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else if (CM.getVisibility() == View.VISIBLE && CMType.getSelectedItemPosition() != (CMType.getAdapter().getCount())) {
+                        Log.d("CMTypegetSelected", CMType.getSelectedItemPosition() + "");
+                        URLLink += "GetAttendanceaAccount?ContractId=" + CMTypel.get(CMType.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + CMTypel.get(CMType.getSelectedItemPosition()).getId() + "&roletype=" + CMTypel.get(CMType.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    } else {
+                        URLLink += "GetAttendanceaAccount?ContractId=" + projecttypel.get(projecttype.getSelectedItemPosition()).getContractsId() + "&FromStrdate=" + from.getText().toString() + "&ToStrdate=" + to.getText().toString() + "&id=" + projecttypel.get(projecttype.getSelectedItemPosition()).getId() + "&roletype=" + projecttypel.get(projecttype.getSelectedItemPosition()).getRoleType() + "&secretToken=123456789";
+                    }
+                }
+
+                Intent Link = new Intent(ShareakReportNActivity.this, SharekShowActivity.class);
+                Link.putExtra("URL_LINK", URLLink);
+                Link.putExtra("Auth", "N");
+                Link.putExtra("Share", "0");
+                startActivity(Link);
 
 
-
+            }
             }
         });
 
@@ -327,6 +339,40 @@ LinearLayout CM,LM,Sup;
 
     }
 
+
+    public  boolean isStoragePermissionGranted() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                return true;
+            } else { //request for the permission
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+                return false;
+
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED ) {
+                    Log.v("Swcc","Permission is granted");
+                    return true;
+                } else {
+
+                    Log.v("SWCC","Permission is revoked");
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    return false;
+                }
+            }
+            else { //permission is automatically granted on sdk<23 upon installation
+                Log.v("SWCC","Permission is granted");
+                return true;
+            }
+        }
+    }
 
     public void CheckSubmit(){
         if(from.getText().toString().length()>3&&
@@ -345,7 +391,6 @@ LinearLayout CM,LM,Sup;
 
     private void CallAllProject() {
         String user=global.GetValue("Username").replace("u","");
-
 
 
         Call<List<ReportRe>> call = RetrofitClient.getInstance(Api.Sharektest).getMyApi().GetAllProject(user);

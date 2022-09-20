@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gov.sa.swcc.model.ExtendTask.ExtendTask;
@@ -41,6 +42,13 @@ public class ExtendApproveActivity extends AppCompatActivity {
 
 
 
+        ((ImageView)findViewById(R.id.close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            }
+        });
 
         submit.setEnabled(true);
         ID=getIntent().getExtras().getString("ID");
@@ -100,7 +108,7 @@ chatitle.setText("التاريخ الحالي لتسليم المهمة هو:"+C
                         Intent intent=new Intent();
                         intent.putExtra("update",true);
                         setResult(1001,intent);
-                        global.ShowMessageNF(response.body().getMessage(),ExtendApproveActivity.this);
+                        global.ShowMessageNFH("شكرا لك .",ExtendApproveActivity.this,"تم رفض التمديد للمهمة بنجاح");
 
 
                     }else {
@@ -143,7 +151,7 @@ chatitle.setText("التاريخ الحالي لتسليم المهمة هو:"+C
                         Intent intent=new Intent();
                         intent.putExtra("update",true);
                         setResult(1001,intent);
-                        global.ShowMessageNF(response.body().getMessage(),ExtendApproveActivity.this);
+                        global.ShowMessageNFH("شكرا لك",ExtendApproveActivity.this,"تم الموافقة على التمديد للمهمة بنجاح");
 
 
                     }else {

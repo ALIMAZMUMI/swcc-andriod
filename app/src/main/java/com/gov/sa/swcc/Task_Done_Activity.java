@@ -5,9 +5,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -33,6 +36,7 @@ import com.gov.sa.swcc.model.ExtendTask.ExtendTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,9 +51,11 @@ public class Task_Done_Activity extends AppCompatActivity {
     ImageView removeimage;
     ImageView addimage;
     int Image=0;
-
+    String ansValue;
+    String ansName;
     Global global;
     String ID;
+    byte [] bytes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,9 +145,9 @@ public class Task_Done_Activity extends AppCompatActivity {
         if(Image==1)
         {
             EmployeeAttachment employeeAttachment=new EmployeeAttachment();
-            employeeAttachment.setName("مرفق");
-            employeeAttachment.setFileExtension("jpg");
-            employeeAttachment.setImageBase(ConvertToBase64());
+            employeeAttachment.setName(ansName.split("\\.")[0]);
+            employeeAttachment.setFileExtension(ansName.split("\\.")[ansName.split("\\.").length-1]);
+            employeeAttachment.setImageBase(Base64.encodeToString(bytes,Base64.DEFAULT));
             List<EmployeeAttachment> employeeAttachments=new ArrayList<>();
             employeeAttachments.add(employeeAttachment);
             completeTask.setEmployeeAttachments(employeeAttachments);
@@ -168,7 +174,7 @@ public class Task_Done_Activity extends AppCompatActivity {
                         Intent intent=new Intent();
                         intent.putExtra("update",true);
                         setResult(1002,intent);
-                        global.ShowMessageNF(response.body().getMessage(),Task_Done_Activity.this);
+                        global.ShowMessageNFH("شكرا لك!",Task_Done_Activity.this,"تم الارسال");
 
 
                     }else {
@@ -176,7 +182,8 @@ public class Task_Done_Activity extends AppCompatActivity {
                         global.ShowMessage("");
                     }
 
-                }else {try {
+                }else {
+                    try {
                     global.ShowMessageNF(response.body().getMessage(),Task_Done_Activity.this);
                 }catch (Exception e){
 
@@ -229,24 +236,32 @@ public class Task_Done_Activity extends AppCompatActivity {
         return Base64.encodeToString(byteArrayImage, Base64.NO_WRAP);
     }
     private void openCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //cameraIntent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true);
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            File pictureFile = null;
-            try {
-                pictureFile = getPictureFile();
-            } catch (IOException ex) {
-                Toast.makeText(Task_Done_Activity.this,
-                        "Photo file can't be created, please try again",
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Uri photoURI = FileProvider.getUriForFile(Task_Done_Activity.this,
-                    "com.gov.sa.swcc.fileprovider",
-                    pictureFile);
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            startActivityForResult(cameraIntent, 1001);
-        }
+        Intent intent = new Intent();
+        intent.setType("*/*");
+//        intent.setType("file/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.putExtra("return-data", true);
+        startActivityForResult(Intent.createChooser(intent, "Complete action using"), 1300);
+
+//
+//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        //cameraIntent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true);
+//        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+//            File pictureFile = null;
+//            try {
+//                pictureFile = getPictureFile();
+//            } catch (IOException ex) {
+//                Toast.makeText(Task_Done_Activity.this,
+//                        "Photo file can't be created, please try again",
+//                        Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            Uri photoURI = FileProvider.getUriForFile(Task_Done_Activity.this,
+//                    "com.gov.sa.swcc.fileprovider",
+//                    pictureFile);
+//            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//            startActivityForResult(cameraIntent, 1001);
+//        }
     }
 
     String pictureFilePath;
@@ -260,6 +275,63 @@ public class Task_Done_Activity extends AppCompatActivity {
         return image;
     }
 
+    @SuppressLint("Range")
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+    public void ConvertToString(Uri uri){
+        String uriString = uri.toString();
+        Log.d("data", "onActivityResult: uri"+uriString);
+        //            myFile = new File(uriString);
+        //            ret = myFile.getAbsolutePath();
+        //Fpath.setText(ret);
+        try {
+            InputStream in = getContentResolver().openInputStream(uri);
+             bytes=getBytes(in);
+            Log.d("data", "onActivityResult: bytes size="+bytes.length);
+            Log.d("data", "onActivityResult: Base64string="+Base64.encodeToString(bytes,Base64.DEFAULT));
+            ansValue = Base64.encodeToString(bytes,Base64.DEFAULT);
+            String Document=Base64.encodeToString(bytes,Base64.DEFAULT);
+            // Log.d("img", "" + ansValue);
+            ansName=getFileName(uri);
+            Log.d("imgiii", "" + ansName);
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            Log.d("error", "onActivityResult: " + e.toString());
+        }
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -289,6 +361,43 @@ public class Task_Done_Activity extends AppCompatActivity {
 
                         }
                     }
+                    break;
+                case 1300:
+
+                    Uri URI = data.getData();
+                    ConvertToString(URI);
+
+                    removeimagetxt.setText(ansName);
+                    addimagetxt.setVisibility(View.GONE);
+                    addimage.setVisibility(View.GONE);
+                    removeimage.setVisibility(View.VISIBLE);
+                    removeimagetxt.setVisibility(View.VISIBLE);
+                    Image=1;
+                    Log.d("img123", "true");
+
+                    //Tecket_Attach.setText(URI.getLastPathSegment());
+//                   Uri selectedImageURI = data.getData();
+//                    Log.d("img", "" + data.getData());
+//                    Log.d("img", "" + selectedImageURI.getAuthority());
+//
+//
+//                    File imgFile= new File(GetFilePathFromDevice.getPath(Emp_Add_TaskActivity.this,data.getData()));
+//                    Log.d("img", "" + imgFile.getAbsolutePath());
+//
+//                    if (imgFile.exists()) {
+//                        Log.d("img", "true");
+//                        //                            imageView.setImageURI(Uri.fromFile(imgFile));
+//                        addimagetxt.setText(imgFile.getName());
+//                        addimagetxt.setVisibility(View.GONE);
+//                        addimage.setVisibility(View.GONE);
+//                        removeimage.setVisibility(View.VISIBLE);
+//                        removeimagetxt.setVisibility(View.VISIBLE);
+//                        Image=1;
+//                        Log.d("img123", "true");
+//                        CheckSubmit();
+//
+//                    }
+
                     break;
 
 

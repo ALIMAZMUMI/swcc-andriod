@@ -4,6 +4,7 @@ package com.gov.sa.swcc.model.Rating;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.gov.sa.swcc.model.emptask.Attachments;
 
 public class Model {
 
@@ -62,28 +63,28 @@ public class Model {
     @Expose
     private String taskComment;
 
-    public List<Object> getManagerAttachmentsDTO() {
+    public List<Attachments>getManagerAttachmentsDTO() {
         return managerAttachmentsDTO;
     }
 
-    public void setManagerAttachmentsDTO(List<Object> managerAttachmentsDTO) {
+    public void setManagerAttachmentsDTO(List<Attachments> managerAttachmentsDTO) {
         this.managerAttachmentsDTO = managerAttachmentsDTO;
     }
 
-    public List<Object> getEmployeeAttachmentsDTO() {
+    public List<Attachments> getEmployeeAttachmentsDTO() {
         return employeeAttachmentsDTO;
     }
 
-    public void setEmployeeAttachmentsDTO(List<Object> employeeAttachmentsDTO) {
+    public void setEmployeeAttachmentsDTO(List<Attachments> employeeAttachmentsDTO) {
         this.employeeAttachmentsDTO = employeeAttachmentsDTO;
     }
 
     @SerializedName("managerAttachmentsDTO")
     @Expose
-    private List<Object>  managerAttachmentsDTO;
+    private List<Attachments>  managerAttachmentsDTO;
     @SerializedName("employeeAttachmentsDTO")
     @Expose
-    private List<Object> employeeAttachmentsDTO;
+    private List<Attachments> employeeAttachmentsDTO;
     @SerializedName("oneDayTask")
     @Expose
     private Boolean oneDayTask;

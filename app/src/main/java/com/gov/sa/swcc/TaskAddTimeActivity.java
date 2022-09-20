@@ -88,7 +88,7 @@ if(detials.getText().length()>2){
 
                     if(response.body().getStatusCode()==1){
                         dialog.dismiss();
-                        global.ShowMessageNF(response.body().getMessage(),TaskAddTimeActivity.this);
+                        global.ShowMessageNFH("شكرا لك!",TaskAddTimeActivity.this,"تم ارسال الطلب");
 
 
                     }else {

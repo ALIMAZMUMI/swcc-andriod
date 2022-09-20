@@ -46,7 +46,7 @@ public class TaskHistoryAdapter extends ArrayAdapter<Model> {
         TextView timetxt=(TextView) rowView.findViewById(R.id.timetxt);
         Global global=new Global(context);
         datetext.setText(global.GetDateFormat(Titem.get(position).getCreatedOn()));
-        titletxt.setText(Titem.get(position).getComment());
+        titletxt.setText(Titem.get(position).getToStatus());
         timetxt.setText(global.GetTime(Titem.get(position).getCreatedOn()));
         return rowView;
 

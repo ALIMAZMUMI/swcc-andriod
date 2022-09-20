@@ -3,6 +3,7 @@ package com.gov.sa.swcc.Adapter;
 import android.app.Activity;
 import android.graphics.Color;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.borjabravo.simpleratingbar.SimpleRatingBar;
+import com.gov.sa.swcc.Global;
 import com.gov.sa.swcc.R;
 import com.gov.sa.swcc.model.Sharekproject;
 import com.gov.sa.swcc.model.emptask.GetAllMyTask;
@@ -33,15 +35,13 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
         this.context=context;
         this.index=index;
         this.Titem=Titem;
-
-
     }
 
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater=context.getLayoutInflater();
 
         View rowView=null;
-
+        Global global=new Global(context);
         if(index==0) {
             GetAllMyTask getAllMyTask;
             getAllMyTask= (GetAllMyTask) Titem.get(position);
@@ -56,11 +56,11 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                 TextView col= (TextView) rowView.findViewById(R.id.col);
 
                 taskname.setText(getAllMyTask.getTaskName() + "");
-                taskdate.setText(getAllMyTask.getFrom());
+                taskdate.setText(global.GetDateFormat(getAllMyTask.getTo()));
                 String Days = "";
-                if (getAllMyTask.getGetRemainingTime().getDays() > 0) {
+                if (getAllMyTask.getGetRemainingTime().getDays() >= 0 &&getAllMyTask.getGetRemainingTime().getHours() >=0) {
 
-                    Days = "متبقي" + getAllMyTask.getGetRemainingTime().getDays() + "أيام";
+                    Days = "متبقي" + global.DTxt(getAllMyTask.getGetRemainingTime().getDays());
                     if(getAllMyTask.getGetRemainingTime().getDays()<=4)
                     { tasktime.setTextColor(Color.parseColor("#EAB011"));
                     taskstatus.setBackgroundResource(R.drawable.tasklite);
@@ -74,8 +74,8 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                     }
 
                 }
-                else {
-                    Days = "متأخرة" + getAllMyTask.getGetRemainingTime().getDays() + "أيام".replaceAll("-","");
+                else  {
+                    Days = "متأخرة" +  global.DTxt(getAllMyTask.getGetRemainingTime().getDays());
                     tasktime.setTextColor(Color.parseColor("#CC0000"));
                     taskstatus.setBackgroundResource(R.drawable.taskdelay);
                     //col.setBackgroundColor(Color.parseColor("#CC0000"));
@@ -84,12 +84,20 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
                 tasktime.setText(Days);
                 int count=0;
-                if(getAllMyTask.getManagerAttachmentsDTO()!=null){
-                    count=getAllMyTask.getManagerAttachmentsDTO().size();
+                if(getAllMyTask.getManagerAttachmentsDTO()!=null&&getAllMyTask.getManagerAttachmentsDTO().size()>0){
+                    count=1;
+                }
+                if(getAllMyTask.getEmployeeAttachmentsDTO()!=null&&getAllMyTask.getEmployeeAttachmentsDTO().size()>0){
+                    count++;
                 }
 
 
-                taskattc.setText(count +" مرفق");
+                if(count==0){
+                    taskattc.setText("لا توجد مرفقات");
+
+                }else {
+                    taskattc.setText("مع مرفقات");
+                }
             }
             else {
                 rowView = inflater.inflate(R.layout.task_cell_done, null, true);
@@ -101,9 +109,19 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                 ImageView imgdone = (ImageView) rowView.findViewById(R.id.imgdone);
 
                 taskname.setText(getAllMyTask.getTaskName() + "");
-                taskdate.setText(getAllMyTask.getFrom());
+                taskdate.setText(global.GetDateFormat(getAllMyTask.getTo()));
 
-                if (getAllMyTask.getIsDelayedTask()) {
+
+                if(getAllMyTask.getTaskStatusId() == 7){
+                    txtdone.setText("قيد الاعتماد و التقييم");
+                    txtdone.setBackgroundResource(R.drawable.ligthbluefull);
+
+                }else if(getAllMyTask.getTaskStatusId() == 8){
+                    txtdone.setText("بانتظار التقييم");
+                    txtdone.setBackgroundResource(R.drawable.ligthbluefull);
+
+                }
+                else if (getAllMyTask.getIsDelayedTask()) {
                     txtdone.setText("تمت بتأخير");
                     imgdone.setBackgroundResource(R.drawable.donetasklite);
                 } else {
@@ -117,7 +135,13 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
                 simple_rating_bar.setEnabled(false);
                 if(getAllMyTask.getEvaluationId()==null){
+                    if(getAllMyTask.getTaskStatusId() == 7){
+
+                    }else if(getAllMyTask.getTaskStatusId() == 8){
+
+                    }else{
                     simple_rating_bar.setVisibility(View.GONE);
+                    }
 
                 }else if(getAllMyTask.getEvaluationId().equals("15"))
                 {
@@ -136,7 +160,13 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                     simple_rating_bar.setRating(5);
                 }else
                 {
-                    simple_rating_bar.setVisibility(View.GONE);
+                    if(getAllMyTask.getTaskStatusId() == 7){
+
+                    }else if(getAllMyTask.getTaskStatusId() == 8){
+
+                    }else{
+                        simple_rating_bar.setVisibility(View.GONE);
+                    }
                 }
                 String Days = "";
 //            if (getAllMyTask.getGetRemainingTime().getDays() > 0) {
@@ -149,17 +179,25 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
                 // tasktime.setText(Days);
                 int count=0;
-                if(getAllMyTask.getManagerAttachmentsDTO()!=null){
-                    count=getAllMyTask.getManagerAttachmentsDTO().size();
+                if(getAllMyTask.getManagerAttachmentsDTO()!=null&&getAllMyTask.getManagerAttachmentsDTO().size()>0){
+                    count=1;
+                }
+                if(getAllMyTask.getEmployeeAttachmentsDTO()!=null&&getAllMyTask.getEmployeeAttachmentsDTO().size()>0){
+                    count++;
                 }
 
 
-                taskattc.setText(count +" مرفق");
+                if(count==0){
+                    taskattc.setText("لا توجد مرفقات");
 
+                }else {
+                    taskattc.setText("مع مرفقات");
+                }
             }
         }
         else if(index==1) {
             GetMyActiveTasks getAllMyTask;
+
             getAllMyTask= (GetMyActiveTasks) Titem.get(position);
             if (getAllMyTask.getTaskStatusId() != 7&&getAllMyTask.getTaskStatusId() != 8&&getAllMyTask.getTaskStatusId() != 10&&getAllMyTask.getTaskStatusId() != 11) {
                 rowView = inflater.inflate(R.layout.mytask_cell, null, true);
@@ -170,15 +208,23 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                 TextView taskattc = (TextView) rowView.findViewById(R.id.taskattc);
                 TextView col= (TextView) rowView.findViewById(R.id.col);
 
+
+                TextView newtask= (TextView) rowView.findViewById(R.id.newtask);
+
+
+                if(!global.GetValue("newtask").contains(getAllMyTask.getId()+"")){
+                   newtask.setVisibility(View.VISIBLE);
+                }
+
                 ImageView taskstatus=(ImageView)rowView.findViewById(R.id.taskstatus);
 
                 taskname.setText(getAllMyTask.getTaskName() + "");
-                taskdate.setText(getAllMyTask.getFrom());
+                taskdate.setText(global.GetDateFormat(getAllMyTask.getTo()));
                 String Days = "";
-                if (getAllMyTask.getGetRemainingTime().getDays() > 0) {
+                if (getAllMyTask.getGetRemainingTime().getDays() >= 0 &&getAllMyTask.getGetRemainingTime().getHours() >=0) {
 
-                    Days = "متبقي" + getAllMyTask.getGetRemainingTime().getDays() + "أيام";
-                    if(getAllMyTask.getGetRemainingTime().getDays()<=4)
+                    Days = "متبقي" + global.DTxt(getAllMyTask.getGetRemainingTime().getDays());
+                    if(getAllMyTask.getGetRemainingTime().getDays()<=4 )
                     { tasktime.setTextColor(Color.parseColor("#EAB011"));
                         taskstatus.setBackgroundResource(R.drawable.tasklite);
                         col.setBackgroundColor(Color.parseColor("#EAB011"));
@@ -192,7 +238,7 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
                 }
                 else {
-                    Days = "متأخرة" + getAllMyTask.getGetRemainingTime().getDays() + "أيام".replaceAll("-","");
+                    Days = "متأخرة" + global.DTxt(getAllMyTask.getGetRemainingTime().getDays() );
                     tasktime.setTextColor(Color.parseColor("#CC0000"));
                     taskstatus.setBackgroundResource(R.drawable.taskdelay);
 
@@ -201,13 +247,22 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                 }
 
                 tasktime.setText(Days);
+
                 int count=0;
-                if(getAllMyTask.getManagerAttachmentsDTO()!=null){
-                    count=getAllMyTask.getManagerAttachmentsDTO().size();
+                if(getAllMyTask.getManagerAttachmentsDTO()!=null&&getAllMyTask.getManagerAttachmentsDTO().size()>0){
+                    count=1;
+                }
+                if(getAllMyTask.getEmployeeAttachmentsDTO()!=null&&getAllMyTask.getEmployeeAttachmentsDTO().size()>0){
+                    count++;
                 }
 
 
-                taskattc.setText(count +" مرفق");
+                if(count==0){
+                    taskattc.setText("لا توجد مرفقات");
+
+                }else {
+                    taskattc.setText("مع مرفقات");
+                }
             }
             else {
                 rowView = inflater.inflate(R.layout.task_cell_done, null, true);
@@ -221,7 +276,7 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
 
                 taskname.setText(getAllMyTask.getTaskName() + "");
-                taskdate.setText(getAllMyTask.getFrom());
+                taskdate.setText(global.GetDateFormat(getAllMyTask.getTo()));
 
                 if (getAllMyTask.getIsDelayedTask()) {
                     txtdone.setText("تمت بتأخير");
@@ -264,14 +319,23 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                 }
 
                 // tasktime.setText(Days);
+
                 int count=0;
-                if(getAllMyTask.getManagerAttachmentsDTO()!=null){
-                    count=getAllMyTask.getManagerAttachmentsDTO().size();
+                if(getAllMyTask.getManagerAttachmentsDTO()!=null&&getAllMyTask.getManagerAttachmentsDTO().size()>0){
+                    count=1;
+                }
+                if(getAllMyTask.getEmployeeAttachmentsDTO()!=null&&getAllMyTask.getEmployeeAttachmentsDTO().size()>0){
+                    count++;
                 }
 
 
-                taskattc.setText(count +" مرفق");
-            }
+                if(count==0){
+                    taskattc.setText("لا توجد مرفقات");
+
+                }else {
+                    taskattc.setText("مع مرفقات");
+                }
+                        }
         }
         else if(index==2) {
             GetMyDelayedTasks getAllMyTask;
@@ -287,11 +351,11 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                 TextView col= (TextView) rowView.findViewById(R.id.col);
 
                 taskname.setText(getAllMyTask.getTaskName() + "");
-                taskdate.setText(getAllMyTask.getFrom());
+                taskdate.setText(global.GetDateFormat(getAllMyTask.getTo()));
                 String Days = "";
-                if (getAllMyTask.getGetRemainingTime().getDays() > 0) {
+                if (false&&getAllMyTask.getGetRemainingTime().getDays() >= 0 && getAllMyTask.getGetRemainingTime().getHours() >=0) {
 
-                    Days = "متبقي" + getAllMyTask.getGetRemainingTime().getDays() + "أيام";
+                    Days = "متبقي" + global.DTxt(getAllMyTask.getGetRemainingTime().getDays() );
                     if(getAllMyTask.getGetRemainingTime().getDays()<=4)
                     { tasktime.setTextColor(Color.parseColor("#EAB011"));
                         taskstatus.setBackgroundResource(R.drawable.tasklite);
@@ -306,7 +370,7 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
                 }
                 else {
-                    Days = "متأخرة" + getAllMyTask.getGetRemainingTime().getDays() + "أيام".replaceAll("-","");
+                    Days = "متأخرة" + global.DTxt(getAllMyTask.getGetRemainingTime().getDays() );
                     tasktime.setTextColor(Color.parseColor("#CC0000"));
                     taskstatus.setBackgroundResource(R.drawable.taskdelay);
                   //  col.setBackgroundColor(Color.parseColor("#CC0000"));
@@ -314,13 +378,22 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                 }
 
                 tasktime.setText(Days);
+
                 int count=0;
-                if(getAllMyTask.getManagerAttachmentsDTO()!=null){
-                    count=getAllMyTask.getManagerAttachmentsDTO().size();
+                if(getAllMyTask.getManagerAttachmentsDTO()!=null&&getAllMyTask.getManagerAttachmentsDTO().size()>0){
+                    count=1;
+                }
+                if(getAllMyTask.getEmployeeAttachmentsDTO()!=null&&getAllMyTask.getEmployeeAttachmentsDTO().size()>0){
+                    count++;
                 }
 
 
-                taskattc.setText(count +" مرفق");
+                if(count==0){
+                    taskattc.setText("لا توجد مرفقات");
+
+                }else {
+                    taskattc.setText("مع مرفقات");
+                }
 
             }
             else {
@@ -333,7 +406,7 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                 ImageView imgdone = (ImageView) rowView.findViewById(R.id.imgdone);
 
                 taskname.setText(getAllMyTask.getTaskName() + "");
-                taskdate.setText(getAllMyTask.getFrom());
+                taskdate.setText(global.GetDateFormat(getAllMyTask.getTo()));
 
                 if (getAllMyTask.getIsDelayedTask()) {
                     txtdone.setText("تمت بتأخير");
@@ -378,13 +451,20 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
                 // tasktime.setText(Days);
                 int count=0;
-                if(getAllMyTask.getManagerAttachmentsDTO()!=null){
-                    count=getAllMyTask.getManagerAttachmentsDTO().size();
+                if(getAllMyTask.getManagerAttachmentsDTO()!=null&&getAllMyTask.getManagerAttachmentsDTO().size()>0){
+                    count=1;
+                }
+                if(getAllMyTask.getEmployeeAttachmentsDTO()!=null&&getAllMyTask.getEmployeeAttachmentsDTO().size()>0){
+                    count++;
                 }
 
 
-                taskattc.setText(count +" مرفق");
+                if(count==0){
+                    taskattc.setText("لا توجد مرفقات");
 
+                }else {
+                    taskattc.setText("مع مرفقات");
+                }
             }
         }
         else if(index==3) {
@@ -402,11 +482,11 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
 
                 taskname.setText(getAllMyTask.getTaskName() + "");
-                taskdate.setText(getAllMyTask.getFrom());
+                taskdate.setText(global.GetDateFormat(getAllMyTask.getTo()));
                 String Days = "";
-                if (getAllMyTask.getGetRemainingTime().getDays() > 0) {
+                if (getAllMyTask.getGetRemainingTime().getDays() >= 0 &&getAllMyTask.getGetRemainingTime().getHours() >=0) {
 
-                    Days = "متبقي" + getAllMyTask.getGetRemainingTime().getDays() + "أيام";
+                    Days = "متبقي" + global.DTxt(getAllMyTask.getGetRemainingTime().getDays() );
                     if(getAllMyTask.getGetRemainingTime().getDays()<=4)
                     { tasktime.setTextColor(Color.parseColor("#EAB011"));
                         taskstatus.setBackgroundResource(R.drawable.tasklite);
@@ -421,7 +501,7 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
                 }
                 else {
-                    Days = "متأخرة" + getAllMyTask.getGetRemainingTime().getDays() + "أيام".replaceAll("-","");
+                    Days = "متأخرة" + global.DTxt(getAllMyTask.getGetRemainingTime().getDays() );
                     tasktime.setTextColor(Color.parseColor("#CC0000"));
                     taskstatus.setBackgroundResource(R.drawable.taskdelay);
                     //col.setBackgroundColor(Color.parseColor("#CC0000"));
@@ -430,13 +510,20 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
                 tasktime.setText(Days);
                 int count=0;
-                if(getAllMyTask.getManagerAttachmentsDTO()!=null){
-                    count=getAllMyTask.getManagerAttachmentsDTO().size();
+                if(getAllMyTask.getManagerAttachmentsDTO()!=null&&getAllMyTask.getManagerAttachmentsDTO().size()>0){
+                    count=1;
+                }
+                if(getAllMyTask.getEmployeeAttachmentsDTO()!=null&&getAllMyTask.getEmployeeAttachmentsDTO().size()>0){
+                    count++;
                 }
 
 
-                taskattc.setText(count +" مرفق");
+                if(count==0){
+                    taskattc.setText("لا توجد مرفقات");
 
+                }else {
+                    taskattc.setText("مع مرفقات");
+                }
             }
             else {
                 rowView = inflater.inflate(R.layout.task_cell_done, null, true);
@@ -448,9 +535,18 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                 ImageView imgdone = (ImageView) rowView.findViewById(R.id.imgdone);
 
                 taskname.setText(getAllMyTask.getTaskName() + "");
-                taskdate.setText(getAllMyTask.getFrom());
+                taskdate.setText(global.GetDateFormat(getAllMyTask.getTo()));
 
-                if (getAllMyTask.getIsDelayedTask()) {
+                if(getAllMyTask.getTaskStatusId() == 7){
+                    txtdone.setText("قيد الاعتماد و التقييم");
+                    txtdone.setBackgroundResource(R.drawable.ligthbluefull);
+
+                }else if(getAllMyTask.getTaskStatusId() == 8){
+                    txtdone.setText("بانتظار التقييم");
+                    txtdone.setBackgroundResource(R.drawable.ligthbluefull);
+
+                }
+                else if (getAllMyTask.getIsDelayedTask()) {
                     txtdone.setText("تمت بتأخير");
                     imgdone.setBackgroundResource(R.drawable.donetasklite);
                 } else {
@@ -463,8 +559,13 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
                 simple_rating_bar.setEnabled(false);
                 if(getAllMyTask.getEvaluationId()==null){
-                    simple_rating_bar.setVisibility(View.GONE);
+                    if(getAllMyTask.getTaskStatusId() == 7){
 
+                    }else if(getAllMyTask.getTaskStatusId() == 8){
+
+                    }else{
+                        simple_rating_bar.setVisibility(View.GONE);
+                    }
                 }else if(getAllMyTask.getEvaluationId().equals("15"))
                 {
                     simple_rating_bar.setRating(1);
@@ -482,8 +583,13 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
                     simple_rating_bar.setRating(5);
                 }else
                 {
-                    simple_rating_bar.setVisibility(View.GONE);
-                }
+                    if(getAllMyTask.getTaskStatusId() == 7){
+
+                    }else if(getAllMyTask.getTaskStatusId() == 8){
+
+                    }else{
+                        simple_rating_bar.setVisibility(View.GONE);
+                    }                }
                 String Days = "";
 //            if (getAllMyTask.getGetRemainingTime().getDays() > 0) {
 //                Days = "متبقي" + getAllMyTask.getGetRemainingTime().getDays() + "أيام";
@@ -495,15 +601,24 @@ public class MyTasksAdapter extends ArrayAdapter<Object> {
 
                 // tasktime.setText(Days);
                 int count=0;
-                if(getAllMyTask.getManagerAttachmentsDTO()!=null){
-                    count=getAllMyTask.getManagerAttachmentsDTO().size();
+                if(getAllMyTask.getManagerAttachmentsDTO()!=null&&getAllMyTask.getManagerAttachmentsDTO().size()>0){
+                    count=1;
+                }
+                if(getAllMyTask.getEmployeeAttachmentsDTO()!=null&&getAllMyTask.getEmployeeAttachmentsDTO().size()>0){
+                    count++;
                 }
 
 
-                taskattc.setText(count +" مرفق");
+                if(count==0){
+                    taskattc.setText("لا توجد مرفقات");
 
+                }else {
+                    taskattc.setText("مع مرفقات");
+                }
             }
         }
+
+
 
 
         return rowView;

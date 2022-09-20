@@ -3,6 +3,7 @@ package com.gov.sa.swcc;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,7 +22,7 @@ import retrofit2.Response;
 
 public class ApproveCompleteActivity extends AppCompatActivity {
     Global global;
-    String ID,TaskName,EmployeeName,Date,Decription,Comment,attachtxt;
+    String ID,TaskName,EmployeeName,Date,Decription,Comment,attachtxt,attachURL;
     TextView tasktitle,empname,taskdate,detials,note,attach;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class ApproveCompleteActivity extends AppCompatActivity {
         Decription=getIntent().getExtras().getString("Decription");
         Comment=getIntent().getExtras().getString("Comment");
         attachtxt=getIntent().getExtras().getString("attach");
+        attachURL=getIntent().getExtras().getString("attachURL");
+
 
         tasktitle=(TextView) findViewById(R.id.tasktitle);
         empname=(TextView) findViewById(R.id.empname);
@@ -48,7 +51,13 @@ public class ApproveCompleteActivity extends AppCompatActivity {
         attach=(TextView) findViewById(R.id.attach);
 
 
-        attach.setText("تحميل "+attachtxt+" مرفق");
+        attach.setText(attachtxt+" مرفق");
+        attach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OpenFile();
+            }
+        });
         tasktitle.setText(TaskName);
         empname.setText(EmployeeName);
         taskdate.setText(Date);
@@ -98,8 +107,17 @@ public class ApproveCompleteActivity extends AppCompatActivity {
                         dialog.dismiss();
                         Intent intent=new Intent();
                         intent.putExtra("update",true);
+                        intent.putExtra("rate",true);
+                        intent.putExtra("ID",ID);
                         setResult(1001,intent);
-                        global.ShowMessageNF(response.body().getMessage(),ApproveCompleteActivity.this);
+                        ApproveCompleteActivity.this.finish();
+
+//                        Intent intent = new Intent(ApproveCompleteActivity.this, RatingTaskActivity.class);
+//                        intent.putExtra("ID", ID+ "");
+//                        //intent.putExtra("Index", index);
+
+                        //startActivityForResult(intent,1002);
+                       // global.ShowMessageNF(response.body().getMessage(),ApproveCompleteActivity.this);
 
 
                     }else {
@@ -141,8 +159,8 @@ public class ApproveCompleteActivity extends AppCompatActivity {
                         Intent intent=new Intent();
                         intent.putExtra("update",true);
                         setResult(1001,intent);
-                        global.ShowMessageNF(response.body().getMessage(),ApproveCompleteActivity.this);
-
+                        global.ShowMessageNFH(TaskName,ApproveCompleteActivity.this,"تم ارجاع المهمة بنجاح");
+ApproveCompleteActivity.this.finish();
 
                     }else {
                         dialog.dismiss();
@@ -164,4 +182,22 @@ public class ApproveCompleteActivity extends AppCompatActivity {
 
         });
     }
+
+
+    public void OpenFile() {
+        if(attachURL!=null){
+        Log.d("SFileURL",attachURL);
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(attachURL));
+        startActivity(browserIntent);}
+//        if(isStoragePermissionGranted()){
+//
+//            //open_file();
+//
+//            downloadPdfContent(SFileURL);
+//
+//        }
+
+
+    }
+
 }

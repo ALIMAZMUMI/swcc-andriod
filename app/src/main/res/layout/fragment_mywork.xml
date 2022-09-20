@@ -34,6 +34,10 @@
                 android:weightSum="5"
                 android:gravity="center|top">
 
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/pullToRefresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -132,7 +136,6 @@
                             android:text="ادارة المهام"
                             android:textSize="17dp"
                             android:paddingVertical="5dp"
-                            android:visibility="gone"
                             android:textColor="#004C86"/>
 
                         <TextView
@@ -140,18 +143,25 @@
                             android:layout_height="3dp"
                             android:background="@drawable/lgreenroundfull"
                             android:textSize="17dp"
-                            android:visibility="gone"
 
 
                             />
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="مهامي"
+                            android:textSize="15dp"
+                            android:paddingVertical="5dp"
+                            android:textColor="#004C86"/>
+
+
                         <androidx.cardview.widget.CardView
                             android:id="@+id/mytask"
-                            android:visibility="gone"
 
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            android:layout_marginTop="15dp">
+                            android:layout_marginTop="5dp">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="50dp"
@@ -186,16 +196,21 @@
                         </androidx.cardview.widget.CardView>
 
 
-
+                        <TextView
+                            android:id="@+id/taskmangerheader"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="متابعة مهام العاملين"
+                            android:textSize="15dp"
+                            android:paddingVertical="5dp"
+                            android:textColor="#004C86"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
                             android:gravity="right|center"
                             android:weightSum="10"
-                            android:visibility="gone"
-
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:orientation="horizontal">
 
 
@@ -227,7 +242,6 @@
                                 android:background="@drawable/gradientbg"
                                 android:layout_width="0dp"
                                 android:layout_height="90dp"
-                                android:visibility="gone"
 
                                 android:gravity="center"
                                 android:weightSum="10"
@@ -261,6 +275,7 @@
                             app:cardCornerRadius="70dp"
                             android:visibility="gone"
 
+
                             android:layout_gravity="start|bottom"
                             android:layout_marginRight="30dp"
                             android:layout_marginTop="60dp"
@@ -282,6 +297,8 @@
 
 
                 </ScrollView>
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
                 <!--                <TextView-->

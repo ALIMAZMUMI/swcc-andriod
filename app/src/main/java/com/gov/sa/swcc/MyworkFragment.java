@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Html;
 import android.util.DisplayMetrics;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.gov.sa.swcc.Adapter.GridAdapter;
 import com.gov.sa.swcc.model.GetToken.GetToken;
 import com.gov.sa.swcc.model.GridItem;
+import com.gov.sa.swcc.model.MangerCount.MangerCount;
 
 import java.util.ArrayList;
 
@@ -94,8 +96,11 @@ public class MyworkFragment extends Fragment {
     ArrayList<GridItem> birdList,birdList1;
 
 CardView mytask;
+    static TextView taskmangerheader;
    static CardView fab;
 static LinearLayout emptask,taskaproval;
+
+    TextView approvaltask, emptasks;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -197,7 +202,9 @@ static LinearLayout emptask,taskaproval;
          mytask=(CardView)view.findViewById(R.id.mytask);
         CardView sharek=(CardView)view.findViewById(R.id.sharek);
          emptask=(LinearLayout) view.findViewById(R.id.emptask);
-         taskaproval=(LinearLayout) view.findViewById(R.id.taskaproval);
+        taskmangerheader=(TextView) view.findViewById(R.id.taskmangerheader);
+
+        taskaproval=(LinearLayout) view.findViewById(R.id.taskaproval);
 
         sharek.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,14 +242,23 @@ static LinearLayout emptask,taskaproval;
         });
 
 
-        TextView approvaltask=(TextView) view.findViewById(R.id.approvaltask);
+         approvaltask=(TextView) view.findViewById(R.id.approvaltask);
 
-        String text = "<font color=#ffffff>في انتظار الموافقة</font> <br/> <font color=#BBF912>"+ global.GetValue("ApprovalWaiting")+"</font> طلب";
+        String text = "<font color=#ffffff>طلبات العاملين</font> <br/> <font color=#BBF912>"+ global.GetValue("ApprovalWaiting")+"</font> طلب";
         approvaltask.setText(Html.fromHtml(text));
-        TextView emptasks=(TextView) view.findViewById(R.id.emptasks);
+         emptasks=(TextView) view.findViewById(R.id.emptasks);
 
          text = "<font color=#ffffff>مهام العاملين</font> <br/> <font color=#BBF912>"+ global.GetValue("EmpTaskCount")+"</font> مهمة";
         emptasks.setText(Html.fromHtml(text));
+
+         SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                GetTaskCount();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
 
 
         //GetToken();
@@ -253,14 +269,75 @@ static LinearLayout emptask,taskaproval;
 
     public  static void CheckFlag(){
 
-//       String IsSuper= global.GetValue("IsSuper");
-//       if(!IsSuper.contains("rue")){
-//           emptask.setVisibility(View.GONE);
-//           taskaproval.setVisibility(View.GONE);
-//           fab.setVisibility(View.GONE);
-//
-//       }
+       String IsSuper= global.GetValue("IsSuper");
+       if(!IsSuper.contains("rue")){
+           emptask.setVisibility(View.GONE);
+           taskaproval.setVisibility(View.GONE);
+           fab.setVisibility(View.GONE);
+           taskmangerheader.setVisibility(View.GONE);
 
+       }
+
+    }
+
+
+
+
+    private void GetTaskCount() {
+
+
+        Call<MangerCount> call = RetrofitClient.getInstance(Api.TaskURL).getMyApi().GetManagerTasksCount(global.GetValue("TaskToken"));
+        PorgressDilog dialog =  new PorgressDilog(getActivity());
+        dialog.show();
+        call.enqueue(new Callback<MangerCount>() {
+            @Override
+            public void onResponse(Call<MangerCount> call, Response<MangerCount> response) {
+                Log.d("Resp",response.message()+"");
+                if(response.isSuccessful())
+                {
+                    dialog.dismiss();
+                    global.SaveValue("EmpTaskCount",response.body().getModel().getActiveTasksCount()+"");
+                    global.SaveValue("ApprovalWaiting",(response.body().getModel().getIncreaseTaskTimeRequestsCount()+response.body().getModel().getApproveRequestTaskCount()+response.body().getModel().getReturnedTasksCount())+"");
+
+
+
+
+                    String text = "<font color=#ffffff>طلبات العاملين</font> <br/> <font color=#BBF912>"+ global.GetValue("ApprovalWaiting")+"</font> طلب";
+                    approvaltask.setText(Html.fromHtml(text));
+
+                    text = "<font color=#ffffff>مهام العاملين</font> <br/> <font color=#BBF912>"+ global.GetValue("EmpTaskCount")+"</font> مهمة";
+                    emptasks.setText(Html.fromHtml(text));
+
+                    Log.d("Reeeeeeeeeee","TaskToken");
+
+
+//                    if(response.body()==1){
+//                        dialog.dismiss();
+//                        global.ShowMessageNF(response.body().getMessage(),TaskAddTimeActivity.this);
+//
+//
+//                    }else {
+//                        dialog.dismiss();
+//                        global.ShowMessage("");
+//                    }
+
+                }else {
+
+                    dialog.dismiss();
+                    GetTaskCount();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MangerCount>call, Throwable t) {
+                dialog.dismiss();
+                GetTaskCount();
+                Log.d("Reeeeeeeeeee",t.getMessage()+"");
+
+            }
+
+
+        });
     }
 
     public void getHeight(GridAdapter listadp, GridView listview)

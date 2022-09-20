@@ -1,14 +1,19 @@
 package com.gov.sa.swcc;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,6 +22,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -44,6 +53,7 @@ import com.gov.sa.swcc.model.ExtendTask.ExtendTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,6 +71,8 @@ TextView date;
     LinearLayout addemp;
     final Calendar myCalendar= Calendar.getInstance();
     final Calendar Current= Calendar.getInstance();
+    String ansValue;
+    String ansName;
 
     TextView removeimagetxt,addimagetxt;
     ImageView removeimage;
@@ -71,8 +83,24 @@ TextView date;
     static List<String> Name;
     ChipGroup empchips;
     Button submit;
-
+    byte[] bytes;
     int Image=0;
+
+
+
+
+    //Sound
+
+
+    public static final Integer RecordAudioRequestCode = 1;
+    private SpeechRecognizer speechRecognizer;
+    //    private EditText editText;
+    private Button micButton;
+    private boolean isActive = false;
+    private int maxLength = 200; //for test
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,7 +205,23 @@ startActivityForResult(new Intent(Emp_Add_TaskActivity.this,Task_Add_EmpActivity
 date.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-        new DatePickerDialog(Emp_Add_TaskActivity.this,date1,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        DatePickerDialog datePickerDialog= new DatePickerDialog(Emp_Add_TaskActivity.this,date1,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH));
+        Calendar currentTime = Calendar.getInstance();
+
+
+        currentTime.add(Calendar.DAY_OF_MONTH,1);
+
+        Log.d("hhkbkjh",Current.get(Calendar.HOUR_OF_DAY)+"");
+       if(Current.get(Calendar.HOUR_OF_DAY)<15)
+       {
+           datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+       }
+       else
+       {
+           datePickerDialog.getDatePicker().setMinDate(currentTime.getTimeInMillis());
+
+       }
+        datePickerDialog.show();
 
     }
 });
@@ -242,7 +286,7 @@ date.setOnClickListener(new View.OnClickListener() {
                 CheckSubmit();
             }
         });
-
+        showbutton();
 
     }
 
@@ -292,29 +336,63 @@ date.setOnClickListener(new View.OnClickListener() {
 
         return Base64.encodeToString(byteArrayImage, Base64.NO_WRAP);
     }
+
+
+//    private void openCamera() {
+//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        //cameraIntent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true);
+//        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+//            File pictureFile = null;
+//            try {
+//                pictureFile = getPictureFile();
+//            } catch (IOException ex) {
+//                Toast.makeText(Emp_Add_TaskActivity.this,
+//                        "Photo file can't be created, please try again",
+//                        Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            Uri photoURI = FileProvider.getUriForFile(Emp_Add_TaskActivity.this,
+//                    "com.gov.sa.swcc.fileprovider",
+//                    pictureFile);
+//            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//            startActivityForResult(cameraIntent, 1001);
+//        }
+//    }
     private void openCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //cameraIntent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true);
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            File pictureFile = null;
-            try {
-                pictureFile = getPictureFile();
-            } catch (IOException ex) {
-                Toast.makeText(Emp_Add_TaskActivity.this,
-                        "Photo file can't be created, please try again",
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Uri photoURI = FileProvider.getUriForFile(Emp_Add_TaskActivity.this,
-                    "com.gov.sa.swcc.fileprovider",
-                    pictureFile);
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            startActivityForResult(cameraIntent, 1001);
-        }
+
+        openFolder();
+//        Intent cameraIntent = new Intent(Intent.ACTION_GET_CONTENT);
+//        cameraIntent.setType("*/*");
+//        startActivityForResult(cameraIntent, 1300);
+
+//        //cameraIntent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true);
+//        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+//            File pictureFile = null;
+//            try {
+//                pictureFile = getPictureFile();
+//            } catch (IOException ex) {
+//                Toast.makeText(Emp_Add_TaskActivity.this,
+//                        "Photo file can't be created, please try again",
+//                        Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            Uri photoURI = FileProvider.getUriForFile(Emp_Add_TaskActivity.this,
+//                    "com.gov.sa.swcc.fileprovider",
+//                    pictureFile);
+//            //cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//            startActivityForResult(cameraIntent, 1001);
+//        }
     }
 
 
-
+    public void openFolder() {
+        Intent intent = new Intent();
+        intent.setType("*/*");
+//        intent.setType("file/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.putExtra("return-data", true);
+        startActivityForResult(Intent.createChooser(intent, "Complete action using"), 1300);
+    }
 
 
     private void CreateEmpTask() {
@@ -324,15 +402,16 @@ date.setOnClickListener(new View.OnClickListener() {
         completeTask.setCreatedBy(global.GetValue("Username").replaceAll("u",""));
         completeTask.setTaskName(Task_Titel.getText().toString());
         completeTask.setFrom(Current.get(Calendar.YEAR)+"-"+(Current.get(Calendar.MONTH)+1)+"-"+Current.get(Calendar.DAY_OF_MONTH));
-        completeTask.setTo(date.getText().toString());
+        completeTask.setTo(date.getText().toString()+"T15:00:00.588Z");
         completeTask.setTaskDecription(detials.getText().toString());
         completeTask.setUids(uid);
+        Log.d("Image",""+Image);
         if(Image==1)
         {
             UploadAttachment employeeAttachment=new UploadAttachment();
-            employeeAttachment.setName("مرفق");
-            employeeAttachment.setFileExtension("jpg");
-            employeeAttachment.setImageBase(ConvertToBase64());
+            employeeAttachment.setName(ansName.split("\\.")[0]);
+            employeeAttachment.setFileExtension(ansName.split("\\.")[ansName.split("\\.").length-1]);
+            employeeAttachment.setImageBase(Base64.encodeToString(bytes,Base64.DEFAULT));
             List<UploadAttachment> employeeAttachments=new ArrayList<>();
             employeeAttachments.add(employeeAttachment);
             completeTask.setUploadAttachments(employeeAttachments);
@@ -359,7 +438,7 @@ date.setOnClickListener(new View.OnClickListener() {
                         Intent intent=new Intent();
                         intent.putExtra("update",true);
                         setResult(1002,intent);
-                        global.ShowMessageNF(response.body().getMessage(),Emp_Add_TaskActivity.this);
+                        global.ShowMessageNFH("شكرا لك!",Emp_Add_TaskActivity.this,"تم اسناد المهمة بنجاح");
 
 
                     }else {
@@ -368,6 +447,7 @@ date.setOnClickListener(new View.OnClickListener() {
                     }
 
                 }else {
+                    global.ShowMessage("");
                     dialog.dismiss();
                 }
             }
@@ -400,6 +480,64 @@ date.setOnClickListener(new View.OnClickListener() {
     }
 
 
+
+
+    @SuppressLint("Range")
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+    public void ConvertToString(Uri uri){
+       String uriString = uri.toString();
+        Log.d("data", "onActivityResult: uri"+uriString);
+        //            myFile = new File(uriString);
+        //            ret = myFile.getAbsolutePath();
+        //Fpath.setText(ret);
+        try {
+            InputStream in = getContentResolver().openInputStream(uri);
+             bytes=getBytes(in);
+           // Log.d("data", "onActivityResult: bytes size="+bytes.length);
+           // Log.d("data", "onActivityResult: Base64string="+Base64.encodeToString(bytes,Base64.DEFAULT));
+            ansValue = Base64.encodeToString(bytes,Base64.DEFAULT);
+            String Document=Base64.encodeToString(bytes,Base64.DEFAULT);
+           // Log.d("img", "" + ansValue);
+            ansName=getFileName(uri);
+           // Log.d("imgiii", "" + ansName.split("\\.")[ansName.split("\\.").length-1]);
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            Log.d("error", "onActivityResult: " + e.toString());
+        }
+    }
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -430,6 +568,45 @@ CheckSubmit();
                     }
                     break;
 
+                case 1300:
+
+                    Uri URI = data.getData();
+                    ConvertToString(URI);
+
+                        removeimagetxt.setText(ansName);
+                        addimagetxt.setVisibility(View.GONE);
+                        addimage.setVisibility(View.GONE);
+                        removeimage.setVisibility(View.VISIBLE);
+                        removeimagetxt.setVisibility(View.VISIBLE);
+                        Image=1;
+                        Log.d("img123", "true");
+                        CheckSubmit();
+
+                    //Tecket_Attach.setText(URI.getLastPathSegment());
+//                   Uri selectedImageURI = data.getData();
+//                    Log.d("img", "" + data.getData());
+//                    Log.d("img", "" + selectedImageURI.getAuthority());
+//
+//
+//                    File imgFile= new File(GetFilePathFromDevice.getPath(Emp_Add_TaskActivity.this,data.getData()));
+//                    Log.d("img", "" + imgFile.getAbsolutePath());
+//
+//                    if (imgFile.exists()) {
+//                        Log.d("img", "true");
+//                        //                            imageView.setImageURI(Uri.fromFile(imgFile));
+//                        addimagetxt.setText(imgFile.getName());
+//                        addimagetxt.setVisibility(View.GONE);
+//                        addimage.setVisibility(View.GONE);
+//                        removeimage.setVisibility(View.VISIBLE);
+//                        removeimagetxt.setVisibility(View.VISIBLE);
+//                        Image=1;
+//                        Log.d("img123", "true");
+//                        CheckSubmit();
+//
+//                    }
+
+                    break;
+
                 case 1400:
                    EmpList();
 
@@ -440,6 +617,20 @@ CheckSubmit();
 
             }
         }
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 
 
@@ -506,6 +697,154 @@ chip.setTag(i+"");
         else { //permission is automatically granted on sdk<23 upon installation
             Log.v("SWCC","Permission is granted");
             return true;
+        }
+    }
+
+
+
+
+    private void showbutton(){
+        micButton = findViewById(R.id.button);
+
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+            checkPermission();
+        }else{
+            micButton.setVisibility(View.VISIBLE);
+        }
+
+//        editText = findViewById(R.id.text);
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+
+        final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ar");// Locale.getDefault());
+//        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
+
+
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 10);
+
+
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 60000); // value to wait
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 60000); // value to wait
+
+
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle bundle) {
+                Log.i("-----","1");
+//                output.setText(""+"\n"+output.getText().toString());
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+                Log.i("-----","2");
+//                editText.setText("");
+//                editText.setHint("Listening...");
+            }
+
+            @Override
+            public void onRmsChanged(float v) {
+//                Log.i("-----","3");
+            }
+
+            @Override
+            public void onBufferReceived(byte[] bytes) {
+                Log.i("-----","4");
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+                Log.i("-----","5");
+
+
+            }
+
+            @Override
+            public void onError(int i) {
+                Log.i("-----","6");
+                isActive = false;
+                micButton.setText("صوتي");
+                micButton.setBackgroundTintList(ContextCompat.getColorStateList(Emp_Add_TaskActivity.this, R.color.darkblue));
+                micButton.setVisibility(View.VISIBLE);
+            }
+
+
+
+            @Override
+            public void onResults(Bundle bundle) {
+                Log.i("-----","7");
+                isActive = false;
+                micButton.setText("صوتي");
+                micButton.setBackgroundTintList(ContextCompat.getColorStateList(Emp_Add_TaskActivity.this, R.color.darkblue));
+                micButton.setVisibility(View.VISIBLE);
+//                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+//                if(data !=null && data.size()>0) {
+//                    String newStr = data.get(0);
+//                    String lastStr = output.getText().toString();
+//                    String fullStr = lastStr + " " + newStr;
+//                    if (fullStr.length() <= maxLength) {
+//                        output.setText(fullStr);
+//                    }
+//                }
+            }
+
+            @Override
+            public void onPartialResults(Bundle bundle) {
+                Log.i("-----", "8");
+
+                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                if(data.size()>0) {
+                    String newStr = data.get(0);
+
+                    String lastStr = detials.getText().toString();
+                    if (!lastStr.endsWith(newStr)) {
+                        String fullStr = lastStr + " " + newStr;
+                        if (fullStr.length() <= maxLength) {
+                            detials.setText(fullStr);
+                        }
+                    }
+
+                    Log.i("-----:", data.size() + "onPR:" + newStr);
+                }
+            }
+
+            @Override
+            public void onEvent(int i, Bundle bundle) {
+                Log.i("-----","9");
+            }
+        });
+
+        micButton.setOnClickListener(v -> {
+            if(isActive){
+                speechRecognizer.stopListening();
+                micButton.setText("صوتي");
+                micButton.setVisibility(View.VISIBLE);
+                micButton.setBackgroundTintList(ContextCompat.getColorStateList(Emp_Add_TaskActivity.this, R.color.darkblue));
+            }else{
+                speechRecognizer.startListening(speechRecognizerIntent);
+                micButton.setText("تحدث");
+                micButton.setVisibility(View.VISIBLE);
+                micButton.setBackgroundTintList(ContextCompat.getColorStateList(Emp_Add_TaskActivity.this, R.color.red));
+
+            }
+            isActive = !isActive;
+        });
+    }
+
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},RecordAudioRequestCode);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RecordAudioRequestCode && grantResults.length > 0 ){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                micButton.setVisibility(View.VISIBLE);
+            }
         }
     }
 
